@@ -1627,6 +1627,16 @@ pub enum TranslatedString {
     address__warning_not_yours = 1237,  // {"Bolt": "", "Caesar": "", "Delizia": "", "Eckhart": "This is NOT your address"}
     #[cfg(feature = "universal_fw")]
     tron__owner_address = 1238,  // "Owner address"
+    #[cfg(feature = "universal_fw")]
+    stellar__argument = 1239,  // "Argument"
+    #[cfg(feature = "universal_fw")]
+    stellar__authorization = 1240,  // "Authorization"
+    #[cfg(feature = "universal_fw")]
+    stellar__contract_address = 1241,  // "Contract Address"
+    #[cfg(feature = "universal_fw")]
+    stellar__function = 1242,  // "Function"
+    #[cfg(feature = "universal_fw")]
+    stellar__invoke_contract = 1243,  // "Invoke Contract"
 }
 
 impl TranslatedString {
@@ -2873,6 +2883,11 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "",
                 "Owner address",
+                "Argument",
+                "Authorization",
+                "Contract Address",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(feature = "debug", feature = "universal_fw"))]
@@ -4117,6 +4132,11 @@ impl TranslatedString {
                 19414,
                 19414,
                 19427,
+                19435,
+                19448,
+                19464,
+                19472,
+                19487,
             ];
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -5360,6 +5380,11 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "",
                 "Owner address",
+                "Argument",
+                "Authorization",
+                "Contract Address",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -6604,6 +6629,11 @@ impl TranslatedString {
                 19414,
                 19414,
                 19427,
+                19435,
+                19448,
+                19464,
+                19472,
+                19487,
             ];
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -7847,6 +7877,11 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "",
                 "Owner address",
+                "Argument",
+                "Authorization",
+                "Contract Address",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -9091,6 +9126,11 @@ impl TranslatedString {
                 19414,
                 19414,
                 19427,
+                19435,
+                19448,
+                19464,
+                19472,
+                19487,
             ];
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -10334,6 +10374,11 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "",
                 "Owner address",
+                "Argument",
+                "Authorization",
+                "Contract Address",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -11578,6 +11623,11 @@ impl TranslatedString {
                 19414,
                 19414,
                 19427,
+                19435,
+                19448,
+                19464,
+                19472,
+                19487,
             ];
 
         } else if #[cfg(feature = "layout_caesar")] {
@@ -12822,6 +12872,11 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "",
                 "Owner address",
+                "Argument",
+                "Authorization",
+                "Contract Address",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(feature = "debug", feature = "universal_fw"))]
@@ -14066,6 +14121,11 @@ impl TranslatedString {
                 17302,
                 17302,
                 17315,
+                17323,
+                17336,
+                17352,
+                17360,
+                17375,
             ];
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -15309,6 +15369,11 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "",
                 "Owner address",
+                "Argument",
+                "Authorization",
+                "Contract Address",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -16553,6 +16618,11 @@ impl TranslatedString {
                 17302,
                 17302,
                 17315,
+                17323,
+                17336,
+                17352,
+                17360,
+                17375,
             ];
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -17796,6 +17866,11 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "",
                 "Owner address",
+                "Argument",
+                "Authorization",
+                "Contract Address",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -19040,6 +19115,11 @@ impl TranslatedString {
                 17302,
                 17302,
                 17315,
+                17323,
+                17336,
+                17352,
+                17360,
+                17375,
             ];
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -20283,6 +20363,11 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "",
                 "Owner address",
+                "Argument",
+                "Authorization",
+                "Contract Address",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -21527,6 +21612,11 @@ impl TranslatedString {
                 17302,
                 17302,
                 17315,
+                17323,
+                17336,
+                17352,
+                17360,
+                17375,
             ];
 
         } else if #[cfg(feature = "layout_delizia")] {
@@ -22771,6 +22861,11 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "",
                 "Owner address",
+                "Argument",
+                "Authorization",
+                "Contract Address",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(feature = "debug", feature = "universal_fw"))]
@@ -24015,6 +24110,11 @@ impl TranslatedString {
                 18931,
                 18931,
                 18944,
+                18952,
+                18965,
+                18981,
+                18989,
+                19004,
             ];
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -25258,6 +25358,11 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "",
                 "Owner address",
+                "Argument",
+                "Authorization",
+                "Contract Address",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -26502,6 +26607,11 @@ impl TranslatedString {
                 18931,
                 18931,
                 18944,
+                18952,
+                18965,
+                18981,
+                18989,
+                19004,
             ];
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -27745,6 +27855,11 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "",
                 "Owner address",
+                "Argument",
+                "Authorization",
+                "Contract Address",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -28989,6 +29104,11 @@ impl TranslatedString {
                 18931,
                 18931,
                 18944,
+                18952,
+                18965,
+                18981,
+                18989,
+                19004,
             ];
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -30232,6 +30352,11 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "",
                 "Owner address",
+                "Argument",
+                "Authorization",
+                "Contract Address",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -31476,6 +31601,11 @@ impl TranslatedString {
                 18931,
                 18931,
                 18944,
+                18952,
+                18965,
+                18981,
+                18989,
+                19004,
             ];
 
         } else if #[cfg(feature = "layout_eckhart")] {
@@ -32720,6 +32850,11 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "This is NOT your address",
                 "Owner address",
+                "Argument",
+                "Authorization",
+                "Contract Address",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(feature = "debug", feature = "universal_fw"))]
@@ -33964,6 +34099,11 @@ impl TranslatedString {
                 20215,
                 20239,
                 20252,
+                20260,
+                20273,
+                20289,
+                20297,
+                20312,
             ];
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -35207,6 +35347,11 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "This is NOT your address",
                 "Owner address",
+                "Argument",
+                "Authorization",
+                "Contract Address",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -36451,6 +36596,11 @@ impl TranslatedString {
                 20215,
                 20239,
                 20252,
+                20260,
+                20273,
+                20289,
+                20297,
+                20312,
             ];
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -37694,6 +37844,11 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "This is NOT your address",
                 "Owner address",
+                "Argument",
+                "Authorization",
+                "Contract Address",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -38938,6 +39093,11 @@ impl TranslatedString {
                 20215,
                 20239,
                 20252,
+                20260,
+                20273,
+                20289,
+                20297,
+                20312,
             ];
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -40181,6 +40341,11 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "This is NOT your address",
                 "Owner address",
+                "Argument",
+                "Authorization",
+                "Contract Address",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -41425,6 +41590,11 @@ impl TranslatedString {
                 20215,
                 20239,
                 20252,
+                20260,
+                20273,
+                20289,
+                20297,
+                20312,
             ];
 
         }
@@ -42711,6 +42881,10 @@ impl TranslatedString {
         #[cfg(feature = "universal_fw")]
         (Qstr::MP_QSTR_stellar__allow_trust, Self::stellar__allow_trust),
         #[cfg(feature = "universal_fw")]
+        (Qstr::MP_QSTR_stellar__argument, Self::stellar__argument),
+        #[cfg(feature = "universal_fw")]
+        (Qstr::MP_QSTR_stellar__authorization, Self::stellar__authorization),
+        #[cfg(feature = "universal_fw")]
         (Qstr::MP_QSTR_stellar__balance_id, Self::stellar__balance_id),
         #[cfg(feature = "universal_fw")]
         (Qstr::MP_QSTR_stellar__bump_sequence, Self::stellar__bump_sequence),
@@ -42731,6 +42905,8 @@ impl TranslatedString {
         #[cfg(feature = "universal_fw")]
         (Qstr::MP_QSTR_stellar__confirm_timebounds, Self::stellar__confirm_timebounds),
         #[cfg(feature = "universal_fw")]
+        (Qstr::MP_QSTR_stellar__contract_address, Self::stellar__contract_address),
+        #[cfg(feature = "universal_fw")]
         (Qstr::MP_QSTR_stellar__create_account, Self::stellar__create_account),
         #[cfg(feature = "universal_fw")]
         (Qstr::MP_QSTR_stellar__debited_amount, Self::stellar__debited_amount),
@@ -42747,6 +42923,8 @@ impl TranslatedString {
         #[cfg(feature = "universal_fw")]
         (Qstr::MP_QSTR_stellar__final_confirm, Self::stellar__final_confirm),
         #[cfg(feature = "universal_fw")]
+        (Qstr::MP_QSTR_stellar__function, Self::stellar__function),
+        #[cfg(feature = "universal_fw")]
         (Qstr::MP_QSTR_stellar__hash, Self::stellar__hash),
         #[cfg(feature = "universal_fw")]
         (Qstr::MP_QSTR_stellar__high, Self::stellar__high),
@@ -42754,6 +42932,8 @@ impl TranslatedString {
         (Qstr::MP_QSTR_stellar__home_domain, Self::stellar__home_domain),
         #[cfg(feature = "universal_fw")]
         (Qstr::MP_QSTR_stellar__inflation, Self::stellar__inflation),
+        #[cfg(feature = "universal_fw")]
+        (Qstr::MP_QSTR_stellar__invoke_contract, Self::stellar__invoke_contract),
         #[cfg(feature = "universal_fw")]
         (Qstr::MP_QSTR_stellar__issuer_template, Self::stellar__issuer_template),
         #[cfg(feature = "universal_fw")]
