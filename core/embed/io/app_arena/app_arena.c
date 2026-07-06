@@ -128,15 +128,13 @@ ts_t app_arena_init(void) {
   arena->mem_ptr = malloc(arena->mem_size);
   TSH_CHECK(arena->mem_ptr != NULL, TS_ENOMEM);
 #else
-  arena->mem_size = APPDATA_RAM_SIZE;
-  arena->mem_ptr = (uint8_t*)APPDATA_RAM_START;
+  arena->mem_size = APP_ARENA_RAM_SIZE;
+  arena->mem_ptr = (uint8_t*)APP_ARENA_RAM_START;
   TSH_CHECK(arena->mem_ptr != NULL, TS_ENOMEM);
 
 #ifdef USE_TRUSTZONE
   // Allow unprivileged access to app arena memory
-  tz_set_sram_unpriv(APPDATA_RAM_START, APPDATA_RAM_SIZE, true);
-  // Allow unprivileged access to app code area
-  tz_set_flash_unpriv(APPCODE_START, APPCODE_MAXSIZE, true);
+  tz_set_sram_unpriv(APP_ARENA_RAM_START, APP_ARENA_RAM_SIZE, true);
 #endif
 
 #endif

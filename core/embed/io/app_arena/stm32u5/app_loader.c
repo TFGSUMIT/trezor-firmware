@@ -158,7 +158,7 @@ ts_t app_loader_verify_payload(const app_header_t* header, const void* code,
   // Check that RW segment size and address are valid
   TSH_CHECK(chdr->rw_va >= chdr->ro_va + chdr->ro_size, TS_EBADMSG);
   TSH_CHECK(chdr->rw_va + chdr->rw_size >= chdr->rw_va, TS_EBADMSG);
-  TSH_CHECK(chdr->rw_size < APPDATA_RAM_SIZE, TS_ENOMEM);
+  TSH_CHECK(chdr->rw_size < APP_ARENA_RAM_SIZE, TS_ENOMEM);
 
   /// Check that RW relocation table fits within the image
   TSH_CHECK(chdr->rw_rel_offset <= raw_code_size, TS_EBADMSG);
@@ -175,10 +175,10 @@ ts_t app_loader_verify_payload(const app_header_t* header, const void* code,
             TS_EBADMSG);
 
   // Check that the stack size is reasonable
-  TSH_CHECK(chdr->stack_size < APPDATA_RAM_SIZE, TS_ENOMEM);
+  TSH_CHECK(chdr->stack_size < APP_ARENA_RAM_SIZE, TS_ENOMEM);
 
   // Check that the heap size is reasonable
-  TSH_CHECK(chdr->heap_size < APPDATA_RAM_SIZE, TS_ENOMEM);
+  TSH_CHECK(chdr->heap_size < APP_ARENA_RAM_SIZE, TS_ENOMEM);
 
   // Check that the entrypoint is within the RO segment
   TSH_CHECK(chdr->entry_va >= chdr->ro_va, TS_EBADMSG);
