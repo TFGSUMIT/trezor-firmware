@@ -26,4 +26,18 @@
 const uint32_t SYSHANDLE__IPC0 = SYSHANDLE_IPC0;
 #endif
 
+// Each application is expected to implement applet_main() function, which is
+// the entry point of the application. The function is called by the system when
+// the application is started.
+//
+// void applet_main(trezor_api_getter_t api_getter);
+
+/**
+ * @brief Type of the function that retrieves the Trezor API for a given
+ * version.
+ *
+ * @param version The version of the Trezor API to retrieve.
+ * @return A pointer to the Trezor API structure corresponding to the requested
+ * version.
+ */
 typedef void* (*trezor_api_getter_t)(uint32_t version);

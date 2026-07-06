@@ -235,6 +235,21 @@ pub fn system_exit_fatal(message: &str, file: &str, line: i32) -> ! {
     core::intrinsics::abort();
 }
 
+pub(crate) fn app_get_heap() -> Result<&'static [u8], ApiError> {
+    unsafe {
+        let mut heap_ptr: *mut c_void = core::ptr::null_mut();
+        let mut heap_size: usize = 0;
+        let status = unwrap!(get_or_die().app_get_heap)(
+            &mut heap_ptr as *mut *mut c_void,
+            &mut heap_size as *mut usize,
+        );
+        if status.code != 0 {
+            return Err(ApiError::Failed);
+        }
+        Ok(core::slice::from_raw_parts(heap_ptr as *const u8, heap_size))
+    }
+}
+
 pub(crate) fn ed25519_sign_open(
     public_key: &[u8; 32],
     signature: &[u8; 64],

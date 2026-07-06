@@ -4,7 +4,7 @@ use xbuild::Result;
 
 fn main() -> Result<()> {
     xbuild::build(|lib| {
-        lib.import_lib("sec")?;
+        lib.import_lib("io")?;
 
         lib.add_includes(["."]);
 

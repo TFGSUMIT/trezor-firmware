@@ -19,4 +19,4 @@ io.workspace = true
 
 test = []
 
-default = ["io/ipc"]
+default = ["io/ipc", "io/app_loading"]

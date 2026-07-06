@@ -5,6 +5,12 @@
 #![allow(non_upper_case_globals)]
 #![allow(dead_code)]
 
+#[doc = " Status code type"]
+#[repr(C)]
+#[derive(Default)]
+pub struct ts_t {
+    pub code: cty::c_int,
+}
 #[doc = " Bitmask of event handles"]
 pub type syshandle_mask_t = u32;
 #[repr(C)]
@@ -235,6 +241,9 @@ pub struct trezor_api_v1_t {
             data_size: usize,
         ) -> bool,
     >,
+    pub app_get_heap: ::core::option::Option<
+        unsafe extern "C" fn(heap_ptr: *mut *mut cty::c_void, heap_size: *mut usize) -> ts_t,
+    >,
     pub trezor_crypto_v1: *const trezor_crypto_v1_t,
 }
 impl Default for trezor_api_v1_t {
@@ -246,6 +255,7 @@ impl Default for trezor_api_v1_t {
         }
     }
 }
-pub const SYSHANDLE__IPC0: u32 = 11;
+pub const SYSHANDLE__IPC0: u32 = 12;
+#[doc = " @brief Type of the function that retrieves the Trezor API for a given\n version.\n\n @param version The version of the Trezor API to retrieve.\n @return A pointer to the Trezor API structure corresponding to the requested\n version."]
 pub type trezor_api_getter_t =
     ::core::option::Option<unsafe extern "C" fn(version: u32) -> *mut cty::c_void>;

@@ -31,6 +31,10 @@
 #include <sys/ipc.h>
 #endif
 
+#ifdef USE_APP_LOADING
+#include <io/app_arena.h>
+#endif
+
 #include "bip32.h"
 #include "ecdsa.h"
 #include "ed25519-donna/ed25519.h"
@@ -113,6 +117,8 @@ typedef struct {
 
   bool (*ipc_send)(systask_id_t remote, uint32_t fn, const void* data,
                    size_t data_size);
+
+  ts_t (*app_get_heap)(void** heap_ptr, size_t* heap_size);
 
   const trezor_crypto_v1_t* trezor_crypto_v1;
 
