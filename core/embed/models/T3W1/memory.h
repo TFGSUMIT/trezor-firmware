@@ -65,11 +65,6 @@
 #define FIRMWARE_SECTOR_START 0x2F
 #define FIRMWARE_SECTOR_END 0x18F
 
-#define APPCODE_START (0x0C320000)
-#define APPCODE_MAXSIZE (64 * 8 * 1024)  // 512 kB
-#define APPCODE_SECTOR_START 0x190
-#define APPCODE_SECTOR_END 0x1CF
-
 // overlaps with assets and storage
 #define BOOTUPDATE_START (0x0C3A0000)
 #define BOOTUPDATE_MAXSIZE (48 * 8 * 1024)  // 384 kB
