@@ -345,7 +345,7 @@ void mpu_set_active_applet(const applet_layout_t* layout) {
   // If we change MPU regions before that save completes, the first FPU
   // instruction in any later interrupt handler triggers the deferred save to
   // FPCAR — which may now point to memory no longer mapped (e.g. AUX1_RAM
-  // after it is replaced by APPDATA_RAM), causing a MemManage fault.
+  // after it is replaced by APP_ARENA_RAM), causing a MemManage fault.
   // Executing any FPU instruction here forces the lazy save to complete while
   // the current MPU configuration (with the task's memory still accessible)
   // is still in effect, so LSPACT is cleared before the regions are changed.
