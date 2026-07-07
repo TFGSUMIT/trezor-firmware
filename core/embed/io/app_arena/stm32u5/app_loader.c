@@ -100,6 +100,7 @@ static const uint8_t* offset_to_ptr(const app_code_header_t* chdr,
   return (const uint8_t*)chdr + sizeof(app_code_header_t) + offset;
 }
 
+// Map virtual address to physical address using the provided mapping
 static uint8_t* map_va_size(const va_map_t* map, uint32_t va, size_t size) {
   if (va + size < va) {
     // Overflow
@@ -123,6 +124,33 @@ static uint8_t* map_va_size(const va_map_t* map, uint32_t va, size_t size) {
 static uint8_t* map_va(const va_map_t* map, uint32_t va) {
   return map_va_size(map, va, 0);
 }
+
+/*
+// Map physical address to virtual address using the provided mapping
+static uint8_t* map_pa_size(const va_map_t* map, uint32_t pa, size_t size) {
+  if (pa + size < pa) {
+    // Overflow
+    return NULL;
+  }
+
+  if (pa >= map->rw_p_addr && pa + size <= map->rw_p_addr + map->rw_size) {
+    // Address within RW segment
+    return (uint8_t*)map->rw_v_addr + (pa - map->rw_p_addr);
+  }
+
+  if (pa >= map->ro_p_addr && pa + size <= map->ro_p_addr + map->ro_size) {
+    // Address within RO segment
+    return (uint8_t*)map->ro_v_addr + (pa - map->ro_p_addr);
+  }
+
+  // Address not within any mapped segment
+  return NULL;
+}
+
+static uint8_t* map_pa(const va_map_t* map, uint32_t pa) {
+  return map_pa_size(map, pa, 0);
+}
+*/
 
 ts_t app_loader_verify_payload(const app_header_t* header, const void* code,
                                size_t code_size) {
@@ -167,7 +195,7 @@ ts_t app_loader_verify_payload(const app_header_t* header, const void* code,
   TSH_CHECK(chdr->rw_rel_offset + chdr->rw_rel_size <= raw_code_size,
             TS_EBADMSG);
 
-  // Check that the RW init data is within the RO segment
+  // Check that the RW init data is within the image
   TSH_CHECK(chdr->rw_init_offset <= raw_code_size, TS_EBADMSG);
   TSH_CHECK(chdr->rw_init_offset + chdr->rw_init_size >= chdr->rw_init_offset,
             TS_EBADMSG);
@@ -263,29 +291,14 @@ static void unload_cb(applet_t* applet) {
 // 16-bit Relocation format
 // -----------------------------------------------------------------------
 // | 15 | 14 | 13 | 12 | 11 | 10 | 9 | 8 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
-// |        type       |              value                              |
+// |    REL_TYPE_xxx   |              offset                             |
 // -----------------------------------------------------------------------
-// s (segment)
-//  0 => target is read-only segment
-//  1 => target is read-write segment
-// type
-//   0 => reset address to 0
-//   1 => skip `value` bytes
-//   2 => skip (`value` << 16) + (next 16-bit value)
-//   3 => R_ARM_ABS32
-//   4 => R_ARM_THM_MOVW_ABS_NC (next 16-bit contains high 16 bits of target)
-//   5 => R_ARM_THM_MOVT_ABS (next 16-bit contains low 16 bits of target)
-//   6 => R_ARM_THM_MOVW_ABS_NC + R_ARM_THM_MOVT_ABS pair (no trailing word;
-//        the movt instruction is at `value` + 4 and both halves of the target
-//        address are recovered from the two instructions themselves)
-// offset = 11 bits
-//  difference between the relocation address and the last relocation address +
-//  1
 
+// Relocation/Command types
 typedef enum {
   REL_TYPE_RESET = 0,          // Reset address to 0
-  REL_TYPE_SKIP = 1,           // Skip up to 4096 bytes
-  REL_TYPE_SKIP_LONG = 2,      // Skip up to 4096 * 65536 bytes
+  REL_TYPE_SKIP = 1,           // Skip up to 4095 bytes
+  REL_TYPE_SKIP_LONG = 2,      // Skip up to 4095 * 65536 bytes
   REL_TYPE_ABS32 = 3,          // Absolute 32-bit address
   REL_TYPE_MOVW_ABS = 4,       // Absolute (low 16 bits)
   REL_TYPE_MOVT_ABS = 5,       // Absolute (high 16 bits)
@@ -314,8 +327,12 @@ static uint32_t insert_movx_value(uint32_t instruction, uint16_t value) {
   return instruction;
 }
 
+#define RELOC_FLAG_NORMAL 0x00  // Perform relocations normally
+#define RELOC_FLAG_DRY_RUN \
+  0x01  // Perform relocations without modifying the memory
+
 ts_t apply_relocations(const void* rel_table, size_t rel_size,
-                       const va_map_t* map) {
+                       const va_map_t* map, uint32_t flags) {
   TSH_DECLARE;
 
   TSH_CHECK(rel_size % sizeof(uint16_t) == 0, TS_EBADMSG);
@@ -329,7 +346,7 @@ ts_t apply_relocations(const void* rel_table, size_t rel_size,
     uint16_t entry = *rel_ptr++;
 
     reloc_type_t type = (entry >> 12) & 0xF;
-    uint16_t value = entry & ((1 << 12) - 1);
+    uint16_t offset = entry & ((1 << 12) - 1);
 
     // Handle address adjustments commands
     switch (type) {
@@ -338,13 +355,13 @@ ts_t apply_relocations(const void* rel_table, size_t rel_size,
         continue;
 
       case REL_TYPE_SKIP:
-        address += value;
+        address += offset;
         continue;
 
       case REL_TYPE_SKIP_LONG:
         TSH_CHECK(rel_ptr < rel_end, TS_EBADMSG);
         uint16_t low = *rel_ptr++;
-        address += (value << 16) + low;
+        address += (offset << 16) + low;
         continue;
 
       default:
@@ -352,7 +369,7 @@ ts_t apply_relocations(const void* rel_table, size_t rel_size,
     }
 
     // Handle relocation commands
-    address += value;
+    address += offset;
 
     uint32_t* ptr = (uint32_t*)map_va_size(map, address, sizeof(uint32_t));
     TSH_CHECK(ptr != NULL, TS_EBADMSG);
@@ -362,27 +379,33 @@ ts_t apply_relocations(const void* rel_table, size_t rel_size,
         uint32_t pa = (uint32_t)map_va(map, *ptr);
         LOG_DBG("0x%08lX: ABS32: 0x%08lX -> 0x%08lX", address, *ptr, pa);
         TSH_CHECK(pa != 0, TS_EBADMSG);
-        *ptr = pa;
+        if ((flags & RELOC_FLAG_DRY_RUN) == 0) {
+          *ptr = pa;
+        }
       } break;
 
       case REL_TYPE_MOVT_ABS: {
         TSH_CHECK(rel_ptr < rel_end, TS_EBADMSG);
         uint16_t low = *rel_ptr++;
-        uint32_t va = (extract_movx_value(*ptr) << 16) | low;
+        uint32_t va = ((uint32_t)extract_movx_value(*ptr) << 16) | low;
         uint32_t pa = (uint32_t)map_va(map, va);
         LOG_DBG("0x%08lX: MOVT_ABS: 0x%08lX -> 0x%08lX", address, va, pa);
         TSH_CHECK(pa != 0, TS_EBADMSG);
-        *ptr = insert_movx_value(*ptr, (uint16_t)(pa >> 16));
+        if ((flags & RELOC_FLAG_DRY_RUN) == 0) {
+          *ptr = insert_movx_value(*ptr, (uint16_t)(pa >> 16));
+        }
       } break;
 
       case REL_TYPE_MOVW_ABS: {
         TSH_CHECK(rel_ptr < rel_end, TS_EBADMSG);
         uint16_t high = *rel_ptr++;
-        uint32_t va = extract_movx_value(*ptr) | (high << 16);
+        uint32_t va = extract_movx_value(*ptr) | ((uint32_t)high << 16);
         uint32_t pa = (uint32_t)map_va(map, va);
         LOG_DBG("0x%08lX: MOVW_ABS: 0x%08lX -> 0x%08lX", address, va, pa);
         TSH_CHECK(pa != 0, TS_EBADMSG);
-        *ptr = insert_movx_value(*ptr, (uint16_t)(pa & 0xFFFF));
+        if ((flags & RELOC_FLAG_DRY_RUN) == 0) {
+          *ptr = insert_movx_value(*ptr, (uint16_t)(pa & 0xFFFF));
+        }
       } break;
 
       case REL_TYPE_MOVW_MOVT_ABS: {
@@ -392,13 +415,15 @@ ts_t apply_relocations(const void* rel_table, size_t rel_size,
         uint32_t* movt = (uint32_t*)map_va_size(map, address + sizeof(uint32_t),
                                                 sizeof(uint32_t));
         TSH_CHECK(movt != NULL, TS_EBADMSG);
-        uint32_t va =
-            extract_movx_value(*ptr) | (extract_movx_value(*movt) << 16);
+        uint32_t va = extract_movx_value(*ptr) |
+                      ((uint32_t)extract_movx_value(*movt) << 16);
         uint32_t pa = (uint32_t)map_va(map, va);
         LOG_DBG("0x%08lX: MOVW_MOVT_ABS: 0x%08lX -> 0x%08lX", address, va, pa);
         TSH_CHECK(pa != 0, TS_EBADMSG);
-        *ptr = insert_movx_value(*ptr, (uint16_t)(pa & 0xFFFF));
-        *movt = insert_movx_value(*movt, (uint16_t)(pa >> 16));
+        if ((flags & RELOC_FLAG_DRY_RUN) == 0) {
+          *ptr = insert_movx_value(*ptr, (uint16_t)(pa & 0xFFFF));
+          *movt = insert_movx_value(*movt, (uint16_t)(pa >> 16));
+        }
       } break;
 
       default:
@@ -415,6 +440,8 @@ ts_t app_loader_prepare_applet(const app_header_t* header, void* code,
   TSH_DECLARE;
   ts_t status;
 
+  memset(applet, 0, sizeof(applet_t));
+
   va_map_t map = {0};
 
   app_code_header_t* chdr = (app_code_header_t*)code;
@@ -427,8 +454,13 @@ ts_t app_loader_prepare_applet(const app_header_t* header, void* code,
   // Apply relocations
   if ((chdr->runtime_flags & RUNTIME_FLAG_RO_SEGMENT_RELOCATED) == 0) {
     status = apply_relocations(offset_to_ptr(chdr, chdr->ro_rel_offset),
-                               chdr->ro_rel_size, &map);
+                               chdr->ro_rel_size, &map, RELOC_FLAG_DRY_RUN);
     TSH_CHECK_OK(status);
+
+    status = apply_relocations(offset_to_ptr(chdr, chdr->ro_rel_offset),
+                               chdr->ro_rel_size, &map, RELOC_FLAG_NORMAL);
+    TSH_CHECK_OK(status);
+
     chdr->runtime_flags |= RUNTIME_FLAG_RO_SEGMENT_RELOCATED;
   }
 
@@ -442,7 +474,7 @@ ts_t app_loader_prepare_applet(const app_header_t* header, void* code,
 
   // Apply relocations for RW segment
   status = apply_relocations(offset_to_ptr(chdr, chdr->rw_rel_offset),
-                             chdr->rw_rel_size, &map);
+                             chdr->rw_rel_size, &map, RELOC_FLAG_NORMAL);
   TSH_CHECK_OK(status);
 
   // Get entrypoint address
@@ -486,7 +518,13 @@ ts_t app_loader_prepare_applet(const app_header_t* header, void* code,
   ok = systask_push_call(&applet->task, entrypoint, api_getter, 0, 0);
   TSH_CHECK(ok, TS_ENOMEM);
 
+  systask_set_mpu(systask_active());
+  TSH_RETURN;
+
 cleanup:
+  applet_unload(applet);
+  memset(applet, 0, sizeof(*applet));
+
   systask_set_mpu(systask_active());
   TSH_RETURN;
 }

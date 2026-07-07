@@ -981,11 +981,11 @@ ts_t app_arena_clear_event(void) {
 }
 
 ts_t app_arena_create_image(const void *header, size_t header_size,
-                            const sha256_digest_t *proof, size_t proof_len,
+                            const sha256_digest_t *proof, size_t proof_size,
                             app_image_handle_t *handle) {
   return ts_make(syscall_invoke5(
       (uint32_t)header, (uint32_t)header_size, (uint32_t)proof,
-      (uint32_t)proof_len, (uint32_t)handle, SYSCALL_APP_ARENA_CREATE_IMAGE));
+      (uint32_t)proof_size, (uint32_t)handle, SYSCALL_APP_ARENA_CREATE_IMAGE));
 }
 
 ts_t app_arena_get_image_by_index(size_t idx, app_image_handle_t *handle) {

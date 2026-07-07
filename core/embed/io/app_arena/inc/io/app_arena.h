@@ -104,7 +104,7 @@ ts_t app_arena_clear_event(void);
  * @param header_size Size of the image header data in bytes.
  * @param proof Pointer to the Merkle proof data for signature
  * verification.
- * @param proof_len Number of sha256_digest_t elements in the proof array.
+ * @param proof_size Size of the Merkle proof data in bytes.
  * @param handle Pointer to store the handle of the newly allocated image.
  *
  * @return TS_OK on success, or an error code on failure.
@@ -112,7 +112,7 @@ ts_t app_arena_clear_event(void);
  *         TS_ENOMEM if there is not enough memory to allocate a new image.
  */
 ts_t app_arena_create_image(const void *header, size_t header_size,
-                            const sha256_digest_t *proof, size_t proof_len,
+                            const sha256_digest_t *proof, size_t proof_size,
                             app_image_handle_t *handle);
 
 /**
@@ -140,8 +140,7 @@ ts_t app_image_get_info(app_image_handle_t handle, app_image_info_t *info);
  * @brief Writes image data to a loaded application image.
  *
  * This function can be used to load the application image data into the arena.
- * The image must be in the APP_IMAGE_STATE_LOADING state before calling this
- * function.
+ * The image must be in the loading state before calling this function.
  *
  * @param handle Handle of the image to write to.
  * @param data Pointer to the data to write.
@@ -202,7 +201,7 @@ ts_t app_image_stop(app_image_handle_t handle);
  * If the image is still running, the info structure will be invalid.
  *
  * @param handle Handle of the image to query.
- * @param pinfo Pointer to a structure to receive postmortem information.
+ * @param pminfo Pointer to a structure to receive postmortem information.
  * @return TS_OK on success, or an error code on failure.
  *         TS_ENOENT if the image handle is invalid.
  */

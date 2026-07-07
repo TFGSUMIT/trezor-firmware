@@ -1455,13 +1455,13 @@ access_violation:
 
 ts_t app_arena_create_image__verified(const void *header, size_t header_size,
                                       const sha256_digest_t *proof,
-                                      size_t proof_len,
+                                      size_t proof_size,
                                       app_image_handle_t *handle) {
   if (!probe_read_access(header, header_size)) {
     goto access_violation;
   }
 
-  if (!probe_read_access(proof, sizeof(*proof) * proof_len)) {
+  if (!probe_read_access(proof, proof_size)) {
     goto access_violation;
   }
 
@@ -1469,7 +1469,7 @@ ts_t app_arena_create_image__verified(const void *header, size_t header_size,
     goto access_violation;
   }
 
-  return app_arena_create_image(header, header_size, proof, proof_len, handle);
+  return app_arena_create_image(header, header_size, proof, proof_size, handle);
 
 access_violation:
   apptask_access_violation();

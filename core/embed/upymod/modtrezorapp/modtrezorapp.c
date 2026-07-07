@@ -49,13 +49,8 @@ STATIC mp_obj_t mod_trezorapp_create_image(mp_obj_t header_obj,
   mp_buffer_info_t proof_buf;
   mp_get_buffer_raise(proof_obj, &proof_buf, MP_BUFFER_READ);
 
-  if (proof_buf.len % sizeof(sha256_digest_t) != 0) {
-    mp_raise_ValueError(MP_ERROR_TEXT("Invalid Merkle proof length"));
-  }
-
-  ts_t status =
-      app_arena_create_image(header_buf.buf, header_buf.len, proof_buf.buf,
-                             proof_buf.len / sizeof(sha256_digest_t), &handle);
+  ts_t status = app_arena_create_image(header_buf.buf, header_buf.len,
+                                       proof_buf.buf, proof_buf.len, &handle);
 
   if (ts_eq(status, TS_ENOMEM)) {
     mp_raise_type(&mp_type_AppImageMemoryError);

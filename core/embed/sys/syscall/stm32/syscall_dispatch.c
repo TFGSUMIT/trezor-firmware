@@ -992,10 +992,10 @@ __attribute((no_stack_protector)) void syscall_handler(uint32_t *args,
       const void *header = (const void *)args[0];
       size_t header_size = (size_t)args[1];
       const sha256_digest_t *proof = (const sha256_digest_t *)args[2];
-      size_t proof_len = (size_t)args[3];
+      size_t proof_size = (size_t)args[3];
       app_image_handle_t *handle = (app_image_handle_t *)args[4];
       ts_t status = app_arena_create_image__verified(header, header_size, proof,
-                                                     proof_len, handle);
+                                                     proof_size, handle);
       args[0] = ts_code(status);
     } break;
 

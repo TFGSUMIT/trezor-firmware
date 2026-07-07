@@ -368,7 +368,7 @@ ts_t app_arena_get_info__verified(app_arena_info_t *info);
 
 ts_t app_arena_create_image__verified(const void *header, size_t header_size,
                                       const sha256_digest_t *proof,
-                                      size_t proof_len,
+                                      size_t proof_size,
                                       app_image_handle_t *handle);
 
 ts_t app_arena_get_image_by_index__verified(size_t idx,

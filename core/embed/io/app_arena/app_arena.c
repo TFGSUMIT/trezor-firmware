@@ -179,11 +179,11 @@ ts_t app_arena_get_image_by_index(size_t idx, app_image_handle_t* handle) {
 
   app_arena_t* arena = &g_app_arena;
 
-  TSH_CHECK(arena->initialized, TS_ENOINIT);
   TSH_CHECK_ARG(handle != NULL);
-  TSH_CHECK_ARG(idx < APP_ARENA_MAX_IMAGES);
-
   *handle = APP_IMAGE_HANDLE_INVALID;
+
+  TSH_CHECK(arena->initialized, TS_ENOINIT);
+  TSH_CHECK_ARG(idx < APP_ARENA_MAX_IMAGES);
 
   // Iterate through the images and find the idx-th valid image
   for (size_t i = 0; i < ARRAY_LENGTH(arena->images); i++) {
@@ -202,7 +202,7 @@ cleanup:
 }
 
 ts_t app_arena_create_image(const void* header, size_t header_size,
-                            const sha256_digest_t* proof, size_t proof_len,
+                            const sha256_digest_t* proof, size_t proof_size,
                             app_image_handle_t* handle) {
   TSH_DECLARE;
 
@@ -212,7 +212,8 @@ ts_t app_arena_create_image(const void* header, size_t header_size,
   TSH_CHECK_ARG(header != NULL);
   TSH_CHECK_ARG(header_size <= APP_HEADER_MAX_SIZE);
   TSH_CHECK_ARG(handle != NULL);
-  TSH_CHECK_ARG(proof_len == 0 || proof != NULL);
+  TSH_CHECK_ARG(proof != NULL || proof_size == 0);
+  TSH_CHECK_ARG(IS_ALIGNED(proof_size, sizeof(sha256_digest_t)));
 
   *handle = APP_IMAGE_HANDLE_INVALID;
 
@@ -368,6 +369,13 @@ ts_t app_image_write_chunk(app_image_handle_t handle, const void* data,
   // Do not allow writing to an image that is already marked as ready
   TSH_CHECK(!entry->ready, TS_EINVAL);
 
+  // Check that the new data fits in the reserved memory and does
+  // not exceed the code size specified in the header
+  TSH_CHECK(entry->written_bytes + size >= entry->written_bytes, TS_ENOMEM);
+  TSH_CHECK(entry->written_bytes + size <= entry->mem_size, TS_ENOMEM);
+  TSH_CHECK(entry->written_bytes + size <= entry->header->code_size,
+            TS_EBADMSG);
+
   // Calculate chunk hash
   sha256_digest_t digest;
   SHA256_CTX ctx;
@@ -380,12 +388,6 @@ ts_t app_image_write_chunk(app_image_handle_t handle, const void* data,
   TSH_CHECK(memcmp(&digest, &entry->chunk_hash, sizeof(digest)) == 0,
             TS_EBADMSG);
   entry->chunk_hash = *hash;
-
-  if (entry->written_bytes + size < entry->written_bytes ||
-      entry->written_bytes + size > entry->mem_size) {
-    // Not enough space in the arena for the new data
-    TSH_RAISE(TS_ENOMEM);
-  }
 
   const uint8_t* src = data;
   const uint8_t* src_end = src + size;
@@ -409,7 +411,7 @@ ts_t app_image_write_chunk(app_image_handle_t handle, const void* data,
 
   entry->written_bytes += size;
 
-  if (entry->written_bytes >= entry->header->code_size) {
+  if (entry->written_bytes == entry->header->code_size) {
     // All data has been written, verify the payload integrity
     app_arena_configure_mpu(entry);
     status = app_loader_verify_payload(entry->header, entry->mem_ptr,
@@ -548,7 +550,10 @@ static void on_task_killed(void* context, systask_id_t task_id) {
     app_arena_entry_t* entry = &arena->images[i];
     if (entry->running && entry->applet.task.id == task_id) {
       // Mark the image as stopped
+      applet_unload(&entry->applet);
+      memset(&entry->applet, 0, sizeof(entry->applet));
       entry->running = false;
+      // Signalize killed task
       arena->task_killed = true;
       break;
     }
