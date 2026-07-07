@@ -476,12 +476,9 @@ ts_t app_image_stop(app_image_handle_t handle) {
   app_arena_entry_t* entry = find_image_by_handle(handle);
   TSH_CHECK(entry != NULL, TS_ENOENT);
 
-  if (entry->running) {
-    applet_unload(&entry->applet);
-
-    memset(&entry->applet, 0, sizeof(entry->applet));
-    entry->running = false;
-  }
+  applet_unload(&entry->applet);
+  memset(&entry->applet, 0, sizeof(entry->applet));
+  entry->running = false;
 
 cleanup:
   TSH_RETURN;
@@ -549,11 +546,7 @@ static void on_task_killed(void* context, systask_id_t task_id) {
   for (size_t i = 0; i < ARRAY_LENGTH(arena->images); i++) {
     app_arena_entry_t* entry = &arena->images[i];
     if (entry->running && entry->applet.task.id == task_id) {
-      // Mark the image as stopped
-      applet_unload(&entry->applet);
-      memset(&entry->applet, 0, sizeof(entry->applet));
       entry->running = false;
-      // Signalize killed task
       arena->task_killed = true;
       break;
     }
