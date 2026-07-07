@@ -31,7 +31,7 @@ class TestCryptoRandom(unittest.TestCase):
                 c[h] = 0
             for _ in range(8):
                 b = random.bytes(1000)
-                for h in hexlify(b):
+                for h in b.hex():
                     c[chr(h)] += 1
             for h in "0123456789abcdef":
                 self.assertAlmostEqual(c[h], 1000, delta=200)

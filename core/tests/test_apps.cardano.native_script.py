@@ -18,7 +18,7 @@ if not utils.BITCOIN_ONLY:
         [
             CardanoNativeScript(
                 type=CardanoNativeScriptType.PUB_KEY,
-                key_hash=unhexlify(
+                key_hash=bytes.fromhex(
                     "c4b9265645fde9536c0795adbcc5291767a0c61fd62448341d7e0386"
                 ),
             ),
@@ -43,7 +43,7 @@ if not utils.BITCOIN_ONLY:
                     ),
                     CardanoNativeScript(
                         type=CardanoNativeScriptType.PUB_KEY,
-                        key_hash=unhexlify(
+                        key_hash=bytes.fromhex(
                             "0241f2d196f52a92fbd2183d03b370c30b6960cfdeae364ffabac889"
                         ),
                     ),
@@ -62,7 +62,7 @@ if not utils.BITCOIN_ONLY:
                     ),
                     CardanoNativeScript(
                         type=CardanoNativeScriptType.PUB_KEY,
-                        key_hash=unhexlify(
+                        key_hash=bytes.fromhex(
                             "0241f2d196f52a92fbd2183d03b370c30b6960cfdeae364ffabac889"
                         ),
                     ),
@@ -86,7 +86,7 @@ if not utils.BITCOIN_ONLY:
                     ),
                     CardanoNativeScript(
                         type=CardanoNativeScriptType.PUB_KEY,
-                        key_hash=unhexlify(
+                        key_hash=bytes.fromhex(
                             "0241f2d196f52a92fbd2183d03b370c30b6960cfdeae364ffabac889"
                         ),
                     ),
@@ -111,13 +111,13 @@ if not utils.BITCOIN_ONLY:
                     ),
                     CardanoNativeScript(
                         type=CardanoNativeScriptType.PUB_KEY,
-                        key_hash=unhexlify(
+                        key_hash=bytes.fromhex(
                             "0241f2d196f52a92fbd2183d03b370c30b6960cfdeae364ffabac889"
                         ),
                     ),
                     CardanoNativeScript(
                         type=CardanoNativeScriptType.PUB_KEY,
-                        key_hash=unhexlify(
+                        key_hash=bytes.fromhex(
                             "cecb1d427c4ae436d28cc0f8ae9bb37501a5b77bcc64cd1693e9ae20"
                         ),
                     ),
@@ -141,7 +141,7 @@ if not utils.BITCOIN_ONLY:
                 scripts=[
                     CardanoNativeScript(
                         type=CardanoNativeScriptType.PUB_KEY,
-                        key_hash=unhexlify(
+                        key_hash=bytes.fromhex(
                             "c4b9265645fde9536c0795adbcc5291767a0c61fd62448341d7e0386"
                         ),
                     ),
@@ -159,7 +159,7 @@ if not utils.BITCOIN_ONLY:
                 scripts=[
                     CardanoNativeScript(
                         type=CardanoNativeScriptType.PUB_KEY,
-                        key_hash=unhexlify(
+                        key_hash=bytes.fromhex(
                             "c4b9265645fde9536c0795adbcc5291767a0c61fd62448341d7e0386"
                         ),
                     ),
@@ -178,7 +178,7 @@ if not utils.BITCOIN_ONLY:
                 scripts=[
                     CardanoNativeScript(
                         type=CardanoNativeScriptType.PUB_KEY,
-                        key_hash=unhexlify(
+                        key_hash=bytes.fromhex(
                             "c4b9265645fde9536c0795adbcc5291767a0c61fd62448341d7e0386"
                         ),
                     ),
@@ -201,7 +201,7 @@ if not utils.BITCOIN_ONLY:
                             ),
                             CardanoNativeScript(
                                 type=CardanoNativeScriptType.PUB_KEY,
-                                key_hash=unhexlify(
+                                key_hash=bytes.fromhex(
                                     "0241f2d196f52a92fbd2183d03b370c30b6960cfdeae364ffabac889"
                                 ),
                             ),
@@ -223,13 +223,13 @@ if not utils.BITCOIN_ONLY:
                             ),
                             CardanoNativeScript(
                                 type=CardanoNativeScriptType.PUB_KEY,
-                                key_hash=unhexlify(
+                                key_hash=bytes.fromhex(
                                     "0241f2d196f52a92fbd2183d03b370c30b6960cfdeae364ffabac889"
                                 ),
                             ),
                             CardanoNativeScript(
                                 type=CardanoNativeScriptType.PUB_KEY,
-                                key_hash=unhexlify(
+                                key_hash=bytes.fromhex(
                                     "cecb1d427c4ae436d28cc0f8ae9bb37501a5b77bcc64cd1693e9ae20"
                                 ),
                             ),
@@ -252,7 +252,7 @@ if not utils.BITCOIN_ONLY:
         # PUB_KEY key_hash has invalid length
         CardanoNativeScript(
             type=CardanoNativeScriptType.PUB_KEY,
-            key_hash=unhexlify(
+            key_hash=bytes.fromhex(
                 "3a55d9f68255dfbefa1efd711f82d005fae1be2e145d616c90cf0f"
             ),
         ),
@@ -272,7 +272,7 @@ if not utils.BITCOIN_ONLY:
             scripts=[
                 CardanoNativeScript(
                     type=CardanoNativeScriptType.PUB_KEY,
-                    key_hash=unhexlify(
+                    key_hash=bytes.fromhex(
                         "3a55d9f68255dfbefa1efd711f82d005fae1be2e145d616c90cf0fa9"
                     ),
                 ),
@@ -285,7 +285,7 @@ if not utils.BITCOIN_ONLY:
             scripts=[
                 CardanoNativeScript(
                     type=CardanoNativeScriptType.PUB_KEY,
-                    key_hash=unhexlify(
+                    key_hash=bytes.fromhex(
                         "3a55d9f68255dfbefa1efd711f82d005fae1be2e145d616c90cf0fa9"
                     ),
                 ),
@@ -310,7 +310,7 @@ class TestCardanoNativeScript(unittest.TestCase):
 
         for script, expected_hash in VALID_NATIVE_SCRIPTS:
             actual_hash = get_native_script_hash(keychain, script)
-            self.assertEqual(hexlify(actual_hash), expected_hash)
+            self.assertEqual(actual_hash.hex(), expected_hash)
 
     def test_validate_native_script(self):
         for script, _ in VALID_NATIVE_SCRIPTS:

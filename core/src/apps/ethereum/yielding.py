@@ -27,8 +27,6 @@ _MERKL_XYZ_CLAIM_DISTRIBUTOR_ADDR = (
 )
 
 if __debug__:
-    from ubinascii import unhexlify
-
     from trezor.crypto.hashlib import sha3_256
 
     assert (
@@ -50,8 +48,9 @@ if __debug__:
         ).digest()[:4]
     )
     # https://etherscan.io/address/0x3ef3d8ba38ebe18db133cec108f4d14ce00dd9ae
-    assert _MERKL_XYZ_CLAIM_DISTRIBUTOR_ADDR == unhexlify(
-        "3ef3d8ba38ebe18db133cec108f4d14ce00dd9ae"
+    assert (
+        _MERKL_XYZ_CLAIM_DISTRIBUTOR_ADDR
+        == b"\x3e\xf3\xd8\xba\x38\xeb\xe1\x8d\xb1\x33\xce\xc1\x08\xf4\xd1\x4c\xe0\x0d\xd9\xae"
     )
 
 # deposit(uint256 assets, address receiver)

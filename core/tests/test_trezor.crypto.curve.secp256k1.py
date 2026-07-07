@@ -206,11 +206,9 @@ class TestCryptoSecp256k1(unittest.TestCase):
             if len(sk) < 64:
                 sk = "0" * (64 - len(sk)) + sk
             pk = pk.lower()
-            pk65 = hexlify(
-                secp256k1.publickey(unhexlify(sk), False)
-            ).decode()  # uncompressed
+            pk65 = secp256k1.publickey(bytes.fromhex(sk), False).hex()  # uncompressed
             self.assertEqual(str(pk65), "04" + pk)
-            pk33 = hexlify(secp256k1.publickey(unhexlify(sk))).decode()
+            pk33 = secp256k1.publickey(bytes.fromhex(sk)).hex()
             if pk[-1] in "02468ace":
                 self.assertEqual(pk33, "02" + pk[:64])
             else:
@@ -262,7 +260,7 @@ class TestCryptoSecp256k1(unittest.TestCase):
         sk = hex(sk)[2:]
         if len(sk) < 64:
             sk = "0" * (64 - len(sk)) + sk
-        sk = unhexlify(sk)
+        sk = bytes.fromhex(sk)
         pk = pk.lower()
         pk33 = secp256k1.publickey(sk)
         pk65 = secp256k1.publickey(sk, False)
@@ -271,7 +269,7 @@ class TestCryptoSecp256k1(unittest.TestCase):
         fixed_vector1 = secp256k1.multiply(sk, pk65)
         fixed_vector2 = secp256k1.multiply(sk, pk33)
         self.assertEqual(fixed_vector1, fixed_vector2)
-        self.assertEqual(hexlify(fixed_vector1), fixed_vector_hex)
+        self.assertEqual(fixed_vector1.hex(), fixed_vector_hex)
 
 
 if __name__ == "__main__":

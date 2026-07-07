@@ -1,6 +1,5 @@
 from micropython import const
 from typing import TYPE_CHECKING
-from ubinascii import unhexlify
 
 from trezor import TR
 from trezor.crypto import rlp
@@ -40,14 +39,12 @@ _MAX_CHAIN_ID = const(0xFFFF_FFFF - 36) // 2
 
 _EIP_7702_TX_TYPE = const(4)
 EIP_7702_KNOWN_ADDRESSES = {
-    unhexlify("000000009B1D0aF20D8C6d0A44e162d11F9b8f00"): "Uniswap",
-    unhexlify("69007702764179f14F51cdce752f4f775d74E139"): "alchemyplatform",
-    unhexlify("5A7FC11397E9a8AD41BF10bf13F22B0a63f96f6d"): "AmbireTech",
-    unhexlify("63c0c19a282a1b52b07dd5a65b58948a07dae32b"): "MetaMask",
-    unhexlify(
-        "4Cd241E8d1510e30b2076397afc7508Ae59C66c9"
-    ): "Ethereum Foundation AA team",
-    unhexlify("17c11FDdADac2b341F2455aFe988fec4c3ba26e3"): "Luganodes",
+    b"\x00\x00\x00\x00\x9b\x1d\x0a\xf2\x0d\x8c\x6d\x0a\x44\xe1\x62\xd1\x1f\x9b\x8f\x00": "Uniswap",
+    b"\x69\x00\x77\x02\x76\x41\x79\xf1\x4f\x51\xcd\xce\x75\x2f\x4f\x77\x5d\x74\xe1\x39": "alchemyplatform",
+    b"\x5a\x7f\xc1\x13\x97\xe9\xa8\xad\x41\xbf\x10\xbf\x13\xf2\x2b\x0a\x63\xf9\x6f\x6d": "AmbireTech",
+    b"\x63\xc0\xc1\x9a\x28\x2a\x1b\x52\xb0\x7d\xd5\xa6\x5b\x58\x94\x8a\x07\xda\xe3\x2b": "MetaMask",
+    b"\x4c\xd2\x41\xe8\xd1\x51\x0e\x30\xb2\x07\x63\x97\xaf\xc7\x50\x8a\xe5\x9c\x66\xc9": "Ethereum Foundation AA team",
+    b"\x17\xc1\x1f\xdd\xad\xac\x2b\x34\x1f\x24\x55\xaf\xe9\x88\xfe\xc4\xc3\xba\x26\xe3": "Luganodes",
 }
 
 

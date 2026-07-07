@@ -196,7 +196,7 @@ class TestZcashZip243(unittest.TestCase):
             for i in v["inputs"]:
                 txi = TxInput(
                     amount=i["amount"],
-                    prev_hash=unhexlify(i["prevout"][0]),
+                    prev_hash=bytes.fromhex(i["prevout"][0]),
                     prev_index=i["prevout"][1],
                     script_type=i["script_type"],
                     sequence=i["sequence"],
@@ -206,28 +206,22 @@ class TestZcashZip243(unittest.TestCase):
             for o in v["outputs"]:
                 txo = PrevOutput(
                     amount=o["amount"],
-                    script_pubkey=unhexlify(o["script_pubkey"]),
+                    script_pubkey=bytes.fromhex(o["script_pubkey"]),
                 )
                 zip243.add_output(txo, txo.script_pubkey)
 
+            self.assertEqual(get_tx_hash(zip243.h_prevouts).hex(), v["prevouts_hash"])
+            self.assertEqual(get_tx_hash(zip243.h_sequence).hex(), v["sequence_hash"])
+            self.assertEqual(get_tx_hash(zip243.h_outputs).hex(), v["outputs_hash"])
             self.assertEqual(
-                hexlify(get_tx_hash(zip243.h_prevouts)), v["prevouts_hash"]
-            )
-            self.assertEqual(
-                hexlify(get_tx_hash(zip243.h_sequence)), v["sequence_hash"]
-            )
-            self.assertEqual(hexlify(get_tx_hash(zip243.h_outputs)), v["outputs_hash"])
-            self.assertEqual(
-                hexlify(
-                    zip243.hash143(
-                        txi,
-                        [unhexlify(i["pubkey"])],
-                        1,
-                        tx,
-                        coin,
-                        SigHashType.SIGHASH_ALL,
-                    )
-                ),
+                zip243.hash143(
+                    txi,
+                    [bytes.fromhex(i["pubkey"])],
+                    1,
+                    tx,
+                    coin,
+                    SigHashType.SIGHASH_ALL,
+                ).hex(),
                 v["preimage_hash"],
             )
 

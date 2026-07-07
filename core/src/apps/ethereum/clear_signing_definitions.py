@@ -62,9 +62,6 @@ if __debug__:
 
 
 def all_display_formats() -> Generator[DisplayFormat, None, None]:
-
-    from ubinascii import unhexlify
-
     from .clear_signing import (
         AmountFormatter,
         Array,
@@ -86,7 +83,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
     yield TRANSFER_DISPLAY_FORMAT
 
     # https://github.com/LedgerHQ/clear-signing-erc7730-registry/blob/master/registry/1inch/calldata-AggregationRouterV6.json#L9
-    ONEINCH_ADDRESS = unhexlify("111111125421cA6dc452d289314280a0f8842A65")
+    ONEINCH_ADDRESS = b"\x11\x11\x11\x12\x54\x21\xca\x6d\xc4\x52\xd2\x89\x31\x42\x80\xa0\xf8\x84\x2a\x65"
     ONEINCH_CHAINS = [
         1,
         10,
@@ -105,8 +102,8 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
 
     # $.metadata.constants.addressAsEth and addressAsNull from common-AggregationRouterV6.json
     ONEINCH_NATIVE_CURRENCY_ADDRESSES = [
-        unhexlify("EeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"),
-        unhexlify("0000000000000000000000000000000000000000"),
+        b"\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee",
+        b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00",
     ]
 
     ONEINCH_CONTEXT = BindingContext(
@@ -123,7 +120,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
     # omit the field rather than display a bare, tokenless integer. (`swap` keeps
     # its minReturnAmount because its dstToken is available.)
 
-    _FUNC_SIG = unhexlify("07ed2379")
+    _FUNC_SIG = b"\x07\xed\x23\x79"
     if __debug__:
         assert _FUNC_SIG == base58.keccak_32(
             b"swap(address,(address,address,address,address,uint256,uint256,uint256),bytes)"
@@ -173,7 +170,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         )
     )
 
-    _FUNC_SIG = unhexlify("83800a8e")
+    _FUNC_SIG = b"\x83\x80\x0a\x8e"
     if __debug__:
         assert _FUNC_SIG == base58.keccak_32(
             b"unoswap(uint256,uint256,uint256,uint256)"
@@ -212,7 +209,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         )
     )
 
-    _FUNC_SIG = unhexlify("e2c95c82")
+    _FUNC_SIG = b"\xe2\xc9\x5c\x82"
     if __debug__:
         assert _FUNC_SIG == base58.keccak_32(
             b"unoswapTo(uint256,uint256,uint256,uint256,uint256)"
@@ -252,7 +249,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         )
     )
 
-    _FUNC_SIG = unhexlify("8770ba91")
+    _FUNC_SIG = b"\x87\x70\xba\x91"
     if __debug__:
         assert _FUNC_SIG == base58.keccak_32(
             b"unoswap2(uint256,uint256,uint256,uint256,uint256)"
@@ -292,7 +289,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         )
     )
 
-    _FUNC_SIG = unhexlify("19367472")
+    _FUNC_SIG = b"\x19\x36\x74\x72"
     if __debug__:
         assert _FUNC_SIG == base58.keccak_32(
             b"unoswap3(uint256,uint256,uint256,uint256,uint256,uint256)"
@@ -333,7 +330,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         )
     )
 
-    _FUNC_SIG = unhexlify("ea76dddf")
+    _FUNC_SIG = b"\xea\x76\xdd\xdf"
     if __debug__:
         assert _FUNC_SIG == base58.keccak_32(
             b"unoswapTo2(uint256,uint256,uint256,uint256,uint256,uint256)"
@@ -374,7 +371,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         )
     )
 
-    _FUNC_SIG = unhexlify("f7a70056")
+    _FUNC_SIG = b"\xf7\xa7\x00\x56"
     if __debug__:
         assert _FUNC_SIG == base58.keccak_32(
             b"unoswapTo3(uint256,uint256,uint256,uint256,uint256,uint256,uint256)"
@@ -416,7 +413,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         )
     )
 
-    _FUNC_SIG = unhexlify("a76dfc3b")
+    _FUNC_SIG = b"\xa7\x6d\xfc\x3b"
     if __debug__:
         assert _FUNC_SIG == base58.keccak_32(b"ethUnoswap(uint256,uint256)")
     yield (
@@ -448,7 +445,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         )
     )
 
-    _FUNC_SIG = unhexlify("89af926a")
+    _FUNC_SIG = b"\x89\xaf\x92\x6a"
     if __debug__:
         assert _FUNC_SIG == base58.keccak_32(b"ethUnoswap2(uint256,uint256,uint256)")
     yield (
@@ -481,7 +478,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         )
     )
 
-    _FUNC_SIG = unhexlify("188ac35d")
+    _FUNC_SIG = b"\x18\x8a\xc3\x5d"
     if __debug__:
         assert _FUNC_SIG == base58.keccak_32(
             b"ethUnoswap3(uint256,uint256,uint256,uint256)"
@@ -517,7 +514,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         )
     )
 
-    _FUNC_SIG = unhexlify("175accdc")
+    _FUNC_SIG = b"\x17\x5a\xcc\xdc"
     if __debug__:
         assert _FUNC_SIG == base58.keccak_32(b"ethUnoswapTo(uint256,uint256,uint256)")
     yield (
@@ -550,7 +547,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         )
     )
 
-    _FUNC_SIG = unhexlify("0f449d71")
+    _FUNC_SIG = b"\x0f\x44\x9d\x71"
     if __debug__:
         assert _FUNC_SIG == base58.keccak_32(
             b"ethUnoswapTo2(uint256,uint256,uint256,uint256)"
@@ -586,7 +583,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         )
     )
 
-    _FUNC_SIG = unhexlify("493189f0")
+    _FUNC_SIG = b"\x49\x31\x89\xf0"
     if __debug__:
         assert _FUNC_SIG == base58.keccak_32(
             b"ethUnoswapTo3(uint256,uint256,uint256,uint256,uint256)"
@@ -624,7 +621,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
     )
 
     # https://github.com/LedgerHQ/clear-signing-erc7730-registry/blob/master/registry/lifi/calldata-LIFIDiamond.json
-    LIFI_ADDRESS = unhexlify("1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE")
+    LIFI_ADDRESS = b"\x12\x31\xde\xb6\xf5\x74\x9e\xf6\xce\x69\x43\xa2\x75\xa1\xd3\xe7\x48\x6f\x4e\xae"
     # Chains where the LiFi diamond is deployed at the canonical LIFI_ADDRESS.
     LIFI_CHAINS = [
         1,
@@ -656,10 +653,22 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
     ]
     # Chains where the LiFi diamond is deployed at a non-canonical address.
     LIFI_ALT_DEPLOYMENTS = [
-        (324, unhexlify("341e94069f53234fe6dabef707ad424830525715")),  # zkSync Era
-        (1088, unhexlify("24ca98fb6972f5ee05f0db00595c7f68d9fafd68")),  # Metis
-        (59144, unhexlify("de1e598b81620773454588b85d6b5d4eec32573e")),  # Linea
-        (167004, unhexlify("3a9a5dba8fe1c4da98187ce4755701bca182f63b")),
+        (
+            324,
+            b"\x34\x1e\x94\x06\x9f\x53\x23\x4f\xe6\xda\xbe\xf7\x07\xad\x42\x48\x30\x52\x57\x15",
+        ),  # zkSync Era
+        (
+            1088,
+            b"\x24\xca\x98\xfb\x69\x72\xf5\xee\x05\xf0\xdb\x00\x59\x5c\x7f\x68\xd9\xfa\xfd\x68",
+        ),  # Metis
+        (
+            59144,
+            b"\xde\x1e\x59\x8b\x81\x62\x07\x73\x45\x45\x88\xb8\x5d\x6b\x5d\x4e\xec\x32\x57\x3e",
+        ),  # Linea
+        (
+            167004,
+            b"\x3a\x9a\x5d\xba\x8f\xe1\xc4\xda\x98\x18\x7c\xe4\x75\x57\x01\xbc\xa1\x82\xf6\x3b",
+        ),
     ]
 
     LIFI_CONTEXT = BindingContext(
@@ -667,11 +676,11 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
     )
 
     LIFI_NATIVE_CURRENCY_ADDRESSES = [
-        unhexlify("EeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"),
-        unhexlify("0000000000000000000000000000000000000000"),
+        b"\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee",
+        b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00",
     ]
 
-    _FUNC_SIG = unhexlify("5fd9ae2e")
+    _FUNC_SIG = b"\x5f\xd9\xae\x2e"
     if __debug__:
         assert _FUNC_SIG == base58.keccak_32(
             b"swapTokensMultipleV3ERC20ToERC20(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool)[])"
@@ -726,7 +735,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         )
     )
 
-    _FUNC_SIG = unhexlify("2c57e884")
+    _FUNC_SIG = b"\x2c\x57\xe8\x84"
     if __debug__:
         assert _FUNC_SIG == base58.keccak_32(
             b"swapTokensMultipleV3ERC20ToNative(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool)[])"
@@ -779,7 +788,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         )
     )
 
-    _FUNC_SIG = unhexlify("736eac0b")
+    _FUNC_SIG = b"\x73\x6e\xac\x0b"
     if __debug__:
         assert _FUNC_SIG == base58.keccak_32(
             b"swapTokensMultipleV3NativeToERC20(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool)[])"
@@ -832,7 +841,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         )
     )
 
-    _FUNC_SIG = unhexlify("4666fc80")
+    _FUNC_SIG = b"\x46\x66\xfc\x80"
     if __debug__:
         assert _FUNC_SIG == base58.keccak_32(
             b"swapTokensSingleV3ERC20ToERC20(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool))"
@@ -883,7 +892,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         )
     )
 
-    _FUNC_SIG = unhexlify("733214a3")
+    _FUNC_SIG = b"\x73\x32\x14\xa3"
     if __debug__:
         assert _FUNC_SIG == base58.keccak_32(
             b"swapTokensSingleV3ERC20ToNative(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool))"
@@ -934,7 +943,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         )
     )
 
-    _FUNC_SIG = unhexlify("af7060fd")
+    _FUNC_SIG = b"\xaf\x70\x60\xfd"
     if __debug__:
         assert _FUNC_SIG == base58.keccak_32(
             b"swapTokensSingleV3NativeToERC20(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool))"
@@ -985,7 +994,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         )
     )
 
-    _FUNC_SIG = unhexlify("4630a0d8")
+    _FUNC_SIG = b"\x46\x30\xa0\xd8"
     if __debug__:
         assert _FUNC_SIG == base58.keccak_32(
             b"swapTokensGeneric(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool)[])"
@@ -1047,7 +1056,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
     )
 
     # https://github.com/LedgerHQ/clear-signing-erc7730-registry/blob/master/registry/uniswap/calldata-UniswapV3Router02.json#L6
-    UNISWAP_V3_ROUTER_ADDRESS = unhexlify("68b3465833fb72A70ecDF485E0e4C7bD8665Fc45")
+    UNISWAP_V3_ROUTER_ADDRESS = b"\x68\xb3\x46\x58\x33\xfb\x72\xa7\x0e\xcd\xf4\x85\xe0\xe4\xc7\xbd\x86\x65\xfc\x45"
     UNISWAP_V3_ROUTER_CHAINS = [1]
 
     # https://github.com/LedgerHQ/clear-signing-erc7730-registry/blob/master/registry/uniswap/calldata-UniswapV3Router02.json
@@ -1056,7 +1065,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         [(chain, UNISWAP_V3_ROUTER_ADDRESS) for chain in UNISWAP_V3_ROUTER_CHAINS],
     )
 
-    _FUNC_SIG = unhexlify("b858183f")
+    _FUNC_SIG = b"\xb8\x58\x18\x3f"
     if __debug__:
         assert _FUNC_SIG == base58.keccak_32(
             b"exactInput((bytes,address,uint256,uint256))"
@@ -1101,7 +1110,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         )
     )
 
-    _FUNC_SIG = unhexlify("04e45aaf")
+    _FUNC_SIG = b"\x04\xe4\x5a\xaf"
     if __debug__:
         assert _FUNC_SIG == base58.keccak_32(
             b"exactInputSingle((address,address,uint24,address,uint256,uint256,uint160))"
@@ -1154,7 +1163,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         )
     )
 
-    _FUNC_SIG = unhexlify("09b81346")
+    _FUNC_SIG = b"\x09\xb8\x13\x46"
     if __debug__:
         assert _FUNC_SIG == base58.keccak_32(
             b"exactOutput((bytes,address,uint256,uint256))"
@@ -1199,7 +1208,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         )
     )
 
-    _FUNC_SIG = unhexlify("5023b4df")
+    _FUNC_SIG = b"\x50\x23\xb4\xdf"
     if __debug__:
         assert _FUNC_SIG == base58.keccak_32(
             b"exactOutputSingle((address,address,uint24,address,uint256,uint256,uint160))"
@@ -1260,9 +1269,9 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         #   * TREZOR_TEST_ARRAYS_DESCRIPTOR   - multi-value arrays
         #   * TREZOR_TEST_PATHS_DESCRIPTOR    - composite path styles (slices + nested)
         TREZOR_TEST_CHAIN_ID = 1
-        TREZOR_TEST_ADDRESS = unhexlify("dddddddddddddddddddddddddddddddddddddddd")
-        TREZOR_TEST_CONST_TOKEN = unhexlify("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
-        TREZOR_TEST_NATIVE = unhexlify("0000000000000000000000000000000000000000")
+        TREZOR_TEST_ADDRESS = b"\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd"
+        TREZOR_TEST_CONST_TOKEN = b"\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee\xee"
+        TREZOR_TEST_NATIVE = b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
 
         TREZOR_TEST_CONTEXT = BindingContext(
             [(TREZOR_TEST_CHAIN_ID, TREZOR_TEST_ADDRESS)]
@@ -1271,7 +1280,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         # --- 1) scalar / atomic formatters ---
         yield DisplayFormat(
             binding_context=TREZOR_TEST_CONTEXT,
-            func_sig=unhexlify("7e577e01"),  # synthetic selector (dummy contract)
+            func_sig=b"\x7e\x57\x7e\x01",  # synthetic selector (dummy contract)
             intent="Trezor Test Scalars. DO NOT USE",
             parameter_definitions=[
                 Atomic(parse_address),  # 0 recipient
@@ -1306,7 +1315,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         # --- 2) token-amount resolution: via token_path and via constant address ---
         yield DisplayFormat(
             binding_context=TREZOR_TEST_CONTEXT,
-            func_sig=unhexlify("7e577e02"),  # synthetic selector (dummy contract)
+            func_sig=b"\x7e\x57\x7e\x02",  # synthetic selector (dummy contract)
             intent="Trezor Test Token. DO NOT USE",
             parameter_definitions=[
                 Atomic(parse_address),  # 0 token (target of token_path below)
@@ -1328,7 +1337,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         # --- 3) multi-value arrays ---
         yield DisplayFormat(
             binding_context=TREZOR_TEST_CONTEXT,
-            func_sig=unhexlify("7e577e03"),  # synthetic selector (dummy contract)
+            func_sig=b"\x7e\x57\x7e\x03",  # synthetic selector (dummy contract)
             intent="Trezor Test Arrays. DO NOT USE",
             parameter_definitions=[
                 Array(Atomic(parse_uint256)),  # 0 amounts (multi-value array)
@@ -1356,7 +1365,7 @@ def all_display_formats() -> Generator[DisplayFormat, None, None]:
         # --- 4) composite path styles: bytes slicing + nested array-of-structs ---
         yield DisplayFormat(
             binding_context=TREZOR_TEST_CONTEXT,
-            func_sig=unhexlify("7e577e04"),  # synthetic selector (dummy contract)
+            func_sig=b"\x7e\x57\x7e\x04",  # synthetic selector (dummy contract)
             intent="Trezor Test Paths. DO NOT USE",
             parameter_definitions=[
                 Atomic(parse_uint256),  # 0 amount (reused by both slice fields)
