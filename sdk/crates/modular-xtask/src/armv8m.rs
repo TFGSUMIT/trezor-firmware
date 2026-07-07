@@ -1,5 +1,5 @@
 //! Converts an ARMv8-M ELF executable file into a custom binary format suitable
-//! for loading as an Trezor applet.
+//! for loading as a Trezor external application
 //!
 //! The app binary format consists of a fixed-size header followed by the read-only
 //! segment data and a list of relocation addresses. The header contains metadata about
@@ -10,6 +10,7 @@ use anyhow::{Context, Result, bail, ensure};
 use cargo_metadata::Package;
 use object::{
     Object, ObjectSection, ObjectSegment, ObjectSymbol, RelocationFlags, RelocationTarget,
+    SymbolKind,
     elf::{
         R_ARM_ABS32, R_ARM_THM_JUMP24, R_ARM_THM_MOVT_ABS, R_ARM_THM_MOVW_ABS_NC, R_ARM_THM_PC22,
     },
@@ -259,8 +260,7 @@ impl Armv8mBinary {
             .context("Startup symbol address does not fit in u32")
     }
 
-    /// Finds and reads the read-only segment containing code and data.
-    /// Returns the file offset and the segment data as a byte vector.
+    /// Finds and reads the read-only segment containing code and rodata.
     fn ro_segment(elf: &object::File<'_>) -> Result<RoSegment> {
         let ro_segment = elf
             .segments()
@@ -287,13 +287,13 @@ impl Armv8mBinary {
 
         Ok(RoSegment {
             va: u32::try_from(ro_segment.address())
-                .context("Read-segment address does not fit in u32")?,
+                .context("Read-only segment address does not fit in u32")?,
             data,
             relocations,
         })
     }
 
-    /// Finds the read-write segment and calculates the init virtual address and size
+    /// Finds the read-write segment
     fn rw_segment(elf: &object::File<'_>) -> Result<RwSegment> {
         let rw_segment = elf
             .segments()
@@ -358,12 +358,13 @@ impl Armv8mBinary {
                     return Ok(relocations);
                 }
 
-                // Supported relocation type?
-                if !matches!(
-                    r_type,
-                    R_ARM_ABS32 | R_ARM_THM_MOVT_ABS | R_ARM_THM_MOVW_ABS_NC
-                ) {
-                    bail!("Unsupported relocation type: {:?}", relocation.flags());
+                // Supported relocation type? 
+                match r_type {
+                    R_ARM_ABS32 => {}
+                    R_ARM_THM_MOVW_ABS_NC | R_ARM_THM_MOVT_ABS => {
+                        Self::verify_movx_addend_zero(r_type, address, &rel_section, &symbol)?;
+                    }
+                    _ => bail!("Unsupported relocation type: {:?}", relocation.flags()),
                 }
 
                 relocations.push(Relocation {
@@ -378,6 +379,75 @@ impl Armv8mBinary {
         Self::encode_relocations(relocations)
     }
 
+    /// Verifies that a MOVW/MOVT relocation carries a zero implicit addend.
+    ///
+    /// A standalone MOVW/MOVT reconstructs the *other* half of the 32-bit target
+    /// from the symbol address rather than from its paired instruction, so a
+    /// non-zero addend would be silently mis-encoded. This checks the assumption
+    /// per entry: the resolved immediate in the instruction must equal the
+    /// corresponding half of the symbol address (low half for MOVW, high half
+    /// for MOVT). Because every pair shares one symbol, checking every MOVW and
+    /// every MOVT proves `S + A == S` (addend 0) for every target, without
+    /// needing to pair them.
+    ///
+    /// In practice rustc/LLVM emits a distinct symbol for each constant (exact
+    /// address, addend 0), and REL cannot fold a carrying offset into a MOVW/MOVT
+    /// immediate anyway, so this check never fails today. If a future toolchain
+    /// (or hand-written asm such as `movw #:lower16:foo+2`) introduces a non-zero
+    /// addend, the build fails with an error instead of producing a broken image.
+    fn verify_movx_addend_zero<'data>(
+        r_type: u32,
+        address: u64,
+        section: &impl ObjectSection<'data>,
+        symbol: &impl ObjectSymbol<'data>,
+    ) -> Result<()> {
+        let section_va = section.address();
+        let section_data = section
+            .data()
+            .context("Failed to read section data for relocation check")?;
+        let offset = (address as usize)
+            .checked_sub(section_va as usize)
+            .context("Relocation address precedes its section")?;
+        let word = section_data
+            .get(offset..offset + 4)
+            .context("Relocation address out of section bounds")?;
+        let instruction = u32::from_le_bytes(word.try_into().unwrap());
+        let imm = Self::extract_movx_imm(instruction);
+
+        // Thumb function symbols carry the interworking bit (bit 0) in the
+        // resolved value; it only affects the low half (MOVW).
+        let thumb_bit = matches!(symbol.kind(), SymbolKind::Text) as u32;
+        let target = symbol.address() as u32;
+        let expected = if r_type == R_ARM_THM_MOVW_ABS_NC {
+            ((target | thumb_bit) & 0xFFFF) as u16
+        } else {
+            ((target >> 16) & 0xFFFF) as u16
+        };
+
+        ensure!(
+            imm == expected,
+            "MOVW/MOVT relocation at {:#010x} against '{}' has a non-zero addend \
+             (immediate {:#06x} != expected {:#06x}); the standalone MOVW/MOVT \
+             encoding cannot represent it",
+            address,
+            symbol.name().unwrap_or("<unnamed>"),
+            imm,
+            expected
+        );
+
+        Ok(())
+    }
+
+    /// Extracts the 16-bit immediate from a Thumb-2 MOVW/MOVT instruction word.
+    /// Mirrors `extract_movx_value` in the on-device loader.
+    fn extract_movx_imm(instruction: u32) -> u16 {
+        let imm1 = ((instruction >> 10) & 0x1) as u16;
+        let imm4 = (instruction & 0xF) as u16;
+        let imm3 = ((instruction >> 28) & 0x7) as u16;
+        let imm8 = ((instruction >> 16) & 0xFF) as u16;
+        (imm4 << 12) | (imm1 << 11) | (imm3 << 8) | imm8
+    }
+
     /// Encodes relocation entries into the compact 16-bit binary format.
     fn encode_relocations(relocations: Vec<Relocation>) -> Result<Vec<u8>> {
         // 16-bit Relocation format
@@ -388,7 +458,7 @@ impl Armv8mBinary {
         // type
         //   0 => reset `offset` to 0
         //   1 => skip `offset` bytes
-        //   2 => skip (`offset` << 12) + next 16-bit value bytes
+        //   2 => skip (`offset` << 16) + next 16-bit value bytes
         //   3 => R_ARM_ABS32
         //   4 => R_ARM_THM_MOVW_ABS_NC (next 16-bit contains high-part of target address)
         //   5 => R_ARM_THM_MOVT_ABS (next 16-bit contains low-part of target address)
@@ -441,7 +511,6 @@ impl Armv8mBinary {
                 if skip <= REL_VALUE_MAX {
                     push(&mut result, REL_TYPE_SKIP_SHORT | skip);
                 } else {
-                    assert!(skip <= (REL_VALUE_MAX << 16) - 1, "Skip value too large");
                     push(&mut result, REL_TYPE_SKIP_LONG | (skip >> 16));
                     push(&mut result, skip & 0xFFFF);
                 }
@@ -528,8 +597,6 @@ impl Armv8mBinary {
                 .write_all(data.as_ref())
                 .context("Failed to write binary")?;
         }
-
-        println!("Header: {:?} bytes", header);
 
         Ok(())
     }

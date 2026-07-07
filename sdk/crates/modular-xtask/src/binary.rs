@@ -25,7 +25,7 @@ enum AppBinaryType {
     X86_64 = 1,
 }
 
-/// The app header is a fixed-size structure at the beginning of the applicatio image
+/// The app header is a fixed-size structure at the beginning of the application image
 /// containing metadata about the app, such as segment sizes and addresses padded
 /// with zeroes to ensure it is exactly APP_HEADER_SIZE bytes in size.
 #[repr(C)]
