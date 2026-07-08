@@ -678,19 +678,19 @@ def _format_map_as_json(map_entries: list[StellarSCValMapEntry]) -> str:
 _MASK64 = 0xFFFF_FFFF_FFFF_FFFF
 
 
-def _format_u128(parts: "StellarUInt128Parts") -> str:
+def _format_u128(parts: StellarUInt128Parts) -> str:
     value = ((parts.hi & _MASK64) << 64) | (parts.lo & _MASK64)
     return str(value)
 
 
-def _format_i128(parts: "StellarInt128Parts") -> str:
+def _format_i128(parts: StellarInt128Parts) -> str:
     value = ((parts.hi & _MASK64) << 64) | (parts.lo & _MASK64)
     if parts.hi < 0:
         value -= 1 << 128
     return str(value)
 
 
-def _format_u256(parts: "StellarUInt256Parts") -> str:
+def _format_u256(parts: StellarUInt256Parts) -> str:
     value = (
         ((parts.hi_hi & _MASK64) << 192)
         | ((parts.hi_lo & _MASK64) << 128)
@@ -700,7 +700,7 @@ def _format_u256(parts: "StellarUInt256Parts") -> str:
     return str(value)
 
 
-def _format_i256(parts: "StellarInt256Parts") -> str:
+def _format_i256(parts: StellarInt256Parts) -> str:
     value = (
         ((parts.hi_hi & _MASK64) << 192)
         | ((parts.hi_lo & _MASK64) << 128)
