@@ -1628,7 +1628,7 @@ pub enum TranslatedString {
     #[cfg(feature = "universal_fw")]
     tron__owner_address = 1238,  // "Owner address"
     #[cfg(feature = "universal_fw")]
-    stellar__argument = 1239,  // "Argument"
+    stellar__argument = 1239,  // "Argument {0}"
     #[cfg(feature = "universal_fw")]
     stellar__authorization = 1240,  // "Authorization"
     #[cfg(feature = "universal_fw")]
@@ -2883,7 +2883,7 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "",
                 "Owner address",
-                "Argument",
+                "Argument {0}",
                 "Authorization",
                 "Contract Address",
                 "Function",
@@ -4132,11 +4132,11 @@ impl TranslatedString {
                 19414,
                 19414,
                 19427,
-                19435,
-                19448,
-                19464,
-                19472,
-                19487,
+                19439,
+                19452,
+                19468,
+                19476,
+                19491,
             ];
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -5380,7 +5380,7 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "",
                 "Owner address",
-                "Argument",
+                "Argument {0}",
                 "Authorization",
                 "Contract Address",
                 "Function",
@@ -6629,11 +6629,11 @@ impl TranslatedString {
                 19414,
                 19414,
                 19427,
-                19435,
-                19448,
-                19464,
-                19472,
-                19487,
+                19439,
+                19452,
+                19468,
+                19476,
+                19491,
             ];
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -7877,7 +7877,7 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "",
                 "Owner address",
-                "Argument",
+                "Argument {0}",
                 "Authorization",
                 "Contract Address",
                 "Function",
@@ -9126,11 +9126,11 @@ impl TranslatedString {
                 19414,
                 19414,
                 19427,
-                19435,
-                19448,
-                19464,
-                19472,
-                19487,
+                19439,
+                19452,
+                19468,
+                19476,
+                19491,
             ];
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -10374,7 +10374,7 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "",
                 "Owner address",
-                "Argument",
+                "Argument {0}",
                 "Authorization",
                 "Contract Address",
                 "Function",
@@ -11623,11 +11623,11 @@ impl TranslatedString {
                 19414,
                 19414,
                 19427,
-                19435,
-                19448,
-                19464,
-                19472,
-                19487,
+                19439,
+                19452,
+                19468,
+                19476,
+                19491,
             ];
 
         } else if #[cfg(feature = "layout_caesar")] {
@@ -12872,7 +12872,7 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "",
                 "Owner address",
-                "Argument",
+                "Argument {0}",
                 "Authorization",
                 "Contract Address",
                 "Function",
@@ -14121,11 +14121,11 @@ impl TranslatedString {
                 17302,
                 17302,
                 17315,
-                17323,
-                17336,
-                17352,
-                17360,
-                17375,
+                17327,
+                17340,
+                17356,
+                17364,
+                17379,
             ];
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -15369,7 +15369,7 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "",
                 "Owner address",
-                "Argument",
+                "Argument {0}",
                 "Authorization",
                 "Contract Address",
                 "Function",
@@ -16618,11 +16618,11 @@ impl TranslatedString {
                 17302,
                 17302,
                 17315,
-                17323,
-                17336,
-                17352,
-                17360,
-                17375,
+                17327,
+                17340,
+                17356,
+                17364,
+                17379,
             ];
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -17866,7 +17866,7 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "",
                 "Owner address",
-                "Argument",
+                "Argument {0}",
                 "Authorization",
                 "Contract Address",
                 "Function",
@@ -19115,11 +19115,11 @@ impl TranslatedString {
                 17302,
                 17302,
                 17315,
-                17323,
-                17336,
-                17352,
-                17360,
-                17375,
+                17327,
+                17340,
+                17356,
+                17364,
+                17379,
             ];
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -20363,7 +20363,7 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "",
                 "Owner address",
-                "Argument",
+                "Argument {0}",
                 "Authorization",
                 "Contract Address",
                 "Function",
@@ -21612,11 +21612,11 @@ impl TranslatedString {
                 17302,
                 17302,
                 17315,
-                17323,
-                17336,
-                17352,
-                17360,
-                17375,
+                17327,
+                17340,
+                17356,
+                17364,
+                17379,
             ];
 
         } else if #[cfg(feature = "layout_delizia")] {
@@ -22861,7 +22861,7 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "",
                 "Owner address",
-                "Argument",
+                "Argument {0}",
                 "Authorization",
                 "Contract Address",
                 "Function",
@@ -24110,11 +24110,11 @@ impl TranslatedString {
                 18931,
                 18931,
                 18944,
-                18952,
-                18965,
-                18981,
-                18989,
-                19004,
+                18956,
+                18969,
+                18985,
+                18993,
+                19008,
             ];
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -25358,7 +25358,7 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "",
                 "Owner address",
-                "Argument",
+                "Argument {0}",
                 "Authorization",
                 "Contract Address",
                 "Function",
@@ -26607,11 +26607,11 @@ impl TranslatedString {
                 18931,
                 18931,
                 18944,
-                18952,
-                18965,
-                18981,
-                18989,
-                19004,
+                18956,
+                18969,
+                18985,
+                18993,
+                19008,
             ];
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -27855,7 +27855,7 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "",
                 "Owner address",
-                "Argument",
+                "Argument {0}",
                 "Authorization",
                 "Contract Address",
                 "Function",
@@ -29104,11 +29104,11 @@ impl TranslatedString {
                 18931,
                 18931,
                 18944,
-                18952,
-                18965,
-                18981,
-                18989,
-                19004,
+                18956,
+                18969,
+                18985,
+                18993,
+                19008,
             ];
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -30352,7 +30352,7 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "",
                 "Owner address",
-                "Argument",
+                "Argument {0}",
                 "Authorization",
                 "Contract Address",
                 "Function",
@@ -31601,11 +31601,11 @@ impl TranslatedString {
                 18931,
                 18931,
                 18944,
-                18952,
-                18965,
-                18981,
-                18989,
-                19004,
+                18956,
+                18969,
+                18985,
+                18993,
+                19008,
             ];
 
         } else if #[cfg(feature = "layout_eckhart")] {
@@ -32850,7 +32850,7 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "This is NOT your address",
                 "Owner address",
-                "Argument",
+                "Argument {0}",
                 "Authorization",
                 "Contract Address",
                 "Function",
@@ -34099,11 +34099,11 @@ impl TranslatedString {
                 20215,
                 20239,
                 20252,
-                20260,
-                20273,
-                20289,
-                20297,
-                20312,
+                20264,
+                20277,
+                20293,
+                20301,
+                20316,
             ];
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -35347,7 +35347,7 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "This is NOT your address",
                 "Owner address",
-                "Argument",
+                "Argument {0}",
                 "Authorization",
                 "Contract Address",
                 "Function",
@@ -36596,11 +36596,11 @@ impl TranslatedString {
                 20215,
                 20239,
                 20252,
-                20260,
-                20273,
-                20289,
-                20297,
-                20312,
+                20264,
+                20277,
+                20293,
+                20301,
+                20316,
             ];
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -37844,7 +37844,7 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "This is NOT your address",
                 "Owner address",
-                "Argument",
+                "Argument {0}",
                 "Authorization",
                 "Contract Address",
                 "Function",
@@ -39093,11 +39093,11 @@ impl TranslatedString {
                 20215,
                 20239,
                 20252,
-                20260,
-                20273,
-                20289,
-                20297,
-                20312,
+                20264,
+                20277,
+                20293,
+                20301,
+                20316,
             ];
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -40341,7 +40341,7 @@ impl TranslatedString {
                 "Claim voting rewards?",
                 "This is NOT your address",
                 "Owner address",
-                "Argument",
+                "Argument {0}",
                 "Authorization",
                 "Contract Address",
                 "Function",
@@ -41590,11 +41590,11 @@ impl TranslatedString {
                 20215,
                 20239,
                 20252,
-                20260,
-                20273,
-                20289,
-                20297,
-                20312,
+                20264,
+                20277,
+                20293,
+                20301,
+                20316,
             ];
 
         }

@@ -2711,7 +2711,7 @@
     "stellar__add_trust": "Add trust",
     "stellar__all_will_be_sent_to": "All XLM will be sent to",
     "stellar__allow_trust": "Allow trust",
-    "stellar__argument": "Argument",
+    "stellar__argument": "Argument {0}",
     "stellar__authorization": "Authorization",
     "stellar__balance_id": "Balance ID",
     "stellar__bump_sequence": "Bump Sequence",

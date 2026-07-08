@@ -453,7 +453,7 @@ async def _confirm_invoke_contract_args(
     for i, arg in enumerate(args.args):
         await confirm_text(
             f"{br_name_prefix}_arg",
-            title=f"{TR.stellar__argument} #{i + 1}",
+            title=TR.stellar__argument.format(i + 1),
             data=_format_sc_val(arg),
         )
 
