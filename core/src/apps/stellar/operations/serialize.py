@@ -266,7 +266,6 @@ def _write_claimable_balance_id(w: Writer, claimable_balance_id: AnyBytes) -> No
 
 def write_invoke_host_function_op(w: Writer, msg: StellarInvokeHostFunctionOp) -> None:
     _write_host_function(w, msg.function)
-    # auth array
     _write_vec(w, msg.auth, _write_soroban_authorization_entry)
 
 
@@ -285,7 +284,6 @@ def _write_host_function(w: Writer, msg: StellarHostFunction) -> None:
 def _write_invoke_contract_args(w: Writer, msg: StellarInvokeContractArgs) -> None:
     _write_sc_address(w, msg.contract_address)
     _write_sc_symbol(w, msg.function_name)
-    # args array
     _write_vec(w, msg.args, _write_sc_val)
 
 
@@ -478,7 +476,6 @@ def _write_soroban_authorized_invocation(
     w: Writer, msg: StellarSorobanAuthorizedInvocation
 ) -> None:
     _write_soroban_authorized_function(w, msg.function)
-    # sub_invocations array
     _write_vec(w, msg.sub_invocations, _write_soroban_authorized_invocation)
 
 
