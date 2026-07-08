@@ -38,6 +38,7 @@ if TYPE_CHECKING:
         StellarPaymentOp,
         StellarSCAddress,
         StellarSCVal,
+        StellarSCValMapEntry,
         StellarSetOptionsOp,
         StellarSorobanAuthorizationEntry,
         StellarSorobanAuthorizedInvocation,
@@ -658,20 +659,19 @@ def _format_sc_val(val: StellarSCVal) -> str:
         raise DataError(f"Stellar: unsupported SCVal type {t}")
 
 
-def _format_vec_as_json(vec: list) -> str:
+def _format_vec_as_json(vec: list[StellarSCVal]) -> str:
     """Format a vector as JSON array."""
     items = [_format_sc_val(item) for item in vec]
     return "[" + ", ".join(items) + "]"
 
 
-def _format_map_as_json(map_entries: list) -> str:
+def _format_map_as_json(map_entries: list[StellarSCValMapEntry]) -> str:
     """Format a map as JSON object."""
     pairs = []
     for entry in map_entries:
-        if entry.key is not None and entry.value is not None:
-            key = _format_sc_val(entry.key)
-            value = _format_sc_val(entry.value)
-            pairs.append(f"{key}: {value}")
+        key = _format_sc_val(entry.key)
+        value = _format_sc_val(entry.value)
+        pairs.append(f"{key}: {value}")
     return "{" + ", ".join(pairs) + "}"
 
 

@@ -412,8 +412,6 @@ def _write_sc_val(w: Writer, msg: StellarSCVal) -> None:
 
 
 def _write_sc_map_entry(w: Writer, entry: StellarSCValMapEntry) -> None:
-    if entry.key is None or entry.value is None:
-        raise DataError("Stellar: map entry missing key or value")
     _write_sc_val(w, entry.key)
     _write_sc_val(w, entry.value)
 
