@@ -97,6 +97,7 @@ fn main() -> Result<()> {
         lib.add_private_include("../rust");
 
         lib.add_sources([
+            "modtimeq.c",
             "modutime.c",
             "rustmods.c",
             "trezorobj.c",
@@ -133,7 +134,6 @@ fn main() -> Result<()> {
             [
                 "extmod/modbinascii.c",
                 "extmod/moduheapq.c",
-                "extmod/modutimeq.c",
                 "extmod/utime_mphal.c",
                 "shared/timeutils/timeutils.c",
                 "py/argcheck.c",
