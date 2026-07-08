@@ -299,29 +299,29 @@ message StellarSignedTx {
  */
 message StellarSCVal {
     required StellarSCValType type = 1;
-    optional bool b = 2; // SCV_BOOL
-    reserved 3; // SCV_ERROR, not supported yet
-    optional uint32 u32 = 4; // SCV_U32
-    optional sint32 i32 = 5; // SCV_I32
-    optional uint64 u64 = 6; // SCV_U64
-    optional sint64 i64 = 7; // SCV_I64
-    optional uint64 timepoint = 8; // SCV_TIMEPOINT
-    optional uint64 duration = 9; // SCV_DURATION
-    optional StellarUInt128Parts u128 = 10; // SCV_U128
-    optional StellarInt128Parts i128 = 11; // SCV_I128
-    optional StellarUInt256Parts u256 = 12; // SCV_U256
-    optional StellarInt256Parts i256 = 13; // SCV_I256
-    optional bytes bytes = 14; // SCV_BYTES
+    optional bool b = 2;                     // SCV_BOOL
+    reserved 3;                              // SCV_ERROR, not supported yet
+    optional uint32 u32 = 4;                 // SCV_U32
+    optional sint32 i32 = 5;                 // SCV_I32
+    optional uint64 u64 = 6;                 // SCV_U64
+    optional sint64 i64 = 7;                 // SCV_I64
+    optional uint64 timepoint = 8;           // SCV_TIMEPOINT
+    optional uint64 duration = 9;            // SCV_DURATION
+    optional StellarUInt128Parts u128 = 10;  // SCV_U128
+    optional StellarInt128Parts i128 = 11;   // SCV_I128
+    optional StellarUInt256Parts u256 = 12;  // SCV_U256
+    optional StellarInt256Parts i256 = 13;   // SCV_I256
+    optional bytes bytes = 14;               // SCV_BYTES
     // SCV_STRING - The bytes contained in Strings do not necessarily conform to any
     // standard text encoding such as ASCII or Unicode UTF-8. They are plain uninterpreted bytes.
     // See: https://developers.stellar.org/docs/learn/fundamentals/contract-development/types/built-in-types
     optional bytes string = 15;
-    optional string symbol = 16; // SCV_SYMBOL
-    repeated StellarSCVal vec = 17; // SCV_VEC
-    repeated StellarSCValMapEntry map = 18; // SCV_MAP
-    optional StellarSCAddress address = 19; // SCV_ADDRESS
-    reserved 20; // SCV_CONTRACT_INSTANCE, not supported yet
-    reserved 21; // SCV_LEDGER_KEY_NONCE, not supported yet
+    optional string symbol = 16;             // SCV_SYMBOL
+    repeated StellarSCVal vec = 17;          // SCV_VEC
+    repeated StellarSCValMapEntry map = 18;  // SCV_MAP
+    optional StellarSCAddress address = 19;  // SCV_ADDRESS
+    reserved 20;                             // SCV_CONTRACT_INSTANCE, not supported yet
+    reserved 21;                             // SCV_LEDGER_KEY_NONCE, not supported yet
 
     message StellarUInt128Parts {
         required uint64 hi = 1;
@@ -358,8 +358,7 @@ message StellarSCVal {
         //   LIQUIDITY_POOL    (L...): 32 bytes = pool hash
         required bytes address = 2;
 
-        enum StellarSCAddressType
-        {
+        enum StellarSCAddressType {
             SC_ADDRESS_TYPE_ACCOUNT = 0;
             SC_ADDRESS_TYPE_CONTRACT = 1;
             SC_ADDRESS_TYPE_MUXED_ACCOUNT = 2;
@@ -376,7 +375,7 @@ message StellarSCVal {
     enum StellarSCValType {
         SCV_BOOL = 0;
         SCV_VOID = 1;
-        reserved 2; // SCV_ERROR, not supported yet (This type is unlikely to occur, although it is a valid value)
+        reserved 2;  // SCV_ERROR, not supported yet (This type is unlikely to occur, although it is a valid value)
         SCV_U32 = 3;
         SCV_I32 = 4;
         SCV_U64 = 5;
@@ -395,9 +394,9 @@ message StellarSCVal {
         SCV_ADDRESS = 18;
         // these 3 scval types are special and are only used in the internal ledger layout.
         // they are not convertible to the env values
-        reserved 19; // SCV_CONTRACT_INSTANCE, not supported yet
-        reserved 20; // SCV_LEDGER_KEY_CONTRACT_INSTANCE, not supported yet
-        reserved 21; // SCV_LEDGER_KEY_NONCE, not supported yet
+        reserved 19;  // SCV_CONTRACT_INSTANCE, not supported yet
+        reserved 20;  // SCV_LEDGER_KEY_CONTRACT_INSTANCE, not supported yet
+        reserved 21;  // SCV_LEDGER_KEY_NONCE, not supported yet
     }
 }
 
@@ -421,8 +420,8 @@ message StellarSorobanAuthorizedFunction {
 
     enum StellarSorobanAuthorizedFunctionType {
         SOROBAN_AUTHORIZED_FUNCTION_TYPE_CONTRACT_FN = 0;
-        reserved 1; // SOROBAN_AUTHORIZED_FUNCTION_TYPE_CREATE_CONTRACT_HOST_FN, not supported yet
-        reserved 2; // SOROBAN_AUTHORIZED_FUNCTION_TYPE_CREATE_CONTRACT_V2_HOST_FN, not supported yet
+        reserved 1;  // SOROBAN_AUTHORIZED_FUNCTION_TYPE_CREATE_CONTRACT_HOST_FN, not supported yet
+        reserved 2;  // SOROBAN_AUTHORIZED_FUNCTION_TYPE_CREATE_CONTRACT_V2_HOST_FN, not supported yet
     }
 }
 
@@ -443,12 +442,11 @@ message StellarHostFunction {
     required StellarHostFunctionType type = 1;
     optional StellarInvokeContractArgs invoke_contract = 2;
 
-    enum StellarHostFunctionType
-    {
-        HOST_FUNCTION_TYPE_INVOKE_CONTRACT = 0; // We only support this type of host function at this time.
-        reserved 1; // HOST_FUNCTION_TYPE_CREATE_CONTRACT, not supported yet
-        reserved 2; // HOST_FUNCTION_TYPE_UPLOAD_CONTRACT_WASM, not supported yet
-        reserved 3; // HOST_FUNCTION_TYPE_CREATE_CONTRACT_V2, not supported yet
+    enum StellarHostFunctionType {
+        HOST_FUNCTION_TYPE_INVOKE_CONTRACT = 0;  // We only support this type of host function at this time.
+        reserved 1;                              // HOST_FUNCTION_TYPE_CREATE_CONTRACT, not supported yet
+        reserved 2;                              // HOST_FUNCTION_TYPE_UPLOAD_CONTRACT_WASM, not supported yet
+        reserved 3;                              // HOST_FUNCTION_TYPE_CREATE_CONTRACT_V2, not supported yet
     }
 }
 
@@ -471,8 +469,7 @@ message StellarSorobanCredentials {
     required StellarSorobanCredentialsType type = 1;
     optional StellarSorobanAddressCredentials address = 2;
 
-    enum StellarSorobanCredentialsType
-    {
+    enum StellarSorobanCredentialsType {
         SOROBAN_CREDENTIALS_SOURCE_ACCOUNT = 0;
         SOROBAN_CREDENTIALS_ADDRESS = 1;
     };
@@ -493,7 +490,7 @@ message StellarSorobanAuthorizationEntry {
  * @next StellarTxExtRequest
  */
 message StellarInvokeHostFunctionOp {
-    optional string source_account = 1; // (optional) source account address
+    optional string source_account = 1;  // (optional) source account address
     required StellarHostFunction function = 2;
     repeated StellarSorobanAuthorizationEntry auth = 3;
 }
@@ -502,8 +499,7 @@ message StellarInvokeHostFunctionOp {
  * Response: device is ready for client to send StellarTxExt
  * @next StellarTxExt
  */
-message StellarTxExtRequest {
-}
+message StellarTxExtRequest {}
 
 /**
  * Request: ask device to add extra data to the transaction
