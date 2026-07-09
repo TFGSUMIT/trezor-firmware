@@ -909,7 +909,7 @@ class TR:
     stellar__add_trust: str = "Add trust"
     stellar__all_will_be_sent_to: str = "All XLM will be sent to"
     stellar__allow_trust: str = "Allow trust"
-    stellar__argument: str = "Argument {0}"
+    stellar__arguments: str = "Arguments"
     stellar__authorization: str = "Authorization"
     stellar__balance_id: str = "Balance ID"
     stellar__bump_sequence: str = "Bump Sequence"

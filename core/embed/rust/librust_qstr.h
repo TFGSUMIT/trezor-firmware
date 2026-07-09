@@ -1474,7 +1474,7 @@ static void _librust_qstrs(void) {
   MP_QSTR_stellar__add_trust;
   MP_QSTR_stellar__all_will_be_sent_to;
   MP_QSTR_stellar__allow_trust;
-  MP_QSTR_stellar__argument;
+  MP_QSTR_stellar__arguments;
   MP_QSTR_stellar__authorization;
   MP_QSTR_stellar__balance_id;
   MP_QSTR_stellar__bump_sequence;

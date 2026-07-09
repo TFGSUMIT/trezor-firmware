@@ -2,6 +2,7 @@ from typing import TYPE_CHECKING
 from ubinascii import hexlify
 
 from trezor import TR
+from trezor.enums import StellarSCValType
 from trezor.ui.layouts import (
     confirm_address,
     confirm_properties,
@@ -450,12 +451,10 @@ async def _confirm_invoke_contract_args(
         args.function_name,
         description=function_description,
     )
-    for i, arg in enumerate(args.args):
-        await confirm_text(
-            f"{br_name_prefix}_arg",
-            title=TR.stellar__argument.format(i + 1),
-            data=_format_sc_val(arg),
-        )
+    props = [
+        (_SC_VAL_TYPE_NAME[arg.type], _format_sc_val(arg), True) for arg in args.args
+    ]
+    await confirm_properties(f"{br_name_prefix}_args", TR.stellar__arguments, props)
 
 
 async def confirm_invoke_host_function_op(op: StellarInvokeHostFunctionOp) -> None:
@@ -598,9 +597,30 @@ def _escape_str(s: str) -> str:
     return s.replace("\\", "\\\\").replace('"', '\\"')
 
 
+_SC_VAL_TYPE_NAME = {
+    StellarSCValType.SCV_BOOL: "bool",
+    StellarSCValType.SCV_VOID: "void",
+    StellarSCValType.SCV_U32: "u32",
+    StellarSCValType.SCV_I32: "i32",
+    StellarSCValType.SCV_U64: "u64",
+    StellarSCValType.SCV_I64: "i64",
+    StellarSCValType.SCV_TIMEPOINT: "timepoint",
+    StellarSCValType.SCV_DURATION: "duration",
+    StellarSCValType.SCV_U128: "u128",
+    StellarSCValType.SCV_I128: "i128",
+    StellarSCValType.SCV_U256: "u256",
+    StellarSCValType.SCV_I256: "i256",
+    StellarSCValType.SCV_BYTES: "bytes",
+    StellarSCValType.SCV_STRING: "string",
+    StellarSCValType.SCV_SYMBOL: "symbol",
+    StellarSCValType.SCV_VEC: "vec",
+    StellarSCValType.SCV_MAP: "map",
+    StellarSCValType.SCV_ADDRESS: "address",
+}
+
+
 def _format_sc_val(val: StellarSCVal) -> str:
     """Format SCVal as a human-readable string, using JSON for complex types."""
-    from trezor.enums import StellarSCValType
 
     t = val.type
 
