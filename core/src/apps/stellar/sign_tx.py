@@ -108,7 +108,6 @@ async def sign_tx(msg: StellarSignTx, keychain: Slip21Keychain) -> StellarSigned
         memo_confirm_text = hexlify(msg.memo_hash).decode()
     else:
         raise ProcessError("Stellar invalid memo type")
-    await layout.require_confirm_memo(memo_type, memo_confirm_text)
 
     if msg.payment_req:
         from apps.common.payment_request import PaymentRequestVerifier
@@ -132,7 +131,22 @@ async def sign_tx(msg: StellarSignTx, keychain: Slip21Keychain) -> StellarSigned
         progress_obj.report(int(i / num_operations * 900))
         op = await call_any(StellarTxOpRequest(), *consts.op_codes.keys())
 
-        await process_operation(w, op, current_output_index, verifier)  # type: ignore [Argument of type "MessageType" cannot be assigned to parameter "op" of type "StellarMessageType" in function "process_operation"]
+        if StellarInvokeHostFunctionOp.is_type_of(op):
+            # A Soroban operation must be the only operation in the transaction.
+            if num_operations != 1:
+                raise ProcessError(
+                    "Stellar: a Soroban operation must be the only operation"
+                )
+            if memo_type != StellarMemoType.NONE:
+                raise ProcessError(
+                    "Stellar: a Soroban operation cannot be used with a memo"
+                )
+            has_soroban_op = True
+        elif i == 0:
+            # Soroban transactions do not support memos
+            await layout.require_confirm_memo(memo_type, memo_confirm_text)
+
+        await process_operation(w, op, current_output_index, verifier)  # type: ignore [Argument of type "StellarInvokeHostFunctionOp | MessageType" cannot be assigned to parameter "op" of type "StellarMessageType" in function "process_operation"]
 
         if msg.payment_req:
             assert verifier is not None
@@ -145,14 +159,6 @@ async def sign_tx(msg: StellarSignTx, keychain: Slip21Keychain) -> StellarSigned
         if op.source_account is not None and op.source_account != address:  # type: ignore [Cannot access attribute "source_account" for class "MessageType"]
             # if the operation source account does not match the Trezor account
             is_sending_from_trezor_account = False
-
-        if StellarInvokeHostFunctionOp.is_type_of(op):
-            # A Soroban operation must be the only operation in the transaction.
-            if num_operations != 1:
-                raise ProcessError(
-                    "Stellar: a Soroban operation must be the only operation"
-                )
-            has_soroban_op = True
 
         if any(
             op_type.is_type_of(op)
