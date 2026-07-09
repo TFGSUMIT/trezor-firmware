@@ -276,12 +276,12 @@ def _write_host_function(w: Writer, msg: StellarHostFunction) -> None:
     if msg.type == StellarHostFunctionType.HOST_FUNCTION_TYPE_INVOKE_CONTRACT:
         if msg.invoke_contract is None:
             raise DataError("Stellar: missing invoke_contract")
-        _write_invoke_contract_args(w, msg.invoke_contract)
+        write_invoke_contract_args(w, msg.invoke_contract)
     else:
         raise ProcessError("Stellar: unsupported host function type")
 
 
-def _write_invoke_contract_args(w: Writer, msg: StellarInvokeContractArgs) -> None:
+def write_invoke_contract_args(w: Writer, msg: StellarInvokeContractArgs) -> None:
     _write_sc_address(w, msg.contract_address)
     _write_sc_symbol(w, msg.function_name)
     _write_vec(w, msg.args, _write_sc_val)
@@ -489,6 +489,6 @@ def _write_soroban_authorized_function(
     ):
         if msg.contract_fn is None:
             raise DataError("Stellar: missing contract_fn")
-        _write_invoke_contract_args(w, msg.contract_fn)
+        write_invoke_contract_args(w, msg.contract_fn)
     else:
         raise ProcessError("Stellar: unsupported authorized function type")

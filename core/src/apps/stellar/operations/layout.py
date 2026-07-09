@@ -27,6 +27,7 @@ if TYPE_CHECKING:
         StellarClaimClaimableBalanceOp,
         StellarCreateAccountOp,
         StellarCreatePassiveSellOfferOp,
+        StellarHostFunction,
         StellarInt128Parts,
         StellarInt256Parts,
         StellarInvokeContractArgs,
@@ -457,6 +458,37 @@ async def _confirm_invoke_contract_args(
     await confirm_properties(f"{br_name_prefix}_args", TR.stellar__arguments, props)
 
 
+def _is_root_auth_entry(
+    auth_entry: StellarSorobanAuthorizationEntry, invoked_fn: StellarHostFunction
+) -> bool:
+    from trezor.enums import (
+        StellarHostFunctionType,
+        StellarSorobanAuthorizedFunctionType,
+    )
+
+    from .serialize import write_invoke_contract_args
+
+    auth_fn = auth_entry.root_invocation.function
+
+    if (
+        auth_fn.type
+        == StellarSorobanAuthorizedFunctionType.SOROBAN_AUTHORIZED_FUNCTION_TYPE_CONTRACT_FN
+        and invoked_fn.type
+        == StellarHostFunctionType.HOST_FUNCTION_TYPE_INVOKE_CONTRACT
+    ):
+        if auth_fn.contract_fn is None or invoked_fn.invoke_contract is None:
+            return False
+
+        b1 = bytearray()
+        write_invoke_contract_args(b1, auth_fn.contract_fn)
+        b2 = bytearray()
+        write_invoke_contract_args(b2, invoked_fn.invoke_contract)
+
+        return b1 == b2
+
+    return False
+
+
 async def confirm_invoke_host_function_op(op: StellarInvokeHostFunctionOp) -> None:
     from trezor.enums import StellarHostFunctionType, StellarSorobanCredentialsType
     from trezor.ui.layouts import should_show_more
@@ -500,7 +532,9 @@ async def confirm_invoke_host_function_op(op: StellarInvokeHostFunctionOp) -> No
             == StellarSorobanCredentialsType.SOROBAN_CREDENTIALS_SOURCE_ACCOUNT
         ):
             shown += 1
-            await _confirm_auth_entry(auth_entry, shown)
+            await _confirm_auth_entry(
+                auth_entry, shown, _is_root_auth_entry(auth_entry, function)
+            )
         else:
             non_src_entries.append(auth_entry)
 
@@ -512,11 +546,13 @@ async def confirm_invoke_host_function_op(op: StellarInvokeHostFunctionOp) -> No
     if show_non_src:
         for auth_entry in non_src_entries:
             shown += 1
-            await _confirm_auth_entry(auth_entry, shown)
+            await _confirm_auth_entry(
+                auth_entry, shown, _is_root_auth_entry(auth_entry, function)
+            )
 
 
 async def _confirm_auth_entry(
-    auth: StellarSorobanAuthorizationEntry, position: int
+    auth: StellarSorobanAuthorizationEntry, position: int, is_root: bool = False
 ) -> None:
     from trezor.enums import StellarSorobanCredentialsType
 
@@ -535,12 +571,11 @@ async def _confirm_auth_entry(
 
     # Show the whole authorized invocation tree starting from its root (not just the
     # nested sub-invocations), so the user sees exactly what this signature authorizes.
-    await _confirm_invocation(auth.root_invocation, str(position))
+    await _confirm_invocation(auth.root_invocation, str(position), is_root=is_root)
 
 
 async def _confirm_invocation(
-    invocation: StellarSorobanAuthorizedInvocation,
-    position: str,
+    invocation: StellarSorobanAuthorizedInvocation, position: str, is_root: bool = False
 ) -> None:
     """Confirm an authorized invocation and its sub-invocations recursively.
 
@@ -560,14 +595,16 @@ async def _confirm_invocation(
         raise DataError("Stellar: missing contract_fn")
 
     title = f"{TR.stellar__authorization} {position}"
-    await _confirm_invoke_contract_args(
-        func.contract_fn,
-        address_title=title,
-        address_description=TR.stellar__contract_address,
-        function_title=title,
-        function_description=TR.stellar__function,
-        br_name_prefix="op_auth",
-    )
+
+    if not is_root:
+        await _confirm_invoke_contract_args(
+            func.contract_fn,
+            address_title=title,
+            address_description=TR.stellar__contract_address,
+            function_title=title,
+            function_description=TR.stellar__function,
+            br_name_prefix="op_auth",
+        )
 
     for i, sub in enumerate(invocation.sub_invocations):
         await _confirm_invocation(sub, f"{position}-{i + 1}")
