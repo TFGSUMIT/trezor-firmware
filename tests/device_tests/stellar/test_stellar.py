@@ -174,12 +174,15 @@ def test_xdr(session: Session, parameters, result):
     envelope = TransactionEnvelope.from_xdr(
         parameters["xdr"], parameters["network_passphrase"]
     )
-    tx, operations = stellar.from_envelope(envelope)
+    tx, operations, ext = stellar.from_envelope(envelope)
     tx.address_n = parse_path(parameters["address_n"])
-    tx_expected, operations_expected = parameters_to_proto(session, parameters)
+    tx_expected, operations_expected, ext_expected = parameters_to_proto(
+        session, parameters
+    )
     assert tx == tx_expected
     for expected, actual in zip(operations_expected, operations):
         assert expected == actual
+    assert ext == ext_expected
 
 
 @parametrize_using_common_fixtures("stellar/get_address.json")
