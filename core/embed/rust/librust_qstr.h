@@ -1494,6 +1494,8 @@ static void _librust_qstrs(void) {
   MP_QSTR_stellar__delete_trust;
   MP_QSTR_stellar__destination;
   MP_QSTR_stellar__exchanges_require_memo;
+  MP_QSTR_stellar__ext_auth;
+  MP_QSTR_stellar__ext_auth_message;
   MP_QSTR_stellar__final_confirm;
   MP_QSTR_stellar__function;
   MP_QSTR_stellar__hash;

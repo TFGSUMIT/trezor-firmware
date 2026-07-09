@@ -929,6 +929,8 @@ class TR:
     stellar__delete_trust: str = "Delete trust"
     stellar__destination: str = "Destination"
     stellar__exchanges_require_memo: str = "Memo is not set.\nTypically needed when sending to exchanges."
+    stellar__ext_auth: str = "External Authorizations"
+    stellar__ext_auth_message: str = "Transaction contains additional invocations authorized by external means."
     stellar__final_confirm: str = "Final confirm"
     stellar__function: str = "Function"
     stellar__hash: str = "Hash"

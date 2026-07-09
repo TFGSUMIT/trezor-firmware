@@ -459,7 +459,8 @@ async def _confirm_invoke_contract_args(
 
 
 async def confirm_invoke_host_function_op(op: StellarInvokeHostFunctionOp) -> None:
-    from trezor.enums import StellarHostFunctionType
+    from trezor.enums import StellarHostFunctionType, StellarSorobanCredentialsType
+    from trezor.ui.layouts import should_show_more
 
     function = op.function
 
@@ -476,43 +477,66 @@ async def confirm_invoke_host_function_op(op: StellarInvokeHostFunctionOp) -> No
             br_name_prefix="op_invoke",
         )
 
-        # An InvokeHostFunctionOp can carry multiple authorization entries, and more
-        # than one may use SOURCE_ACCOUNT credentials -- a single source account can
-        # authorize several distinct invocation trees in one transaction (this occurs
-        # in real transactions). Number the displayed (source-account) entries so the
-        # user can tell them apart, and show each entry's full tree from its root.
+        # Auth entries fall into two kinds by credential type:
+        #
+        # - SOURCE_ACCOUNT credentials are authorized by the signature the device
+        #   produces over the transaction envelope. Approving that signature approves
+        #   these entries, so we must always show them for confirmation.
+        #
+        # - ADDRESS credentials are authorized by a separate signature over the
+        #   ENVELOPE_TYPE_SOROBAN_AUTHORIZATION preimage, which this device does not
+        #   produce. They are hidden behind an opt-in and only shown for information;
+        #   the user does not need to review them to sign safely.
+
+        # NOTE: signing ADDRESS credentials for our own account may be added later.
+
         shown = 0
+        non_src_entries = []
+
         for auth_entry in op.auth:
-            if await _confirm_auth_entry(auth_entry, shown + 1):
+            if (
+                auth_entry.credentials.type
+                == StellarSorobanCredentialsType.SOROBAN_CREDENTIALS_SOURCE_ACCOUNT
+            ):
                 shown += 1
+                await _confirm_auth_entry(auth_entry, shown)
+            else:
+                non_src_entries.append(auth_entry)
+
+        show_non_src = non_src_entries and await should_show_more(
+            TR.stellar__ext_auth,
+            ((TR.stellar__ext_auth_message, False),),
+            button_text=TR.buttons__show_all,
+        )
+        if show_non_src:
+            for auth_entry in non_src_entries:
+                shown += 1
+                await _confirm_auth_entry(auth_entry, shown)
     else:
         raise ProcessError("Stellar: unsupported host function type")
 
 
 async def _confirm_auth_entry(
     auth: StellarSorobanAuthorizationEntry, position: int
-) -> bool:
+) -> None:
     from trezor.enums import StellarSorobanCredentialsType
 
     creds = auth.credentials
 
-    # We only support SOROBAN_CREDENTIALS_SOURCE_ACCOUNT authorization: the device
-    # signs the transaction envelope, and that signature authorizes these entries.
-    # An ADDRESS credential is instead authorized by a separate signature over the
-    # ENVELOPE_TYPE_SOROBAN_AUTHORIZATION preimage, which this device does not
-    # produce. Skipping such entries is safe: our transaction signature never
-    # authorizes them, so not showing them can't make the user unknowingly approve
-    # anything -- an ADDRESS credential we didn't sign (e.g. one for our own
-    # account) just makes the whole transaction fail on-chain, so no unauthorized
-    # invocation can run.
-    # NOTE: signing ADDRESS credentials for our own account may be added later.
-    if creds.type != StellarSorobanCredentialsType.SOROBAN_CREDENTIALS_SOURCE_ACCOUNT:
-        return False
+    if creds.type == StellarSorobanCredentialsType.SOROBAN_CREDENTIALS_ADDRESS:
+        if creds.address is None:
+            raise DataError("Stellar: missing address credentials")
+
+        await confirm_address(
+            f"{TR.stellar__authorization} {position}",
+            _format_sc_address(creds.address.address),
+            description=TR.words__address,
+            br_name="op_auth_entry_address",
+        )
 
     # Show the whole authorized invocation tree starting from its root (not just the
     # nested sub-invocations), so the user sees exactly what this signature authorizes.
     await _confirm_invocation(auth.root_invocation, str(position))
-    return True
 
 
 async def _confirm_invocation(

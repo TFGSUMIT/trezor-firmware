@@ -1637,6 +1637,10 @@ pub enum TranslatedString {
     stellar__function = 1242,  // "Function"
     #[cfg(feature = "universal_fw")]
     stellar__invoke_contract = 1243,  // "Invoke Contract"
+    #[cfg(feature = "universal_fw")]
+    stellar__ext_auth = 1244,  // "External Authorizations"
+    #[cfg(feature = "universal_fw")]
+    stellar__ext_auth_message = 1245,  // "Transaction contains additional invocations authorized by external means."
 }
 
 impl TranslatedString {
@@ -2888,6 +2892,8 @@ impl TranslatedString {
                 "Contract Address",
                 "Function",
                 "Invoke Contract",
+                "External Authorizations",
+                "Transaction contains additional invocations authorized by external means.",
             );
 
             #[cfg(all(feature = "debug", feature = "universal_fw"))]
@@ -4137,6 +4143,8 @@ impl TranslatedString {
                 19468,
                 19476,
                 19491,
+                19514,
+                19587,
             ];
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -5385,6 +5393,8 @@ impl TranslatedString {
                 "Contract Address",
                 "Function",
                 "Invoke Contract",
+                "External Authorizations",
+                "Transaction contains additional invocations authorized by external means.",
             );
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -6634,6 +6644,8 @@ impl TranslatedString {
                 19468,
                 19476,
                 19491,
+                19514,
+                19587,
             ];
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -7882,6 +7894,8 @@ impl TranslatedString {
                 "Contract Address",
                 "Function",
                 "Invoke Contract",
+                "External Authorizations",
+                "Transaction contains additional invocations authorized by external means.",
             );
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -9131,6 +9145,8 @@ impl TranslatedString {
                 19468,
                 19476,
                 19491,
+                19514,
+                19587,
             ];
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -10379,6 +10395,8 @@ impl TranslatedString {
                 "Contract Address",
                 "Function",
                 "Invoke Contract",
+                "External Authorizations",
+                "Transaction contains additional invocations authorized by external means.",
             );
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -11628,6 +11646,8 @@ impl TranslatedString {
                 19468,
                 19476,
                 19491,
+                19514,
+                19587,
             ];
 
         } else if #[cfg(feature = "layout_caesar")] {
@@ -12877,6 +12897,8 @@ impl TranslatedString {
                 "Contract Address",
                 "Function",
                 "Invoke Contract",
+                "External Authorizations",
+                "Transaction contains additional invocations authorized by external means.",
             );
 
             #[cfg(all(feature = "debug", feature = "universal_fw"))]
@@ -14126,6 +14148,8 @@ impl TranslatedString {
                 17356,
                 17364,
                 17379,
+                17402,
+                17475,
             ];
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -15374,6 +15398,8 @@ impl TranslatedString {
                 "Contract Address",
                 "Function",
                 "Invoke Contract",
+                "External Authorizations",
+                "Transaction contains additional invocations authorized by external means.",
             );
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -16623,6 +16649,8 @@ impl TranslatedString {
                 17356,
                 17364,
                 17379,
+                17402,
+                17475,
             ];
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -17871,6 +17899,8 @@ impl TranslatedString {
                 "Contract Address",
                 "Function",
                 "Invoke Contract",
+                "External Authorizations",
+                "Transaction contains additional invocations authorized by external means.",
             );
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -19120,6 +19150,8 @@ impl TranslatedString {
                 17356,
                 17364,
                 17379,
+                17402,
+                17475,
             ];
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -20368,6 +20400,8 @@ impl TranslatedString {
                 "Contract Address",
                 "Function",
                 "Invoke Contract",
+                "External Authorizations",
+                "Transaction contains additional invocations authorized by external means.",
             );
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -21617,6 +21651,8 @@ impl TranslatedString {
                 17356,
                 17364,
                 17379,
+                17402,
+                17475,
             ];
 
         } else if #[cfg(feature = "layout_delizia")] {
@@ -22866,6 +22902,8 @@ impl TranslatedString {
                 "Contract Address",
                 "Function",
                 "Invoke Contract",
+                "External Authorizations",
+                "Transaction contains additional invocations authorized by external means.",
             );
 
             #[cfg(all(feature = "debug", feature = "universal_fw"))]
@@ -24115,6 +24153,8 @@ impl TranslatedString {
                 18985,
                 18993,
                 19008,
+                19031,
+                19104,
             ];
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -25363,6 +25403,8 @@ impl TranslatedString {
                 "Contract Address",
                 "Function",
                 "Invoke Contract",
+                "External Authorizations",
+                "Transaction contains additional invocations authorized by external means.",
             );
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -26612,6 +26654,8 @@ impl TranslatedString {
                 18985,
                 18993,
                 19008,
+                19031,
+                19104,
             ];
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -27860,6 +27904,8 @@ impl TranslatedString {
                 "Contract Address",
                 "Function",
                 "Invoke Contract",
+                "External Authorizations",
+                "Transaction contains additional invocations authorized by external means.",
             );
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -29109,6 +29155,8 @@ impl TranslatedString {
                 18985,
                 18993,
                 19008,
+                19031,
+                19104,
             ];
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -30357,6 +30405,8 @@ impl TranslatedString {
                 "Contract Address",
                 "Function",
                 "Invoke Contract",
+                "External Authorizations",
+                "Transaction contains additional invocations authorized by external means.",
             );
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -31606,6 +31656,8 @@ impl TranslatedString {
                 18985,
                 18993,
                 19008,
+                19031,
+                19104,
             ];
 
         } else if #[cfg(feature = "layout_eckhart")] {
@@ -32855,6 +32907,8 @@ impl TranslatedString {
                 "Contract Address",
                 "Function",
                 "Invoke Contract",
+                "External Authorizations",
+                "Transaction contains additional invocations authorized by external means.",
             );
 
             #[cfg(all(feature = "debug", feature = "universal_fw"))]
@@ -34104,6 +34158,8 @@ impl TranslatedString {
                 20293,
                 20301,
                 20316,
+                20339,
+                20412,
             ];
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -35352,6 +35408,8 @@ impl TranslatedString {
                 "Contract Address",
                 "Function",
                 "Invoke Contract",
+                "External Authorizations",
+                "Transaction contains additional invocations authorized by external means.",
             );
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -36601,6 +36659,8 @@ impl TranslatedString {
                 20293,
                 20301,
                 20316,
+                20339,
+                20412,
             ];
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -37849,6 +37909,8 @@ impl TranslatedString {
                 "Contract Address",
                 "Function",
                 "Invoke Contract",
+                "External Authorizations",
+                "Transaction contains additional invocations authorized by external means.",
             );
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -39098,6 +39160,8 @@ impl TranslatedString {
                 20293,
                 20301,
                 20316,
+                20339,
+                20412,
             ];
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -40346,6 +40410,8 @@ impl TranslatedString {
                 "Contract Address",
                 "Function",
                 "Invoke Contract",
+                "External Authorizations",
+                "Transaction contains additional invocations authorized by external means.",
             );
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -41595,6 +41661,8 @@ impl TranslatedString {
                 20293,
                 20301,
                 20316,
+                20339,
+                20412,
             ];
 
         }
@@ -42920,6 +42988,10 @@ impl TranslatedString {
         (Qstr::MP_QSTR_stellar__destination, Self::stellar__destination),
         #[cfg(feature = "universal_fw")]
         (Qstr::MP_QSTR_stellar__exchanges_require_memo, Self::stellar__exchanges_require_memo),
+        #[cfg(feature = "universal_fw")]
+        (Qstr::MP_QSTR_stellar__ext_auth, Self::stellar__ext_auth),
+        #[cfg(feature = "universal_fw")]
+        (Qstr::MP_QSTR_stellar__ext_auth_message, Self::stellar__ext_auth_message),
         #[cfg(feature = "universal_fw")]
         (Qstr::MP_QSTR_stellar__final_confirm, Self::stellar__final_confirm),
         #[cfg(feature = "universal_fw")]
