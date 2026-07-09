@@ -38,7 +38,6 @@ if TYPE_CHECKING:
         StellarPathPaymentStrictReceiveOp,
         StellarPathPaymentStrictSendOp,
         StellarPaymentOp,
-        StellarSCAddress,
         StellarSCVal,
         StellarSCValMapEntry,
         StellarSetOptionsOp,
@@ -442,7 +441,7 @@ async def _confirm_invoke_contract_args(
 ) -> None:
     await confirm_address(
         address_title,
-        _format_sc_address(args.contract_address),
+        args.contract_address,
         description=address_description,
         br_name=f"{br_name_prefix}_contract_address",
     )
@@ -564,7 +563,7 @@ async def _confirm_auth_entry(
 
         await confirm_address(
             f"{TR.stellar__authorization} {position}",
-            _format_sc_address(creds.address.address),
+            creds.address.address,
             description=TR.words__address,
             br_name="op_auth_entry_address",
         )
@@ -608,24 +607,6 @@ async def _confirm_invocation(
 
     for i, sub in enumerate(invocation.sub_invocations):
         await _confirm_invocation(sub, f"{position}-{i + 1}")
-
-
-def _format_sc_address(addr: StellarSCAddress) -> str:
-    from trezor.enums import StellarSCAddressType
-
-    from .. import helpers
-
-    strkey_version_map = {
-        StellarSCAddressType.SC_ADDRESS_TYPE_ACCOUNT: helpers.STRKEY_ED25519_PUBLIC_KEY,
-        StellarSCAddressType.SC_ADDRESS_TYPE_CONTRACT: helpers.STRKEY_CONTRACT,
-        StellarSCAddressType.SC_ADDRESS_TYPE_MUXED_ACCOUNT: helpers.STRKEY_MUXED_ACCOUNT,
-        StellarSCAddressType.SC_ADDRESS_TYPE_CLAIMABLE_BALANCE: helpers.STRKEY_CLAIMABLE_BALANCE,
-        StellarSCAddressType.SC_ADDRESS_TYPE_LIQUIDITY_POOL: helpers.STRKEY_LIQUIDITY_POOL,
-    }
-    version = strkey_version_map.get(addr.type)
-    if version is None:
-        raise ProcessError(f"Stellar: unsupported SCAddress type: {addr.type}")
-    return helpers.encode_strkey(version, addr.address)
 
 
 def _escape_str(s: str) -> str:
@@ -735,7 +716,7 @@ def _format_sc_val(val: StellarSCVal) -> str:
     elif t == StellarSCValType.SCV_ADDRESS:
         if val.address is None:
             raise DataError("Stellar: missing address value")
-        return _format_sc_address(val.address)
+        return val.address
     else:
         raise DataError(f"Stellar: unsupported SCVal type {t}")
 

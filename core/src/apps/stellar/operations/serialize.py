@@ -38,7 +38,6 @@ if TYPE_CHECKING:
         StellarPathPaymentStrictReceiveOp,
         StellarPathPaymentStrictSendOp,
         StellarPaymentOp,
-        StellarSCAddress,
         StellarSCVal,
         StellarSCValMapEntry,
         StellarSetOptionsOp,
@@ -287,36 +286,42 @@ def write_invoke_contract_args(w: Writer, msg: StellarInvokeContractArgs) -> Non
     _write_vec(w, msg.args, _write_sc_val)
 
 
-def _write_sc_address(w: Writer, msg: StellarSCAddress) -> None:
-    from trezor.enums import StellarSCAddressType
+def _write_sc_address(w: Writer, addr: str) -> None:
+    from .. import helpers
 
-    write_uint32(w, msg.type)
-    if msg.type == StellarSCAddressType.SC_ADDRESS_TYPE_ACCOUNT:
+    version, data = helpers.decode_strkey(addr)
+
+    if version == helpers.STRKEY_ED25519_PUBLIC_KEY:
         # AccountID is a PublicKey: KEY_TYPE_ED25519 (0) + 32 bytes ed25519
+        write_uint32(w, 0)  # SC_ADDRESS_TYPE_ACCOUNT
         write_uint32(w, 0)  # KEY_TYPE_ED25519
-        write_bytes_fixed(w, msg.address, 32)
-    elif msg.type == StellarSCAddressType.SC_ADDRESS_TYPE_CONTRACT:
+        write_bytes_fixed(w, data, 32)
+    elif version == helpers.STRKEY_CONTRACT:
         # ContractID is a Hash (32 bytes)
-        write_bytes_fixed(w, msg.address, 32)
-    elif msg.type == StellarSCAddressType.SC_ADDRESS_TYPE_MUXED_ACCOUNT:
+        write_uint32(w, 1)  # SC_ADDRESS_TYPE_CONTRACT
+        write_bytes_fixed(w, data, 32)
+    elif version == helpers.STRKEY_MUXED_ACCOUNT:
         # MuxedEd25519Account: { id: uint64, ed25519: uint256 }
         # address format: 32 bytes ed25519 + 8 bytes id
-        if len(msg.address) != 40:
+        if len(data) != 40:
             raise DataError("Stellar: invalid muxed account address length")
-        write_bytes_fixed(w, msg.address[32:40], 8)  # id (uint64)
-        write_bytes_fixed(w, msg.address[0:32], 32)  # ed25519
-    elif msg.type == StellarSCAddressType.SC_ADDRESS_TYPE_CLAIMABLE_BALANCE:
+        write_uint32(w, 2)  # SC_ADDRESS_TYPE_MUXED_ACCOUNT
+        write_bytes_fixed(w, data[32:40], 8)  # id (uint64)
+        write_bytes_fixed(w, data[0:32], 32)  # ed25519
+    elif version == helpers.STRKEY_CLAIMABLE_BALANCE:
         # ClaimableBalanceID: { type: uint32, v0: Hash }
         # address format: 1 byte type + 32 bytes hash (from strkey decoding)
-        if len(msg.address) != 33:
+        if len(data) != 33:
             raise DataError("Stellar: invalid claimable balance address length")
-        if msg.address[0:1] != b"\x00":
+        if data[0:1] != b"\x00":
             raise DataError("Stellar: unsupported claimable balance ID type")
+        write_uint32(w, 3)  # SC_ADDRESS_TYPE_CLAIMABLE_BALANCE
         write_uint32(w, 0)  # CLAIMABLE_BALANCE_ID_TYPE_V0
-        write_bytes_fixed(w, msg.address[1:33], 32)  # v0 hash
-    elif msg.type == StellarSCAddressType.SC_ADDRESS_TYPE_LIQUIDITY_POOL:
+        write_bytes_fixed(w, data[1:33], 32)  # v0 hash
+    elif version == helpers.STRKEY_LIQUIDITY_POOL:
         # PoolID is a Hash (32 bytes)
-        write_bytes_fixed(w, msg.address, 32)
+        write_uint32(w, 4)  # SC_ADDRESS_TYPE_LIQUIDITY_POOL
+        write_bytes_fixed(w, data, 32)
     else:
         raise ProcessError("Stellar: unsupported SC address type")
 

@@ -6306,7 +6306,7 @@ pub struct StellarSCVal {
     // @@protoc_insertion_point(field:hw.trezor.messages.stellar.StellarSCVal.map)
     pub map: ::std::vec::Vec<stellar_scval::StellarSCValMapEntry>,
     // @@protoc_insertion_point(field:hw.trezor.messages.stellar.StellarSCVal.address)
-    pub address: ::protobuf::MessageField<stellar_scval::StellarSCAddress>,
+    pub address: ::std::option::Option<::std::string::String>,
     // special fields
     // @@protoc_insertion_point(special_field:hw.trezor.messages.stellar.StellarSCVal.special_fields)
     pub special_fields: ::protobuf::SpecialFields,
@@ -6586,6 +6586,42 @@ impl StellarSCVal {
         self.symbol.take().unwrap_or_else(|| ::std::string::String::new())
     }
 
+    // optional string address = 19;
+
+    pub fn address(&self) -> &str {
+        match self.address.as_ref() {
+            Some(v) => v,
+            None => "",
+        }
+    }
+
+    pub fn clear_address(&mut self) {
+        self.address = ::std::option::Option::None;
+    }
+
+    pub fn has_address(&self) -> bool {
+        self.address.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_address(&mut self, v: ::std::string::String) {
+        self.address = ::std::option::Option::Some(v);
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_address(&mut self) -> &mut ::std::string::String {
+        if self.address.is_none() {
+            self.address = ::std::option::Option::Some(::std::string::String::new());
+        }
+        self.address.as_mut().unwrap()
+    }
+
+    // Take field
+    pub fn take_address(&mut self) -> ::std::string::String {
+        self.address.take().unwrap_or_else(|| ::std::string::String::new())
+    }
+
     fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
         let mut fields = ::std::vec::Vec::with_capacity(18);
         let mut oneofs = ::std::vec::Vec::with_capacity(0);
@@ -6674,7 +6710,7 @@ impl StellarSCVal {
             |m: &StellarSCVal| { &m.map },
             |m: &mut StellarSCVal| { &mut m.map },
         ));
-        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, stellar_scval::StellarSCAddress>(
+        fields.push(::protobuf::reflect::rt::v2::make_option_accessor::<_, _>(
             "address",
             |m: &StellarSCVal| { &m.address },
             |m: &mut StellarSCVal| { &mut m.address },
@@ -6720,11 +6756,6 @@ impl ::protobuf::Message for StellarSCVal {
             }
         };
         for v in &self.map {
-            if !v.is_initialized() {
-                return false;
-            }
-        };
-        for v in &self.address {
             if !v.is_initialized() {
                 return false;
             }
@@ -6787,7 +6818,7 @@ impl ::protobuf::Message for StellarSCVal {
                     self.map.push(is.read_message()?);
                 },
                 154 => {
-                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.address)?;
+                    self.address = ::std::option::Option::Some(is.read_string()?);
                 },
                 tag => {
                     ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
@@ -6859,8 +6890,7 @@ impl ::protobuf::Message for StellarSCVal {
             my_size += 2 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
         };
         if let Some(v) = self.address.as_ref() {
-            let len = v.compute_size();
-            my_size += 2 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+            my_size += ::protobuf::rt::string_size(19, &v);
         }
         my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
         self.special_fields.cached_size().set(my_size as u32);
@@ -6920,7 +6950,7 @@ impl ::protobuf::Message for StellarSCVal {
             ::protobuf::rt::write_message_field_with_cached_size(18, v, os)?;
         };
         if let Some(v) = self.address.as_ref() {
-            ::protobuf::rt::write_message_field_with_cached_size(19, v, os)?;
+            os.write_string(19, v)?;
         }
         os.write_unknown_fields(self.special_fields.unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -6956,7 +6986,7 @@ impl ::protobuf::Message for StellarSCVal {
         self.symbol = ::std::option::Option::None;
         self.vec.clear();
         self.map.clear();
-        self.address.clear();
+        self.address = ::std::option::Option::None;
         self.special_fields.clear();
     }
 
@@ -6979,7 +7009,7 @@ impl ::protobuf::Message for StellarSCVal {
             symbol: ::std::option::Option::None,
             vec: ::std::vec::Vec::new(),
             map: ::std::vec::Vec::new(),
-            address: ::protobuf::MessageField::none(),
+            address: ::std::option::Option::None,
             special_fields: ::protobuf::SpecialFields::new(),
         };
         &instance
@@ -7901,290 +7931,6 @@ pub mod stellar_scval {
         type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
     }
 
-    // @@protoc_insertion_point(message:hw.trezor.messages.stellar.StellarSCVal.StellarSCAddress)
-    #[derive(PartialEq,Clone,Default,Debug)]
-    pub struct StellarSCAddress {
-        // message fields
-        // @@protoc_insertion_point(field:hw.trezor.messages.stellar.StellarSCVal.StellarSCAddress.type)
-        pub type_: ::std::option::Option<::protobuf::EnumOrUnknown<stellar_scaddress::StellarSCAddressType>>,
-        // @@protoc_insertion_point(field:hw.trezor.messages.stellar.StellarSCVal.StellarSCAddress.address)
-        pub address: ::std::option::Option<::std::vec::Vec<u8>>,
-        // special fields
-        // @@protoc_insertion_point(special_field:hw.trezor.messages.stellar.StellarSCVal.StellarSCAddress.special_fields)
-        pub special_fields: ::protobuf::SpecialFields,
-    }
-
-    impl<'a> ::std::default::Default for &'a StellarSCAddress {
-        fn default() -> &'a StellarSCAddress {
-            <StellarSCAddress as ::protobuf::Message>::default_instance()
-        }
-    }
-
-    impl StellarSCAddress {
-        pub fn new() -> StellarSCAddress {
-            ::std::default::Default::default()
-        }
-
-        // required .hw.trezor.messages.stellar.StellarSCVal.StellarSCAddress.StellarSCAddressType type = 1;
-
-        pub fn type_(&self) -> stellar_scaddress::StellarSCAddressType {
-            match self.type_ {
-                Some(e) => e.enum_value_or(stellar_scaddress::StellarSCAddressType::SC_ADDRESS_TYPE_ACCOUNT),
-                None => stellar_scaddress::StellarSCAddressType::SC_ADDRESS_TYPE_ACCOUNT,
-            }
-        }
-
-        pub fn clear_type_(&mut self) {
-            self.type_ = ::std::option::Option::None;
-        }
-
-        pub fn has_type(&self) -> bool {
-            self.type_.is_some()
-        }
-
-        // Param is passed by value, moved
-        pub fn set_type(&mut self, v: stellar_scaddress::StellarSCAddressType) {
-            self.type_ = ::std::option::Option::Some(::protobuf::EnumOrUnknown::new(v));
-        }
-
-        // required bytes address = 2;
-
-        pub fn address(&self) -> &[u8] {
-            match self.address.as_ref() {
-                Some(v) => v,
-                None => &[],
-            }
-        }
-
-        pub fn clear_address(&mut self) {
-            self.address = ::std::option::Option::None;
-        }
-
-        pub fn has_address(&self) -> bool {
-            self.address.is_some()
-        }
-
-        // Param is passed by value, moved
-        pub fn set_address(&mut self, v: ::std::vec::Vec<u8>) {
-            self.address = ::std::option::Option::Some(v);
-        }
-
-        // Mutable pointer to the field.
-        // If field is not initialized, it is initialized with default value first.
-        pub fn mut_address(&mut self) -> &mut ::std::vec::Vec<u8> {
-            if self.address.is_none() {
-                self.address = ::std::option::Option::Some(::std::vec::Vec::new());
-            }
-            self.address.as_mut().unwrap()
-        }
-
-        // Take field
-        pub fn take_address(&mut self) -> ::std::vec::Vec<u8> {
-            self.address.take().unwrap_or_else(|| ::std::vec::Vec::new())
-        }
-
-        pub(in super) fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
-            let mut fields = ::std::vec::Vec::with_capacity(2);
-            let mut oneofs = ::std::vec::Vec::with_capacity(0);
-            fields.push(::protobuf::reflect::rt::v2::make_option_accessor::<_, _>(
-                "type",
-                |m: &StellarSCAddress| { &m.type_ },
-                |m: &mut StellarSCAddress| { &mut m.type_ },
-            ));
-            fields.push(::protobuf::reflect::rt::v2::make_option_accessor::<_, _>(
-                "address",
-                |m: &StellarSCAddress| { &m.address },
-                |m: &mut StellarSCAddress| { &mut m.address },
-            ));
-            ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<StellarSCAddress>(
-                "StellarSCVal.StellarSCAddress",
-                fields,
-                oneofs,
-            )
-        }
-    }
-
-    impl ::protobuf::Message for StellarSCAddress {
-        const NAME: &'static str = "StellarSCAddress";
-
-        fn is_initialized(&self) -> bool {
-            if self.type_.is_none() {
-                return false;
-            }
-            if self.address.is_none() {
-                return false;
-            }
-            true
-        }
-
-        fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
-            while let Some(tag) = is.read_raw_tag_or_eof()? {
-                match tag {
-                    8 => {
-                        self.type_ = ::std::option::Option::Some(is.read_enum_or_unknown()?);
-                    },
-                    18 => {
-                        self.address = ::std::option::Option::Some(is.read_bytes()?);
-                    },
-                    tag => {
-                        ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
-                    },
-                };
-            }
-            ::std::result::Result::Ok(())
-        }
-
-        // Compute sizes of nested messages
-        #[allow(unused_variables)]
-        fn compute_size(&self) -> u64 {
-            let mut my_size = 0;
-            if let Some(v) = self.type_ {
-                my_size += ::protobuf::rt::int32_size(1, v.value());
-            }
-            if let Some(v) = self.address.as_ref() {
-                my_size += ::protobuf::rt::bytes_size(2, &v);
-            }
-            my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
-            self.special_fields.cached_size().set(my_size as u32);
-            my_size
-        }
-
-        fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
-            if let Some(v) = self.type_ {
-                os.write_enum(1, ::protobuf::EnumOrUnknown::value(&v))?;
-            }
-            if let Some(v) = self.address.as_ref() {
-                os.write_bytes(2, v)?;
-            }
-            os.write_unknown_fields(self.special_fields.unknown_fields())?;
-            ::std::result::Result::Ok(())
-        }
-
-        fn special_fields(&self) -> &::protobuf::SpecialFields {
-            &self.special_fields
-        }
-
-        fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
-            &mut self.special_fields
-        }
-
-        fn new() -> StellarSCAddress {
-            StellarSCAddress::new()
-        }
-
-        fn clear(&mut self) {
-            self.type_ = ::std::option::Option::None;
-            self.address = ::std::option::Option::None;
-            self.special_fields.clear();
-        }
-
-        fn default_instance() -> &'static StellarSCAddress {
-            static instance: StellarSCAddress = StellarSCAddress {
-                type_: ::std::option::Option::None,
-                address: ::std::option::Option::None,
-                special_fields: ::protobuf::SpecialFields::new(),
-            };
-            &instance
-        }
-    }
-
-    impl ::protobuf::MessageFull for StellarSCAddress {
-        fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
-            static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
-            descriptor.get(|| super::file_descriptor().message_by_package_relative_name("StellarSCVal.StellarSCAddress").unwrap()).clone()
-        }
-    }
-
-    impl ::std::fmt::Display for StellarSCAddress {
-        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
-            ::protobuf::text_format::fmt(self, f)
-        }
-    }
-
-    impl ::protobuf::reflect::ProtobufValue for StellarSCAddress {
-        type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
-    }
-
-    /// Nested message and enums of message `StellarSCAddress`
-    pub mod stellar_scaddress {
-        #[derive(Clone,Copy,PartialEq,Eq,Debug,Hash)]
-        // @@protoc_insertion_point(enum:hw.trezor.messages.stellar.StellarSCVal.StellarSCAddress.StellarSCAddressType)
-        pub enum StellarSCAddressType {
-            // @@protoc_insertion_point(enum_value:hw.trezor.messages.stellar.StellarSCVal.StellarSCAddress.StellarSCAddressType.SC_ADDRESS_TYPE_ACCOUNT)
-            SC_ADDRESS_TYPE_ACCOUNT = 0,
-            // @@protoc_insertion_point(enum_value:hw.trezor.messages.stellar.StellarSCVal.StellarSCAddress.StellarSCAddressType.SC_ADDRESS_TYPE_CONTRACT)
-            SC_ADDRESS_TYPE_CONTRACT = 1,
-            // @@protoc_insertion_point(enum_value:hw.trezor.messages.stellar.StellarSCVal.StellarSCAddress.StellarSCAddressType.SC_ADDRESS_TYPE_MUXED_ACCOUNT)
-            SC_ADDRESS_TYPE_MUXED_ACCOUNT = 2,
-            // @@protoc_insertion_point(enum_value:hw.trezor.messages.stellar.StellarSCVal.StellarSCAddress.StellarSCAddressType.SC_ADDRESS_TYPE_CLAIMABLE_BALANCE)
-            SC_ADDRESS_TYPE_CLAIMABLE_BALANCE = 3,
-            // @@protoc_insertion_point(enum_value:hw.trezor.messages.stellar.StellarSCVal.StellarSCAddress.StellarSCAddressType.SC_ADDRESS_TYPE_LIQUIDITY_POOL)
-            SC_ADDRESS_TYPE_LIQUIDITY_POOL = 4,
-        }
-
-        impl ::protobuf::Enum for StellarSCAddressType {
-            const NAME: &'static str = "StellarSCAddressType";
-
-            fn value(&self) -> i32 {
-                *self as i32
-            }
-
-            fn from_i32(value: i32) -> ::std::option::Option<StellarSCAddressType> {
-                match value {
-                    0 => ::std::option::Option::Some(StellarSCAddressType::SC_ADDRESS_TYPE_ACCOUNT),
-                    1 => ::std::option::Option::Some(StellarSCAddressType::SC_ADDRESS_TYPE_CONTRACT),
-                    2 => ::std::option::Option::Some(StellarSCAddressType::SC_ADDRESS_TYPE_MUXED_ACCOUNT),
-                    3 => ::std::option::Option::Some(StellarSCAddressType::SC_ADDRESS_TYPE_CLAIMABLE_BALANCE),
-                    4 => ::std::option::Option::Some(StellarSCAddressType::SC_ADDRESS_TYPE_LIQUIDITY_POOL),
-                    _ => ::std::option::Option::None
-                }
-            }
-
-            fn from_str(str: &str) -> ::std::option::Option<StellarSCAddressType> {
-                match str {
-                    "SC_ADDRESS_TYPE_ACCOUNT" => ::std::option::Option::Some(StellarSCAddressType::SC_ADDRESS_TYPE_ACCOUNT),
-                    "SC_ADDRESS_TYPE_CONTRACT" => ::std::option::Option::Some(StellarSCAddressType::SC_ADDRESS_TYPE_CONTRACT),
-                    "SC_ADDRESS_TYPE_MUXED_ACCOUNT" => ::std::option::Option::Some(StellarSCAddressType::SC_ADDRESS_TYPE_MUXED_ACCOUNT),
-                    "SC_ADDRESS_TYPE_CLAIMABLE_BALANCE" => ::std::option::Option::Some(StellarSCAddressType::SC_ADDRESS_TYPE_CLAIMABLE_BALANCE),
-                    "SC_ADDRESS_TYPE_LIQUIDITY_POOL" => ::std::option::Option::Some(StellarSCAddressType::SC_ADDRESS_TYPE_LIQUIDITY_POOL),
-                    _ => ::std::option::Option::None
-                }
-            }
-
-            const VALUES: &'static [StellarSCAddressType] = &[
-                StellarSCAddressType::SC_ADDRESS_TYPE_ACCOUNT,
-                StellarSCAddressType::SC_ADDRESS_TYPE_CONTRACT,
-                StellarSCAddressType::SC_ADDRESS_TYPE_MUXED_ACCOUNT,
-                StellarSCAddressType::SC_ADDRESS_TYPE_CLAIMABLE_BALANCE,
-                StellarSCAddressType::SC_ADDRESS_TYPE_LIQUIDITY_POOL,
-            ];
-        }
-
-        impl ::protobuf::EnumFull for StellarSCAddressType {
-            fn enum_descriptor() -> ::protobuf::reflect::EnumDescriptor {
-                static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::EnumDescriptor> = ::protobuf::rt::Lazy::new();
-                descriptor.get(|| super::super::file_descriptor().enum_by_package_relative_name("StellarSCVal.StellarSCAddress.StellarSCAddressType").unwrap()).clone()
-            }
-
-            fn descriptor(&self) -> ::protobuf::reflect::EnumValueDescriptor {
-                let index = *self as usize;
-                Self::enum_descriptor().value_by_index(index)
-            }
-        }
-
-        impl ::std::default::Default for StellarSCAddressType {
-            fn default() -> Self {
-                StellarSCAddressType::SC_ADDRESS_TYPE_ACCOUNT
-            }
-        }
-
-        impl StellarSCAddressType {
-            pub(in super::super) fn generated_enum_descriptor_data() -> ::protobuf::reflect::GeneratedEnumDescriptorData {
-                ::protobuf::reflect::GeneratedEnumDescriptorData::new::<StellarSCAddressType>("StellarSCVal.StellarSCAddress.StellarSCAddressType")
-            }
-        }
-    }
-
     // @@protoc_insertion_point(message:hw.trezor.messages.stellar.StellarSCVal.StellarSCValMapEntry)
     #[derive(PartialEq,Clone,Default,Debug)]
     pub struct StellarSCValMapEntry {
@@ -8510,7 +8256,7 @@ pub mod stellar_scval {
 pub struct StellarInvokeContractArgs {
     // message fields
     // @@protoc_insertion_point(field:hw.trezor.messages.stellar.StellarInvokeContractArgs.contract_address)
-    pub contract_address: ::protobuf::MessageField<stellar_scval::StellarSCAddress>,
+    pub contract_address: ::std::option::Option<::std::string::String>,
     // @@protoc_insertion_point(field:hw.trezor.messages.stellar.StellarInvokeContractArgs.function_name)
     pub function_name: ::std::option::Option<::std::string::String>,
     // @@protoc_insertion_point(field:hw.trezor.messages.stellar.StellarInvokeContractArgs.args)
@@ -8529,6 +8275,42 @@ impl<'a> ::std::default::Default for &'a StellarInvokeContractArgs {
 impl StellarInvokeContractArgs {
     pub fn new() -> StellarInvokeContractArgs {
         ::std::default::Default::default()
+    }
+
+    // required string contract_address = 1;
+
+    pub fn contract_address(&self) -> &str {
+        match self.contract_address.as_ref() {
+            Some(v) => v,
+            None => "",
+        }
+    }
+
+    pub fn clear_contract_address(&mut self) {
+        self.contract_address = ::std::option::Option::None;
+    }
+
+    pub fn has_contract_address(&self) -> bool {
+        self.contract_address.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_contract_address(&mut self, v: ::std::string::String) {
+        self.contract_address = ::std::option::Option::Some(v);
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_contract_address(&mut self) -> &mut ::std::string::String {
+        if self.contract_address.is_none() {
+            self.contract_address = ::std::option::Option::Some(::std::string::String::new());
+        }
+        self.contract_address.as_mut().unwrap()
+    }
+
+    // Take field
+    pub fn take_contract_address(&mut self) -> ::std::string::String {
+        self.contract_address.take().unwrap_or_else(|| ::std::string::String::new())
     }
 
     // required string function_name = 2;
@@ -8570,7 +8352,7 @@ impl StellarInvokeContractArgs {
     fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
         let mut fields = ::std::vec::Vec::with_capacity(3);
         let mut oneofs = ::std::vec::Vec::with_capacity(0);
-        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, stellar_scval::StellarSCAddress>(
+        fields.push(::protobuf::reflect::rt::v2::make_option_accessor::<_, _>(
             "contract_address",
             |m: &StellarInvokeContractArgs| { &m.contract_address },
             |m: &mut StellarInvokeContractArgs| { &mut m.contract_address },
@@ -8603,11 +8385,6 @@ impl ::protobuf::Message for StellarInvokeContractArgs {
         if self.function_name.is_none() {
             return false;
         }
-        for v in &self.contract_address {
-            if !v.is_initialized() {
-                return false;
-            }
-        };
         for v in &self.args {
             if !v.is_initialized() {
                 return false;
@@ -8620,7 +8397,7 @@ impl ::protobuf::Message for StellarInvokeContractArgs {
         while let Some(tag) = is.read_raw_tag_or_eof()? {
             match tag {
                 10 => {
-                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.contract_address)?;
+                    self.contract_address = ::std::option::Option::Some(is.read_string()?);
                 },
                 18 => {
                     self.function_name = ::std::option::Option::Some(is.read_string()?);
@@ -8641,8 +8418,7 @@ impl ::protobuf::Message for StellarInvokeContractArgs {
     fn compute_size(&self) -> u64 {
         let mut my_size = 0;
         if let Some(v) = self.contract_address.as_ref() {
-            let len = v.compute_size();
-            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+            my_size += ::protobuf::rt::string_size(1, &v);
         }
         if let Some(v) = self.function_name.as_ref() {
             my_size += ::protobuf::rt::string_size(2, &v);
@@ -8658,7 +8434,7 @@ impl ::protobuf::Message for StellarInvokeContractArgs {
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
         if let Some(v) = self.contract_address.as_ref() {
-            ::protobuf::rt::write_message_field_with_cached_size(1, v, os)?;
+            os.write_string(1, v)?;
         }
         if let Some(v) = self.function_name.as_ref() {
             os.write_string(2, v)?;
@@ -8683,7 +8459,7 @@ impl ::protobuf::Message for StellarInvokeContractArgs {
     }
 
     fn clear(&mut self) {
-        self.contract_address.clear();
+        self.contract_address = ::std::option::Option::None;
         self.function_name = ::std::option::Option::None;
         self.args.clear();
         self.special_fields.clear();
@@ -8691,7 +8467,7 @@ impl ::protobuf::Message for StellarInvokeContractArgs {
 
     fn default_instance() -> &'static StellarInvokeContractArgs {
         static instance: StellarInvokeContractArgs = StellarInvokeContractArgs {
-            contract_address: ::protobuf::MessageField::none(),
+            contract_address: ::std::option::Option::None,
             function_name: ::std::option::Option::None,
             args: ::std::vec::Vec::new(),
             special_fields: ::protobuf::SpecialFields::new(),
@@ -9339,7 +9115,7 @@ pub mod stellar_host_function {
 pub struct StellarSorobanAddressCredentials {
     // message fields
     // @@protoc_insertion_point(field:hw.trezor.messages.stellar.StellarSorobanAddressCredentials.address)
-    pub address: ::protobuf::MessageField<stellar_scval::StellarSCAddress>,
+    pub address: ::std::option::Option<::std::string::String>,
     // @@protoc_insertion_point(field:hw.trezor.messages.stellar.StellarSorobanAddressCredentials.nonce)
     pub nonce: ::std::option::Option<i64>,
     // @@protoc_insertion_point(field:hw.trezor.messages.stellar.StellarSorobanAddressCredentials.signature_expiration_ledger)
@@ -9360,6 +9136,42 @@ impl<'a> ::std::default::Default for &'a StellarSorobanAddressCredentials {
 impl StellarSorobanAddressCredentials {
     pub fn new() -> StellarSorobanAddressCredentials {
         ::std::default::Default::default()
+    }
+
+    // required string address = 1;
+
+    pub fn address(&self) -> &str {
+        match self.address.as_ref() {
+            Some(v) => v,
+            None => "",
+        }
+    }
+
+    pub fn clear_address(&mut self) {
+        self.address = ::std::option::Option::None;
+    }
+
+    pub fn has_address(&self) -> bool {
+        self.address.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_address(&mut self, v: ::std::string::String) {
+        self.address = ::std::option::Option::Some(v);
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_address(&mut self) -> &mut ::std::string::String {
+        if self.address.is_none() {
+            self.address = ::std::option::Option::Some(::std::string::String::new());
+        }
+        self.address.as_mut().unwrap()
+    }
+
+    // Take field
+    pub fn take_address(&mut self) -> ::std::string::String {
+        self.address.take().unwrap_or_else(|| ::std::string::String::new())
     }
 
     // required sint64 nonce = 2;
@@ -9403,7 +9215,7 @@ impl StellarSorobanAddressCredentials {
     fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
         let mut fields = ::std::vec::Vec::with_capacity(4);
         let mut oneofs = ::std::vec::Vec::with_capacity(0);
-        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, stellar_scval::StellarSCAddress>(
+        fields.push(::protobuf::reflect::rt::v2::make_option_accessor::<_, _>(
             "address",
             |m: &StellarSorobanAddressCredentials| { &m.address },
             |m: &mut StellarSorobanAddressCredentials| { &mut m.address },
@@ -9447,11 +9259,6 @@ impl ::protobuf::Message for StellarSorobanAddressCredentials {
         if self.signature.is_none() {
             return false;
         }
-        for v in &self.address {
-            if !v.is_initialized() {
-                return false;
-            }
-        };
         for v in &self.signature {
             if !v.is_initialized() {
                 return false;
@@ -9464,7 +9271,7 @@ impl ::protobuf::Message for StellarSorobanAddressCredentials {
         while let Some(tag) = is.read_raw_tag_or_eof()? {
             match tag {
                 10 => {
-                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.address)?;
+                    self.address = ::std::option::Option::Some(is.read_string()?);
                 },
                 16 => {
                     self.nonce = ::std::option::Option::Some(is.read_sint64()?);
@@ -9488,8 +9295,7 @@ impl ::protobuf::Message for StellarSorobanAddressCredentials {
     fn compute_size(&self) -> u64 {
         let mut my_size = 0;
         if let Some(v) = self.address.as_ref() {
-            let len = v.compute_size();
-            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+            my_size += ::protobuf::rt::string_size(1, &v);
         }
         if let Some(v) = self.nonce {
             my_size += ::protobuf::rt::sint64_size(2, v);
@@ -9508,7 +9314,7 @@ impl ::protobuf::Message for StellarSorobanAddressCredentials {
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
         if let Some(v) = self.address.as_ref() {
-            ::protobuf::rt::write_message_field_with_cached_size(1, v, os)?;
+            os.write_string(1, v)?;
         }
         if let Some(v) = self.nonce {
             os.write_sint64(2, v)?;
@@ -9536,7 +9342,7 @@ impl ::protobuf::Message for StellarSorobanAddressCredentials {
     }
 
     fn clear(&mut self) {
-        self.address.clear();
+        self.address = ::std::option::Option::None;
         self.nonce = ::std::option::Option::None;
         self.signature_expiration_ledger = ::std::option::Option::None;
         self.signature.clear();
@@ -9545,7 +9351,7 @@ impl ::protobuf::Message for StellarSorobanAddressCredentials {
 
     fn default_instance() -> &'static StellarSorobanAddressCredentials {
         static instance: StellarSorobanAddressCredentials = StellarSorobanAddressCredentials {
-            address: ::protobuf::MessageField::none(),
+            address: ::std::option::Option::None,
             nonce: ::std::option::Option::None,
             signature_expiration_ledger: ::std::option::Option::None,
             signature: ::protobuf::MessageField::none(),
@@ -10644,7 +10450,7 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     p\x12%\n\x0esource_account\x18\x01\x20\x01(\tR\rsourceAccount\x12\x1d\n\
     \nbalance_id\x18\x02\x20\x02(\x0cR\tbalanceId\"N\n\x0fStellarSignedTx\
     \x12\x1d\n\npublic_key\x18\x01\x20\x02(\x0cR\tpublicKey\x12\x1c\n\tsigna\
-    ture\x18\x02\x20\x02(\x0cR\tsignature\"\xcd\x0f\n\x0cStellarSCVal\x12M\n\
+    ture\x18\x02\x20\x02(\x0cR\tsignature\"\xbd\x0c\n\x0cStellarSCVal\x12M\n\
     \x04type\x18\x01\x20\x02(\x0e29.hw.trezor.messages.stellar.StellarSCVal.\
     StellarSCValTypeR\x04type\x12\x0c\n\x01b\x18\x02\x20\x01(\x08R\x01b\x12\
     \x10\n\x03u32\x18\x04\x20\x01(\rR\x03u32\x12\x10\n\x03i32\x18\x05\x20\
@@ -10661,83 +10467,74 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x0f\x20\x01(\x0cR\x06string\x12\x16\n\x06symbol\x18\x10\x20\x01(\tR\x06\
     symbol\x12:\n\x03vec\x18\x11\x20\x03(\x0b2(.hw.trezor.messages.stellar.S\
     tellarSCValR\x03vec\x12O\n\x03map\x18\x12\x20\x03(\x0b2=.hw.trezor.messa\
-    ges.stellar.StellarSCVal.StellarSCValMapEntryR\x03map\x12S\n\x07address\
-    \x18\x13\x20\x01(\x0b29.hw.trezor.messages.stellar.StellarSCVal.StellarS\
-    CAddressR\x07address\x1a5\n\x13StellarUInt128Parts\x12\x0e\n\x02hi\x18\
-    \x01\x20\x02(\x04R\x02hi\x12\x0e\n\x02lo\x18\x02\x20\x02(\x04R\x02lo\x1a\
-    4\n\x12StellarInt128Parts\x12\x0e\n\x02hi\x18\x01\x20\x02(\x12R\x02hi\
-    \x12\x0e\n\x02lo\x18\x02\x20\x02(\x04R\x02lo\x1ai\n\x13StellarUInt256Par\
-    ts\x12\x13\n\x05hi_hi\x18\x01\x20\x02(\x04R\x04hiHi\x12\x13\n\x05hi_lo\
-    \x18\x02\x20\x02(\x04R\x04hiLo\x12\x13\n\x05lo_hi\x18\x03\x20\x02(\x04R\
-    \x04loHi\x12\x13\n\x05lo_lo\x18\x04\x20\x02(\x04R\x04loLo\x1ah\n\x12Stel\
-    larInt256Parts\x12\x13\n\x05hi_hi\x18\x01\x20\x02(\x12R\x04hiHi\x12\x13\
+    ges.stellar.StellarSCVal.StellarSCValMapEntryR\x03map\x12\x18\n\x07addre\
+    ss\x18\x13\x20\x01(\tR\x07address\x1a5\n\x13StellarUInt128Parts\x12\x0e\
+    \n\x02hi\x18\x01\x20\x02(\x04R\x02hi\x12\x0e\n\x02lo\x18\x02\x20\x02(\
+    \x04R\x02lo\x1a4\n\x12StellarInt128Parts\x12\x0e\n\x02hi\x18\x01\x20\x02\
+    (\x12R\x02hi\x12\x0e\n\x02lo\x18\x02\x20\x02(\x04R\x02lo\x1ai\n\x13Stell\
+    arUInt256Parts\x12\x13\n\x05hi_hi\x18\x01\x20\x02(\x04R\x04hiHi\x12\x13\
     \n\x05hi_lo\x18\x02\x20\x02(\x04R\x04hiLo\x12\x13\n\x05lo_hi\x18\x03\x20\
-    \x02(\x04R\x04loHi\x12\x13\n\x05lo_lo\x18\x04\x20\x02(\x04R\x04loLo\x1a\
-    \xd2\x02\n\x10StellarSCAddress\x12b\n\x04type\x18\x01\x20\x02(\x0e2N.hw.\
-    trezor.messages.stellar.StellarSCVal.StellarSCAddress.StellarSCAddressTy\
-    peR\x04type\x12\x18\n\x07address\x18\x02\x20\x02(\x0cR\x07address\"\xbf\
-    \x01\n\x14StellarSCAddressType\x12\x1b\n\x17SC_ADDRESS_TYPE_ACCOUNT\x10\
-    \0\x12\x1c\n\x18SC_ADDRESS_TYPE_CONTRACT\x10\x01\x12!\n\x1dSC_ADDRESS_TY\
-    PE_MUXED_ACCOUNT\x10\x02\x12%\n!SC_ADDRESS_TYPE_CLAIMABLE_BALANCE\x10\
-    \x03\x12\"\n\x1eSC_ADDRESS_TYPE_LIQUIDITY_POOL\x10\x04\x1a\x92\x01\n\x14\
-    StellarSCValMapEntry\x12:\n\x03key\x18\x01\x20\x02(\x0b2(.hw.trezor.mess\
-    ages.stellar.StellarSCValR\x03key\x12>\n\x05value\x18\x02\x20\x02(\x0b2(\
-    .hw.trezor.messages.stellar.StellarSCValR\x05value\"\xb1\x02\n\x10Stella\
-    rSCValType\x12\x0c\n\x08SCV_BOOL\x10\0\x12\x0c\n\x08SCV_VOID\x10\x01\x12\
-    \x0b\n\x07SCV_U32\x10\x03\x12\x0b\n\x07SCV_I32\x10\x04\x12\x0b\n\x07SCV_\
-    U64\x10\x05\x12\x0b\n\x07SCV_I64\x10\x06\x12\x11\n\rSCV_TIMEPOINT\x10\
-    \x07\x12\x10\n\x0cSCV_DURATION\x10\x08\x12\x0c\n\x08SCV_U128\x10\t\x12\
-    \x0c\n\x08SCV_I128\x10\n\x12\x0c\n\x08SCV_U256\x10\x0b\x12\x0c\n\x08SCV_\
-    I256\x10\x0c\x12\r\n\tSCV_BYTES\x10\r\x12\x0e\n\nSCV_STRING\x10\x0e\x12\
-    \x0e\n\nSCV_SYMBOL\x10\x0f\x12\x0b\n\x07SCV_VEC\x10\x10\x12\x0b\n\x07SCV\
-    _MAP\x10\x11\x12\x0f\n\x0bSCV_ADDRESS\x10\x12\"\x04\x08\x02\x10\x02\"\
-    \x04\x08\x13\x10\x13\"\x04\x08\x14\x10\x14\"\x04\x08\x15\x10\x15J\x04\
-    \x08\x03\x10\x04J\x04\x08\x14\x10\x15J\x04\x08\x15\x10\x16\"\xe4\x01\n\
-    \x19StellarInvokeContractArgs\x12d\n\x10contract_address\x18\x01\x20\x02\
-    (\x0b29.hw.trezor.messages.stellar.StellarSCVal.StellarSCAddressR\x0fcon\
-    tractAddress\x12#\n\rfunction_name\x18\x02\x20\x02(\tR\x0cfunctionName\
-    \x12<\n\x04args\x18\x03\x20\x03(\x0b2(.hw.trezor.messages.stellar.Stella\
-    rSCValR\x04args\"\xd7\x02\n\x20StellarSorobanAuthorizedFunction\x12u\n\
-    \x04type\x18\x01\x20\x02(\x0e2a.hw.trezor.messages.stellar.StellarSoroba\
-    nAuthorizedFunction.StellarSorobanAuthorizedFunctionTypeR\x04type\x12V\n\
-    \x0bcontract_fn\x18\x02\x20\x01(\x0b25.hw.trezor.messages.stellar.Stella\
-    rInvokeContractArgsR\ncontractFn\"d\n$StellarSorobanAuthorizedFunctionTy\
-    pe\x120\n,SOROBAN_AUTHORIZED_FUNCTION_TYPE_CONTRACT_FN\x10\0\"\x04\x08\
-    \x01\x10\x01\"\x04\x08\x02\x10\x02\"\xe7\x01\n\"StellarSorobanAuthorized\
-    Invocation\x12X\n\x08function\x18\x01\x20\x02(\x0b2<.hw.trezor.messages.\
-    stellar.StellarSorobanAuthorizedFunctionR\x08function\x12g\n\x0fsub_invo\
-    cations\x18\x02\x20\x03(\x0b2>.hw.trezor.messages.stellar.StellarSoroban\
-    AuthorizedInvocationR\x0esubInvocations\"\xa7\x02\n\x13StellarHostFuncti\
-    on\x12[\n\x04type\x18\x01\x20\x02(\x0e2G.hw.trezor.messages.stellar.Stel\
-    larHostFunction.StellarHostFunctionTypeR\x04type\x12^\n\x0finvoke_contra\
-    ct\x18\x02\x20\x01(\x0b25.hw.trezor.messages.stellar.StellarInvokeContra\
-    ctArgsR\x0einvokeContract\"S\n\x17StellarHostFunctionType\x12&\n\"HOST_F\
-    UNCTION_TYPE_INVOKE_CONTRACT\x10\0\"\x04\x08\x01\x10\x01\"\x04\x08\x02\
-    \x10\x02\"\x04\x08\x03\x10\x03\"\x95\x02\n\x20StellarSorobanAddressCrede\
-    ntials\x12S\n\x07address\x18\x01\x20\x02(\x0b29.hw.trezor.messages.stell\
-    ar.StellarSCVal.StellarSCAddressR\x07address\x12\x14\n\x05nonce\x18\x02\
-    \x20\x02(\x12R\x05nonce\x12>\n\x1bsignature_expiration_ledger\x18\x03\
-    \x20\x02(\rR\x19signatureExpirationLedger\x12F\n\tsignature\x18\x04\x20\
-    \x02(\x0b2(.hw.trezor.messages.stellar.StellarSCValR\tsignature\"\xc6\
-    \x02\n\x19StellarSorobanCredentials\x12g\n\x04type\x18\x01\x20\x02(\x0e2\
-    S.hw.trezor.messages.stellar.StellarSorobanCredentials.StellarSorobanCre\
-    dentialsTypeR\x04type\x12V\n\x07address\x18\x02\x20\x01(\x0b2<.hw.trezor\
-    .messages.stellar.StellarSorobanAddressCredentialsR\x07address\"h\n\x1dS\
-    tellarSorobanCredentialsType\x12&\n\"SOROBAN_CREDENTIALS_SOURCE_ACCOUNT\
-    \x10\0\x12\x1f\n\x1bSOROBAN_CREDENTIALS_ADDRESS\x10\x01\"\xe4\x01\n\x20S\
-    tellarSorobanAuthorizationEntry\x12W\n\x0bcredentials\x18\x01\x20\x02(\
-    \x0b25.hw.trezor.messages.stellar.StellarSorobanCredentialsR\x0bcredenti\
-    als\x12g\n\x0froot_invocation\x18\x02\x20\x02(\x0b2>.hw.trezor.messages.\
-    stellar.StellarSorobanAuthorizedInvocationR\x0erootInvocation\"\xe3\x01\
-    \n\x1bStellarInvokeHostFunctionOp\x12%\n\x0esource_account\x18\x01\x20\
-    \x01(\tR\rsourceAccount\x12K\n\x08function\x18\x02\x20\x02(\x0b2/.hw.tre\
-    zor.messages.stellar.StellarHostFunctionR\x08function\x12P\n\x04auth\x18\
-    \x03\x20\x03(\x0b2<.hw.trezor.messages.stellar.StellarSorobanAuthorizati\
-    onEntryR\x04auth\"\x15\n\x13StellarTxExtRequest\"?\n\x0cStellarTxExt\x12\
-    \x0c\n\x01v\x18\x01\x20\x02(\x11R\x01v\x12!\n\x0csoroban_data\x18\x02\
-    \x20\x01(\x0cR\x0bsorobanData*=\n\x10StellarAssetType\x12\n\n\x06NATIVE\
-    \x10\0\x12\r\n\tALPHANUM4\x10\x01\x12\x0e\n\nALPHANUM12\x10\x02B;\n#com.\
-    satoshilabs.trezor.lib.protobufB\x14TrezorMessageStellar\
+    \x02(\x04R\x04loHi\x12\x13\n\x05lo_lo\x18\x04\x20\x02(\x04R\x04loLo\x1ah\
+    \n\x12StellarInt256Parts\x12\x13\n\x05hi_hi\x18\x01\x20\x02(\x12R\x04hiH\
+    i\x12\x13\n\x05hi_lo\x18\x02\x20\x02(\x04R\x04hiLo\x12\x13\n\x05lo_hi\
+    \x18\x03\x20\x02(\x04R\x04loHi\x12\x13\n\x05lo_lo\x18\x04\x20\x02(\x04R\
+    \x04loLo\x1a\x92\x01\n\x14StellarSCValMapEntry\x12:\n\x03key\x18\x01\x20\
+    \x02(\x0b2(.hw.trezor.messages.stellar.StellarSCValR\x03key\x12>\n\x05va\
+    lue\x18\x02\x20\x02(\x0b2(.hw.trezor.messages.stellar.StellarSCValR\x05v\
+    alue\"\xb1\x02\n\x10StellarSCValType\x12\x0c\n\x08SCV_BOOL\x10\0\x12\x0c\
+    \n\x08SCV_VOID\x10\x01\x12\x0b\n\x07SCV_U32\x10\x03\x12\x0b\n\x07SCV_I32\
+    \x10\x04\x12\x0b\n\x07SCV_U64\x10\x05\x12\x0b\n\x07SCV_I64\x10\x06\x12\
+    \x11\n\rSCV_TIMEPOINT\x10\x07\x12\x10\n\x0cSCV_DURATION\x10\x08\x12\x0c\
+    \n\x08SCV_U128\x10\t\x12\x0c\n\x08SCV_I128\x10\n\x12\x0c\n\x08SCV_U256\
+    \x10\x0b\x12\x0c\n\x08SCV_I256\x10\x0c\x12\r\n\tSCV_BYTES\x10\r\x12\x0e\
+    \n\nSCV_STRING\x10\x0e\x12\x0e\n\nSCV_SYMBOL\x10\x0f\x12\x0b\n\x07SCV_VE\
+    C\x10\x10\x12\x0b\n\x07SCV_MAP\x10\x11\x12\x0f\n\x0bSCV_ADDRESS\x10\x12\
+    \"\x04\x08\x02\x10\x02\"\x04\x08\x13\x10\x13\"\x04\x08\x14\x10\x14\"\x04\
+    \x08\x15\x10\x15J\x04\x08\x03\x10\x04J\x04\x08\x14\x10\x15J\x04\x08\x15\
+    \x10\x16\"\xa9\x01\n\x19StellarInvokeContractArgs\x12)\n\x10contract_add\
+    ress\x18\x01\x20\x02(\tR\x0fcontractAddress\x12#\n\rfunction_name\x18\
+    \x02\x20\x02(\tR\x0cfunctionName\x12<\n\x04args\x18\x03\x20\x03(\x0b2(.h\
+    w.trezor.messages.stellar.StellarSCValR\x04args\"\xd7\x02\n\x20StellarSo\
+    robanAuthorizedFunction\x12u\n\x04type\x18\x01\x20\x02(\x0e2a.hw.trezor.\
+    messages.stellar.StellarSorobanAuthorizedFunction.StellarSorobanAuthoriz\
+    edFunctionTypeR\x04type\x12V\n\x0bcontract_fn\x18\x02\x20\x01(\x0b25.hw.\
+    trezor.messages.stellar.StellarInvokeContractArgsR\ncontractFn\"d\n$Stel\
+    larSorobanAuthorizedFunctionType\x120\n,SOROBAN_AUTHORIZED_FUNCTION_TYPE\
+    _CONTRACT_FN\x10\0\"\x04\x08\x01\x10\x01\"\x04\x08\x02\x10\x02\"\xe7\x01\
+    \n\"StellarSorobanAuthorizedInvocation\x12X\n\x08function\x18\x01\x20\
+    \x02(\x0b2<.hw.trezor.messages.stellar.StellarSorobanAuthorizedFunctionR\
+    \x08function\x12g\n\x0fsub_invocations\x18\x02\x20\x03(\x0b2>.hw.trezor.\
+    messages.stellar.StellarSorobanAuthorizedInvocationR\x0esubInvocations\"\
+    \xa7\x02\n\x13StellarHostFunction\x12[\n\x04type\x18\x01\x20\x02(\x0e2G.\
+    hw.trezor.messages.stellar.StellarHostFunction.StellarHostFunctionTypeR\
+    \x04type\x12^\n\x0finvoke_contract\x18\x02\x20\x01(\x0b25.hw.trezor.mess\
+    ages.stellar.StellarInvokeContractArgsR\x0einvokeContract\"S\n\x17Stella\
+    rHostFunctionType\x12&\n\"HOST_FUNCTION_TYPE_INVOKE_CONTRACT\x10\0\"\x04\
+    \x08\x01\x10\x01\"\x04\x08\x02\x10\x02\"\x04\x08\x03\x10\x03\"\xda\x01\n\
+    \x20StellarSorobanAddressCredentials\x12\x18\n\x07address\x18\x01\x20\
+    \x02(\tR\x07address\x12\x14\n\x05nonce\x18\x02\x20\x02(\x12R\x05nonce\
+    \x12>\n\x1bsignature_expiration_ledger\x18\x03\x20\x02(\rR\x19signatureE\
+    xpirationLedger\x12F\n\tsignature\x18\x04\x20\x02(\x0b2(.hw.trezor.messa\
+    ges.stellar.StellarSCValR\tsignature\"\xc6\x02\n\x19StellarSorobanCreden\
+    tials\x12g\n\x04type\x18\x01\x20\x02(\x0e2S.hw.trezor.messages.stellar.S\
+    tellarSorobanCredentials.StellarSorobanCredentialsTypeR\x04type\x12V\n\
+    \x07address\x18\x02\x20\x01(\x0b2<.hw.trezor.messages.stellar.StellarSor\
+    obanAddressCredentialsR\x07address\"h\n\x1dStellarSorobanCredentialsType\
+    \x12&\n\"SOROBAN_CREDENTIALS_SOURCE_ACCOUNT\x10\0\x12\x1f\n\x1bSOROBAN_C\
+    REDENTIALS_ADDRESS\x10\x01\"\xe4\x01\n\x20StellarSorobanAuthorizationEnt\
+    ry\x12W\n\x0bcredentials\x18\x01\x20\x02(\x0b25.hw.trezor.messages.stell\
+    ar.StellarSorobanCredentialsR\x0bcredentials\x12g\n\x0froot_invocation\
+    \x18\x02\x20\x02(\x0b2>.hw.trezor.messages.stellar.StellarSorobanAuthori\
+    zedInvocationR\x0erootInvocation\"\xe3\x01\n\x1bStellarInvokeHostFunctio\
+    nOp\x12%\n\x0esource_account\x18\x01\x20\x01(\tR\rsourceAccount\x12K\n\
+    \x08function\x18\x02\x20\x02(\x0b2/.hw.trezor.messages.stellar.StellarHo\
+    stFunctionR\x08function\x12P\n\x04auth\x18\x03\x20\x03(\x0b2<.hw.trezor.\
+    messages.stellar.StellarSorobanAuthorizationEntryR\x04auth\"\x15\n\x13St\
+    ellarTxExtRequest\"?\n\x0cStellarTxExt\x12\x0c\n\x01v\x18\x01\x20\x02(\
+    \x11R\x01v\x12!\n\x0csoroban_data\x18\x02\x20\x01(\x0cR\x0bsorobanData*=\
+    \n\x10StellarAssetType\x12\n\n\x06NATIVE\x10\0\x12\r\n\tALPHANUM4\x10\
+    \x01\x12\x0e\n\nALPHANUM12\x10\x02B;\n#com.satoshilabs.trezor.lib.protob\
+    ufB\x14TrezorMessageStellar\
 ";
 
 /// `FileDescriptorProto` object which was a source for this generated file
@@ -10756,7 +10553,7 @@ pub fn file_descriptor() -> &'static ::protobuf::reflect::FileDescriptor {
         let generated_file_descriptor = generated_file_descriptor_lazy.get(|| {
             let mut deps = ::std::vec::Vec::with_capacity(1);
             deps.push(super::messages_common::file_descriptor().clone());
-            let mut messages = ::std::vec::Vec::with_capacity(37);
+            let mut messages = ::std::vec::Vec::with_capacity(36);
             messages.push(StellarAsset::generated_message_descriptor_data());
             messages.push(StellarGetAddress::generated_message_descriptor_data());
             messages.push(StellarAddress::generated_message_descriptor_data());
@@ -10792,14 +10589,12 @@ pub fn file_descriptor() -> &'static ::protobuf::reflect::FileDescriptor {
             messages.push(stellar_scval::StellarInt128Parts::generated_message_descriptor_data());
             messages.push(stellar_scval::StellarUInt256Parts::generated_message_descriptor_data());
             messages.push(stellar_scval::StellarInt256Parts::generated_message_descriptor_data());
-            messages.push(stellar_scval::StellarSCAddress::generated_message_descriptor_data());
             messages.push(stellar_scval::StellarSCValMapEntry::generated_message_descriptor_data());
-            let mut enums = ::std::vec::Vec::with_capacity(8);
+            let mut enums = ::std::vec::Vec::with_capacity(7);
             enums.push(StellarAssetType::generated_enum_descriptor_data());
             enums.push(stellar_sign_tx::StellarMemoType::generated_enum_descriptor_data());
             enums.push(stellar_set_options_op::StellarSignerType::generated_enum_descriptor_data());
             enums.push(stellar_scval::StellarSCValType::generated_enum_descriptor_data());
-            enums.push(stellar_scval::stellar_scaddress::StellarSCAddressType::generated_enum_descriptor_data());
             enums.push(stellar_soroban_authorized_function::StellarSorobanAuthorizedFunctionType::generated_enum_descriptor_data());
             enums.push(stellar_host_function::StellarHostFunctionType::generated_enum_descriptor_data());
             enums.push(stellar_soroban_credentials::StellarSorobanCredentialsType::generated_enum_descriptor_data());

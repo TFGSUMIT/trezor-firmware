@@ -404,13 +404,6 @@ if TYPE_CHECKING:
         SCV_MAP = 17
         SCV_ADDRESS = 18
 
-    class StellarSCAddressType(IntEnum):
-        SC_ADDRESS_TYPE_ACCOUNT = 0
-        SC_ADDRESS_TYPE_CONTRACT = 1
-        SC_ADDRESS_TYPE_MUXED_ACCOUNT = 2
-        SC_ADDRESS_TYPE_CLAIMABLE_BALANCE = 3
-        SC_ADDRESS_TYPE_LIQUIDITY_POOL = 4
-
     class StellarSorobanAuthorizedFunctionType(IntEnum):
         SOROBAN_AUTHORIZED_FUNCTION_TYPE_CONTRACT_FN = 0
 

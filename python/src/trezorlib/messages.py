@@ -459,14 +459,6 @@ class StellarSCValType(IntEnum):
     SCV_ADDRESS = 18
 
 
-class StellarSCAddressType(IntEnum):
-    SC_ADDRESS_TYPE_ACCOUNT = 0
-    SC_ADDRESS_TYPE_CONTRACT = 1
-    SC_ADDRESS_TYPE_MUXED_ACCOUNT = 2
-    SC_ADDRESS_TYPE_CLAIMABLE_BALANCE = 3
-    SC_ADDRESS_TYPE_LIQUIDITY_POOL = 4
-
-
 class StellarSorobanAuthorizedFunctionType(IntEnum):
     SOROBAN_AUTHORIZED_FUNCTION_TYPE_CONTRACT_FN = 0
 
@@ -8429,7 +8421,7 @@ class StellarSCVal(protobuf.MessageType):
         16: protobuf.Field("symbol", "string", repeated=False, required=False, default=None),
         17: protobuf.Field("vec", "StellarSCVal", repeated=True, required=False, default=None),
         18: protobuf.Field("map", "StellarSCValMapEntry", repeated=True, required=False, default=None),
-        19: protobuf.Field("address", "StellarSCAddress", repeated=False, required=False, default=None),
+        19: protobuf.Field("address", "string", repeated=False, required=False, default=None),
     }
 
     def __init__(
@@ -8452,7 +8444,7 @@ class StellarSCVal(protobuf.MessageType):
         bytes: Optional["bytes"] = None,
         string: Optional["bytes"] = None,
         symbol: Optional["str"] = None,
-        address: Optional["StellarSCAddress"] = None,
+        address: Optional["str"] = None,
     ) -> None:
         self.vec: Sequence["StellarSCVal"] = vec if vec is not None else []
         self.map: Sequence["StellarSCValMapEntry"] = map if map is not None else []
@@ -8477,7 +8469,7 @@ class StellarSCVal(protobuf.MessageType):
 class StellarInvokeContractArgs(protobuf.MessageType):
     MESSAGE_WIRE_TYPE = None
     FIELDS = {
-        1: protobuf.Field("contract_address", "StellarSCAddress", repeated=False, required=True),
+        1: protobuf.Field("contract_address", "string", repeated=False, required=True),
         2: protobuf.Field("function_name", "string", repeated=False, required=True),
         3: protobuf.Field("args", "StellarSCVal", repeated=True, required=False, default=None),
     }
@@ -8485,7 +8477,7 @@ class StellarInvokeContractArgs(protobuf.MessageType):
     def __init__(
         self,
         *,
-        contract_address: "StellarSCAddress",
+        contract_address: "str",
         function_name: "str",
         args: Optional[Sequence["StellarSCVal"]] = None,
     ) -> None:
@@ -8548,7 +8540,7 @@ class StellarHostFunction(protobuf.MessageType):
 class StellarSorobanAddressCredentials(protobuf.MessageType):
     MESSAGE_WIRE_TYPE = None
     FIELDS = {
-        1: protobuf.Field("address", "StellarSCAddress", repeated=False, required=True),
+        1: protobuf.Field("address", "string", repeated=False, required=True),
         2: protobuf.Field("nonce", "sint64", repeated=False, required=True),
         3: protobuf.Field("signature_expiration_ledger", "uint32", repeated=False, required=True),
         4: protobuf.Field("signature", "StellarSCVal", repeated=False, required=True),
@@ -8557,7 +8549,7 @@ class StellarSorobanAddressCredentials(protobuf.MessageType):
     def __init__(
         self,
         *,
-        address: "StellarSCAddress",
+        address: "str",
         nonce: "int",
         signature_expiration_ledger: "int",
         signature: "StellarSCVal",
@@ -8721,23 +8713,6 @@ class StellarInt256Parts(protobuf.MessageType):
         self.hi_lo = hi_lo
         self.lo_hi = lo_hi
         self.lo_lo = lo_lo
-
-
-class StellarSCAddress(protobuf.MessageType):
-    MESSAGE_WIRE_TYPE = None
-    FIELDS = {
-        1: protobuf.Field("type", "StellarSCAddressType", repeated=False, required=True),
-        2: protobuf.Field("address", "bytes", repeated=False, required=True),
-    }
-
-    def __init__(
-        self,
-        *,
-        type: "StellarSCAddressType",
-        address: "bytes",
-    ) -> None:
-        self.type = type
-        self.address = address
 
 
 class StellarSCValMapEntry(protobuf.MessageType):

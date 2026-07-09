@@ -70,7 +70,6 @@ if TYPE_CHECKING:
     from trezor.enums import StellarAssetType  # noqa: F401
     from trezor.enums import StellarHostFunctionType  # noqa: F401
     from trezor.enums import StellarMemoType  # noqa: F401
-    from trezor.enums import StellarSCAddressType  # noqa: F401
     from trezor.enums import StellarSCValType  # noqa: F401
     from trezor.enums import StellarSignerType  # noqa: F401
     from trezor.enums import StellarSorobanAuthorizedFunctionType  # noqa: F401
@@ -6553,7 +6552,7 @@ if TYPE_CHECKING:
         symbol: "str | None"
         vec: "list[StellarSCVal]"
         map: "list[StellarSCValMapEntry]"
-        address: "StellarSCAddress | None"
+        address: "str | None"
 
         def __init__(
             self,
@@ -6575,7 +6574,7 @@ if TYPE_CHECKING:
             bytes: "AnyBytes | None" = None,
             string: "AnyBytes | None" = None,
             symbol: "str | None" = None,
-            address: "StellarSCAddress | None" = None,
+            address: "str | None" = None,
         ) -> None:
             pass
 
@@ -6584,14 +6583,14 @@ if TYPE_CHECKING:
             return isinstance(msg, cls)
 
     class StellarInvokeContractArgs(protobuf.MessageType):
-        contract_address: "StellarSCAddress"
+        contract_address: "str"
         function_name: "str"
         args: "list[StellarSCVal]"
 
         def __init__(
             self,
             *,
-            contract_address: "StellarSCAddress",
+            contract_address: "str",
             function_name: "str",
             args: "list[StellarSCVal] | None" = None,
         ) -> None:
@@ -6650,7 +6649,7 @@ if TYPE_CHECKING:
             return isinstance(msg, cls)
 
     class StellarSorobanAddressCredentials(protobuf.MessageType):
-        address: "StellarSCAddress"
+        address: "str"
         nonce: "int"
         signature_expiration_ledger: "int"
         signature: "StellarSCVal"
@@ -6658,7 +6657,7 @@ if TYPE_CHECKING:
         def __init__(
             self,
             *,
-            address: "StellarSCAddress",
+            address: "str",
             nonce: "int",
             signature_expiration_ledger: "int",
             signature: "StellarSCVal",
@@ -6811,22 +6810,6 @@ if TYPE_CHECKING:
 
         @classmethod
         def is_type_of(cls, msg: Any) -> TypeGuard["StellarInt256Parts"]:
-            return isinstance(msg, cls)
-
-    class StellarSCAddress(protobuf.MessageType):
-        type: "StellarSCAddressType"
-        address: "AnyBytes"
-
-        def __init__(
-            self,
-            *,
-            type: "StellarSCAddressType",
-            address: "AnyBytes",
-        ) -> None:
-            pass
-
-        @classmethod
-        def is_type_of(cls, msg: Any) -> TypeGuard["StellarSCAddress"]:
             return isinstance(msg, cls)
 
     class StellarSCValMapEntry(protobuf.MessageType):

@@ -1249,32 +1249,20 @@
             "function": {
               "type": "HOST_FUNCTION_TYPE_INVOKE_CONTRACT",
               "invoke_contract": {
-                "contract_address": {
-                  "type": "SC_ADDRESS_TYPE_CONTRACT",
-                  "address": "129cc8cc6336f1fdbbdcc0f3983434c3cdb85fd9ea85697a3782d318d874a580"
-                },
+                "contract_address": "CAJJZSGMMM3PD7N33TAPHGBUGTB43OC73HVIK2L2G6BNGGGYOSSYBXBD",
                 "function_name": "submit",
                 "args": [
                   {
                     "type": "SCV_ADDRESS",
-                    "address": {
-                      "type": "SC_ADDRESS_TYPE_ACCOUNT",
-                      "address": "2f22b9c62f08b774f3ebe6dd6e7db93c3ec2cbde0279561a3d9c5225b8c32292"
-                    }
+                    "address": "GAXSFOOGF4ELO5HT5PTN23T5XE6D5QWL3YBHSVQ2HWOFEJNYYMRJENBV"
                   },
                   {
                     "type": "SCV_ADDRESS",
-                    "address": {
-                      "type": "SC_ADDRESS_TYPE_ACCOUNT",
-                      "address": "2f22b9c62f08b774f3ebe6dd6e7db93c3ec2cbde0279561a3d9c5225b8c32292"
-                    }
+                    "address": "GAXSFOOGF4ELO5HT5PTN23T5XE6D5QWL3YBHSVQ2HWOFEJNYYMRJENBV"
                   },
                   {
                     "type": "SCV_ADDRESS",
-                    "address": {
-                      "type": "SC_ADDRESS_TYPE_ACCOUNT",
-                      "address": "2f22b9c62f08b774f3ebe6dd6e7db93c3ec2cbde0279561a3d9c5225b8c32292"
-                    }
+                    "address": "GAXSFOOGF4ELO5HT5PTN23T5XE6D5QWL3YBHSVQ2HWOFEJNYYMRJENBV"
                   },
                   {
                     "type": "SCV_VEC",
@@ -1289,10 +1277,7 @@
                             },
                             "value": {
                               "type": "SCV_ADDRESS",
-                              "address": {
-                                "type": "SC_ADDRESS_TYPE_CONTRACT",
-                                "address": "adefce59aee52968f76061d494c2525b75659fa4296a65f499ef29e56477e496"
-                              }
+                              "address": "CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75"
                             }
                           },
                           {
@@ -1334,32 +1319,20 @@
                   "function": {
                     "type": "SOROBAN_AUTHORIZED_FUNCTION_TYPE_CONTRACT_FN",
                     "contract_fn": {
-                      "contract_address": {
-                        "type": "SC_ADDRESS_TYPE_CONTRACT",
-                        "address": "129cc8cc6336f1fdbbdcc0f3983434c3cdb85fd9ea85697a3782d318d874a580"
-                      },
+                      "contract_address": "CAJJZSGMMM3PD7N33TAPHGBUGTB43OC73HVIK2L2G6BNGGGYOSSYBXBD",
                       "function_name": "submit",
                       "args": [
                         {
                           "type": "SCV_ADDRESS",
-                          "address": {
-                            "type": "SC_ADDRESS_TYPE_ACCOUNT",
-                            "address": "2f22b9c62f08b774f3ebe6dd6e7db93c3ec2cbde0279561a3d9c5225b8c32292"
-                          }
+                          "address": "GAXSFOOGF4ELO5HT5PTN23T5XE6D5QWL3YBHSVQ2HWOFEJNYYMRJENBV"
                         },
                         {
                           "type": "SCV_ADDRESS",
-                          "address": {
-                            "type": "SC_ADDRESS_TYPE_ACCOUNT",
-                            "address": "2f22b9c62f08b774f3ebe6dd6e7db93c3ec2cbde0279561a3d9c5225b8c32292"
-                          }
+                          "address": "GAXSFOOGF4ELO5HT5PTN23T5XE6D5QWL3YBHSVQ2HWOFEJNYYMRJENBV"
                         },
                         {
                           "type": "SCV_ADDRESS",
-                          "address": {
-                            "type": "SC_ADDRESS_TYPE_ACCOUNT",
-                            "address": "2f22b9c62f08b774f3ebe6dd6e7db93c3ec2cbde0279561a3d9c5225b8c32292"
-                          }
+                          "address": "GAXSFOOGF4ELO5HT5PTN23T5XE6D5QWL3YBHSVQ2HWOFEJNYYMRJENBV"
                         },
                         {
                           "type": "SCV_VEC",
@@ -1374,10 +1347,7 @@
                                   },
                                   "value": {
                                     "type": "SCV_ADDRESS",
-                                    "address": {
-                                      "type": "SC_ADDRESS_TYPE_CONTRACT",
-                                      "address": "adefce59aee52968f76061d494c2525b75659fa4296a65f499ef29e56477e496"
-                                    }
+                                    "address": "CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75"
                                   }
                                 },
                                 {
@@ -1415,25 +1385,16 @@
                       "function": {
                         "type": "SOROBAN_AUTHORIZED_FUNCTION_TYPE_CONTRACT_FN",
                         "contract_fn": {
-                          "contract_address": {
-                            "type": "SC_ADDRESS_TYPE_CONTRACT",
-                            "address": "adefce59aee52968f76061d494c2525b75659fa4296a65f499ef29e56477e496"
-                          },
+                          "contract_address": "CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75",
                           "function_name": "transfer",
                           "args": [
                             {
                               "type": "SCV_ADDRESS",
-                              "address": {
-                                "type": "SC_ADDRESS_TYPE_ACCOUNT",
-                                "address": "2f22b9c62f08b774f3ebe6dd6e7db93c3ec2cbde0279561a3d9c5225b8c32292"
-                              }
+                              "address": "GAXSFOOGF4ELO5HT5PTN23T5XE6D5QWL3YBHSVQ2HWOFEJNYYMRJENBV"
                             },
                             {
                               "type": "SCV_ADDRESS",
-                              "address": {
-                                "type": "SC_ADDRESS_TYPE_CONTRACT",
-                                "address": "129cc8cc6336f1fdbbdcc0f3983434c3cdb85fd9ea85697a3782d318d874a580"
-                              }
+                              "address": "CAJJZSGMMM3PD7N33TAPHGBUGTB43OC73HVIK2L2G6BNGGGYOSSYBXBD"
                             },
                             {
                               "type": "SCV_I128",

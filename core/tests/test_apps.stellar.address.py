@@ -11,6 +11,7 @@ if not utils.BITCOIN_ONLY:
         STRKEY_LIQUIDITY_POOL,
         STRKEY_MUXED_ACCOUNT,
         address_from_public_key,
+        decode_strkey,
         encode_strkey,
         public_key_from_address,
     )
@@ -84,86 +85,88 @@ class TestStellarAddress(unittest.TestCase):
                 "GCN2K2HG53AWX2SP5UHRPMJUUHLJF2XBTGSXROTPWRGAYJCDDP63J2AA"
             )  # invalid checksum
 
-    # Strkey encoding test vectors from SEP-0023 "Valid test cases":
+    # Strkey round-trip test vectors from SEP-0023 "Valid test cases":
     # https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0023.md#tests
-    # (the muxed account with id=1024 is an extra variant, not part of SEP-0023;
-    #  muxed addresses can be generated at https://lab.stellar.org/account/muxed-create)
-    def test_encode_strkey_account(self):
-        # Test encoding ED25519 public key (G... address)
+    # Each case asserts both directions: encode_strkey(version, data) -> strkey
+    # and decode_strkey(strkey) -> (version, data).
+    def test_strkey_account(self):
+        # ED25519 public key (G... address)
         pubkey = unhexlify(
             "3f0c34bf93ad0d9971d04ccc90f705511c838aad9734a4a2fb0d7a03fc7fe89a"
         )
-        self.assertEqual(
-            encode_strkey(STRKEY_ED25519_PUBLIC_KEY, pubkey),
-            "GA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJVSGZ",
-        )
+        strkey = "GA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJVSGZ"
+        self.assertEqual(encode_strkey(STRKEY_ED25519_PUBLIC_KEY, pubkey), strkey)
+        self.assertEqual(decode_strkey(strkey), (STRKEY_ED25519_PUBLIC_KEY, pubkey))
 
-    def test_encode_strkey_contract(self):
-        # Test encoding contract address (C... address)
+    def test_strkey_contract(self):
+        # contract address (C... address)
         contract_hash = unhexlify(
             "3f0c34bf93ad0d9971d04ccc90f705511c838aad9734a4a2fb0d7a03fc7fe89a"
         )
-        self.assertEqual(
-            encode_strkey(STRKEY_CONTRACT, contract_hash),
-            "CA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJUWDA",
-        )
+        strkey = "CA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJUWDA"
+        self.assertEqual(encode_strkey(STRKEY_CONTRACT, contract_hash), strkey)
+        self.assertEqual(decode_strkey(strkey), (STRKEY_CONTRACT, contract_hash))
 
-    def test_encode_strkey_muxed_account(self):
-        # Test encoding muxed account (M... address)
-        # Muxed account is 32 bytes public key + 8 bytes ID
+    def test_strkey_muxed_account(self):
+        # muxed account (M... address): 32 bytes public key + 8 bytes ID
         # ed25519: GA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJVSGZ
-        # id: 9223372036854775808 (0x8000000000000000)
-        muxed_data = unhexlify(
-            "3f0c34bf93ad0d9971d04ccc90f705511c838aad9734a4a2fb0d7a03fc7fe89a"  # public key
-            "8000000000000000"  # muxed ID
-        )
-        self.assertEqual(
-            encode_strkey(STRKEY_MUXED_ACCOUNT, muxed_data),
-            "MA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJVAAAAAAAAAAAAAJLK",
-        )
+        pubkey = "3f0c34bf93ad0d9971d04ccc90f705511c838aad9734a4a2fb0d7a03fc7fe89a"
+        for muxed_id, strkey in (
+            # id: 9223372036854775808 (0x8000000000000000)
+            (
+                "8000000000000000",
+                "MA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJVAAAAAAAAAAAAAJLK",
+            ),
+            # id: 0
+            (
+                "0000000000000000",
+                "MA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJUAAAAAAAAAAAACJUQ",
+            ),
+            # id: 1024 (extra variant, not part of SEP-0023; muxed addresses can
+            # be generated at https://lab.stellar.org/account/muxed-create)
+            (
+                "0000000000000400",
+                "MA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJUAAAAAAAAAAEABLYI",
+            ),
+        ):
+            muxed_data = unhexlify(pubkey + muxed_id)
+            self.assertEqual(encode_strkey(STRKEY_MUXED_ACCOUNT, muxed_data), strkey)
+            self.assertEqual(decode_strkey(strkey), (STRKEY_MUXED_ACCOUNT, muxed_data))
 
-        # id: 0
-        muxed_data = unhexlify(
-            "3f0c34bf93ad0d9971d04ccc90f705511c838aad9734a4a2fb0d7a03fc7fe89a"  # public key
-            "0000000000000000"  # muxed ID = 0
-        )
-        self.assertEqual(
-            encode_strkey(STRKEY_MUXED_ACCOUNT, muxed_data),
-            "MA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJUAAAAAAAAAAAACJUQ",
-        )
-
-        # id: 1024
-        muxed_data = unhexlify(
-            "3f0c34bf93ad0d9971d04ccc90f705511c838aad9734a4a2fb0d7a03fc7fe89a"  # public key
-            "0000000000000400"  # muxed ID = 1024
-        )
-        self.assertEqual(
-            encode_strkey(STRKEY_MUXED_ACCOUNT, muxed_data),
-            "MA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJUAAAAAAAAAAEABLYI",
-        )
-
-    def test_encode_strkey_claimable_balance(self):
-        # Test encoding claimable balance (B... address)
-        # Claimable balance ID format: 1 bytes type (v0 = 0x00) + 32 bytes hash
+    def test_strkey_claimable_balance(self):
+        # claimable balance (B... address): 1 byte type (v0 = 0x00) + 32 bytes hash
         balance_id = unhexlify(
             "00"  # type v0
             "3f0c34bf93ad0d9971d04ccc90f705511c838aad9734a4a2fb0d7a03fc7fe89a"  # hash
         )
-        self.assertEqual(
-            encode_strkey(STRKEY_CLAIMABLE_BALANCE, balance_id),
-            "BAAD6DBUX6J22DMZOHIEZTEQ64CVCHEDRKWZONFEUL5Q26QD7R76RGR4TU",
-        )
+        strkey = "BAAD6DBUX6J22DMZOHIEZTEQ64CVCHEDRKWZONFEUL5Q26QD7R76RGR4TU"
+        self.assertEqual(encode_strkey(STRKEY_CLAIMABLE_BALANCE, balance_id), strkey)
+        self.assertEqual(decode_strkey(strkey), (STRKEY_CLAIMABLE_BALANCE, balance_id))
 
-    def test_encode_strkey_liquidity_pool(self):
-        # Test encoding liquidity pool (L... address)
-        # Liquidity pool ID is 32 bytes hash
+    def test_strkey_liquidity_pool(self):
+        # liquidity pool (L... address): 32 bytes hash
         pool_id = unhexlify(
             "3f0c34bf93ad0d9971d04ccc90f705511c838aad9734a4a2fb0d7a03fc7fe89a"
         )
-        self.assertEqual(
-            encode_strkey(STRKEY_LIQUIDITY_POOL, pool_id),
-            "LA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJUPJN",
-        )
+        strkey = "LA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJUPJN"
+        self.assertEqual(encode_strkey(STRKEY_LIQUIDITY_POOL, pool_id), strkey)
+        self.assertEqual(decode_strkey(strkey), (STRKEY_LIQUIDITY_POOL, pool_id))
+
+    def test_decode_strkey_invalid(self):
+        # SEP-0023 invalid cases rejected by decode_strkey itself. Cases invalid
+        # only due to a wrong per-type payload are checked by the serializers.
+        for strkey in (
+            "MA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJUAAAAAAAAAAAACJUR",  # unused trailing bit not zero
+            "GA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJVSGZA",  # length 1 mod 8
+            "G47QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJVP2I",  # non-zero algorithm bits
+            "MA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJVAAAAAAAAAAAAAJLKA",  # length 6 mod 8
+            "M47QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJUAAAAAAAAAAAACJUQ",  # non-zero algorithm bits
+            "MA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJUAAAAAAAAAAAACJUK===",  # explicit padding not allowed
+            "MA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJUAAAAAAAAAAAACJUO",  # invalid checksum
+            "BAAD6DBUX6J22DMZOHIEZTEQ64CVCHEDRKWZONFEUL5Q26QD7R76RGR4TV",  # unused trailing 2-bits not zero
+        ):
+            with self.assertRaises((ProcessError, ValueError)):
+                decode_strkey(strkey)
 
 
 if __name__ == "__main__":
