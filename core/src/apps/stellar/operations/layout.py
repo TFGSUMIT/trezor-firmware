@@ -475,44 +475,44 @@ async def confirm_invoke_host_function_op(op: StellarInvokeHostFunctionOp) -> No
             function_description=None,
             br_name_prefix="op_invoke",
         )
-
-        # Auth entries fall into two kinds by credential type:
-        #
-        # - SOURCE_ACCOUNT credentials are authorized by the signature the device
-        #   produces over the transaction envelope. Approving that signature approves
-        #   these entries, so we must always show them for confirmation.
-        #
-        # - ADDRESS credentials are authorized by a separate signature over the
-        #   ENVELOPE_TYPE_SOROBAN_AUTHORIZATION preimage, which this device does not
-        #   produce. They are hidden behind an opt-in and only shown for information;
-        #   the user does not need to review them to sign safely.
-
-        # NOTE: signing ADDRESS credentials for our own account may be added later.
-
-        shown = 0
-        non_src_entries = []
-
-        for auth_entry in op.auth:
-            if (
-                auth_entry.credentials.type
-                == StellarSorobanCredentialsType.SOROBAN_CREDENTIALS_SOURCE_ACCOUNT
-            ):
-                shown += 1
-                await _confirm_auth_entry(auth_entry, shown)
-            else:
-                non_src_entries.append(auth_entry)
-
-        show_non_src = non_src_entries and await should_show_more(
-            TR.stellar__ext_auth,
-            ((TR.stellar__ext_auth_message, False),),
-            button_text=TR.buttons__show_all,
-        )
-        if show_non_src:
-            for auth_entry in non_src_entries:
-                shown += 1
-                await _confirm_auth_entry(auth_entry, shown)
     else:
         raise ProcessError("Stellar: unsupported host function type")
+
+    # Auth entries fall into two kinds by credential type:
+    #
+    # - SOURCE_ACCOUNT credentials are authorized by the signature the device
+    #   produces over the transaction envelope. Approving that signature approves
+    #   these entries, so we must always show them for confirmation.
+    #
+    # - ADDRESS credentials are authorized by a separate signature over the
+    #   ENVELOPE_TYPE_SOROBAN_AUTHORIZATION preimage, which this device does not
+    #   produce. They are hidden behind an opt-in and only shown for information;
+    #   the user does not need to review them to sign safely.
+
+    # NOTE: signing ADDRESS credentials for our own account may be added later.
+
+    shown = 0
+    non_src_entries = []
+
+    for auth_entry in op.auth:
+        if (
+            auth_entry.credentials.type
+            == StellarSorobanCredentialsType.SOROBAN_CREDENTIALS_SOURCE_ACCOUNT
+        ):
+            shown += 1
+            await _confirm_auth_entry(auth_entry, shown)
+        else:
+            non_src_entries.append(auth_entry)
+
+    show_non_src = non_src_entries and await should_show_more(
+        TR.stellar__ext_auth,
+        ((TR.stellar__ext_auth_message, False),),
+        button_text=TR.buttons__show_all,
+    )
+    if show_non_src:
+        for auth_entry in non_src_entries:
+            shown += 1
+            await _confirm_auth_entry(auth_entry, shown)
 
 
 async def _confirm_auth_entry(
