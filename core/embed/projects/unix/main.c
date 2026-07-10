@@ -123,7 +123,7 @@ static int execute_from_lexer(int source_kind, const void *source,
       lex = mp_lexer_new_from_str_len(MP_QSTR__lt_stdin_gt_, vstr->buf,
                                       vstr->len, false);
     } else if (source_kind == LEX_SRC_FILENAME) {
-      lex = mp_lexer_new_from_file((const char *)source);
+      lex = mp_lexer_new_from_file(qstr_from_str((const char *)source));
     } else {  // LEX_SRC_STDIN
       lex = mp_lexer_new_from_fd(MP_QSTR__lt_stdin_gt_, 0, false);
     }

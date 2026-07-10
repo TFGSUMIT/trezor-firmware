@@ -71,7 +71,7 @@
 #define MICROPY_CONFIG_ROM_LEVEL (MICROPY_CONFIG_ROM_LEVEL_CORE_FEATURES)
 
 // Python internal features
-#define MICROPY_READER_VFS          (0)
+#define MICROPY_READER_VFS          (1)
 #define MICROPY_ENABLE_GC           (1)
 #define MICROPY_ENABLE_FINALISER    (1)
 #define MICROPY_STACK_CHECK         (1)
@@ -91,11 +91,11 @@
 #define MICROPY_STREAMS_NON_BLOCK   (1)
 #define MICROPY_MODULE_WEAK_LINKS   (0)
 #define MICROPY_CAN_OVERRIDE_BUILTINS (0)
-#define MICROPY_VFS_POSIX_FILE      (1)
+#define MICROPY_VFS_POSIX           (1)
 #define MICROPY_USE_INTERNAL_ERRNO  (0)
 #define MICROPY_ENABLE_SCHEDULER    (0)
 #define MICROPY_SCHEDULER_DEPTH     (0)
-#define MICROPY_VFS                 (0)
+#define MICROPY_VFS                 (1)
 
 // control over Python builtins
 #define MICROPY_PY_FUNCTION_ATTRS   (1)
@@ -148,7 +148,7 @@
 #define MICROPY_PY_UCTYPES          (!BITCOIN_ONLY)  // used in FIDO
 #define MICROPY_PY_UZLIB            (0)
 #define MICROPY_PY_UJSON            (0)
-#define MICROPY_PY_OS               (1)
+#define MICROPY_PY_OS               (1) // ???? prune module list
 #define MICROPY_PY_OS_INCLUDEFILE   "ports/unix/modos.c"
 #define MICROPY_PY_OS_ERRNO         (1)
 #define MICROPY_PY_OS_GETENV_PUTENV_UNSETENV (1)
@@ -167,9 +167,7 @@
 #define MICROPY_PY_URANDOM          (0)
 #define MICROPY_PY_URANDOM_EXTRA_FUNCS (0)
 #define MICROPY_PY_USELECT          (0)
-#define MICROPY_PY_UTIMEQ           (1)
 #define MICROPY_PY_TIME             (1)
-#define MICROPY_PY_UTIME_MP_HAL     (1)
 #define MICROPY_PY_OS_DUPTERM       (0)
 #define MICROPY_PY_LWIP_SOCK_RAW    (0)
 #define MICROPY_PY_MACHINE          (0)
@@ -253,8 +251,8 @@ typedef unsigned int mp_uint_t; // must be pointer size
 
 #define MICROPY_EVENT_POLL_HOOK \
     do { \
-        extern void mp_handle_pending(bool); \
-        mp_handle_pending(true); \
+        extern void mp_handle_pending(mp_handle_pending_behaviour_t); \
+        mp_handle_pending(MP_HANDLE_PENDING_CALLBACKS_AND_EXCEPTIONS); \
         mp_hal_delay_us(500); \
     } while (0);
 
@@ -313,5 +311,8 @@ void mp_unix_mark_exec(void);
 // For debugging purposes, make printf() available to any source file.
 #include <stdio.h>
 #endif
+
+// TODO
+#define mp_hal_pin_obj_t
 
 #endif // __INCLUDED_MPCONFIGPORT_H

@@ -121,7 +121,7 @@ fn main() -> Result<()> {
         lib.add_sources_in_dir_with_attrs(mpy_dir, ["py/gc.c", "py/pystack.c", "py/vm.c"], attrs);
 
         // silence warning about unterminated string literals
-        // TODO: remove this after we upgrade MicroPython
+        // TODO: remove this after we upgrade MicroPython // FIXME
         let attrs_silence_unterminated =
             xbuild::CompileAttrs::new().with_flag("-Wno-unterminated-string-initialization");
         lib.add_sources_in_dir_with_attrs(
@@ -134,8 +134,7 @@ fn main() -> Result<()> {
             mpy_dir,
             [
                 "extmod/modbinascii.c",
-                "extmod/moduheapq.c",
-                "extmod/utime_mphal.c",
+                "extmod/modtime.c",
                 "shared/timeutils/timeutils.c",
                 "py/argcheck.c",
                 "py/asmarm.c",
@@ -150,13 +149,13 @@ fn main() -> Result<()> {
                 "py/builtinhelp.c",
                 "py/builtinimport.c",
                 "py/compile.c",
+                "py/cstack.c",
                 "py/emitbc.c",
                 "py/emitcommon.c",
                 "py/emitglue.c",
                 "py/emitinlinethumb.c",
                 "py/formatfloat.c",
                 "py/frozenmod.c",
-                "py/lexer.c",
                 "py/malloc.c",
                 "py/map.c",
                 "py/modarray.c",
@@ -170,7 +169,7 @@ fn main() -> Result<()> {
                 "py/modstruct.c",
                 "py/modsys.c",
                 "py/modthread.c",
-                "py/moderrno.c",
+                "py/moderrno.c", // SD card only? // or unix only??
                 "py/mpprint.c",
                 "py/mpstate.c",
                 "py/mpz.c",
@@ -182,6 +181,7 @@ fn main() -> Result<()> {
                 "py/objboundmeth.c",
                 "py/objcell.c",
                 "py/objclosure.c",
+                "py/objcode.c",
                 "py/objcomplex.c",
                 "py/objdeque.c",
                 "py/objdict.c",
@@ -220,7 +220,6 @@ fn main() -> Result<()> {
                 "py/parsenumbase.c",
                 "py/persistentcode.c",
                 "py/qstr.c",
-                "py/reader.c",
                 "py/repl.c",
                 "py/runtime.c",
                 "py/runtime_utils.c",
@@ -247,13 +246,17 @@ fn main() -> Result<()> {
             lib.add_sources_in_dir(
                 mpy_dir,
                 [
+                    "extmod/vfs.c",
+                    "extmod/vfs_posix.c",
                     "extmod/vfs_posix_file.c",
+                    "extmod/vfs_reader.c",
                     "extmod/modos.c",
                     "py/emitnarm.c",
                     "py/emitnative.c",
                     "py/emitnthumb.c",
                     "py/emitnx64.c",
                     "py/emitnx86.c",
+                    "py/lexer.c",
                     "py/nlr.c",
                     "py/nlraarch64.c",
                     "py/nlrsetjmp.c",
@@ -261,6 +264,7 @@ fn main() -> Result<()> {
                     "py/nlrx64.c",
                     "py/nlrx86.c",
                     "py/profile.c",
+                    "py/reader.c",
                     "ports/unix/alloc.c",
                     "ports/unix/gccollect.c",
                     "ports/unix/input.c",
@@ -282,7 +286,7 @@ fn main() -> Result<()> {
                     "shared/runtime/interrupt_char.c",
                     "shared/runtime/pyexec.c",
                     "shared/runtime/stdout_helpers.c",
-                    // "shared/runtime/gchelper_m3.s", // This file is added later
+                    // "shared/runtime/gchelper_thumb2.s", // This file is added later
                 ],
             );
         } else {
@@ -311,7 +315,7 @@ fn main() -> Result<()> {
         if cfg!(not(feature = "emulator")) {
             // This file must not be preprocessed in MpyBuilder so it is added here
             // after the build_genhdr step
-            lib.add_sources_in_dir(mpy_dir, ["shared/runtime/gchelper_m3.s"]);
+            lib.add_sources_in_dir(mpy_dir, ["shared/runtime/gchelper_thumb2.s"]);
         }
 
         Ok(())
@@ -638,7 +642,7 @@ impl<'a> MpyBuilder<'a> {
         let output = self.genhdr_dir.join("moduledefs.collected.h");
         let mut cmd = std::process::Command::new("sh");
         cmd.arg("-c")
-            .arg(r#"out="$1"; shift; grep '^MP_REGISTER_MODULE' "$@" > "$out""#)
+            .arg(r#"out="$1"; shift; egrep '^MP_REGISTER(_EXTENSIBLE)?_MODULE' "$@" > "$out""#)
             .arg("sh")
             .arg(&output)
             .args(upydef_files);
@@ -821,7 +825,6 @@ impl<'a> MpyBuilder<'a> {
 
         // Build mpy-cross in the folder common for all models and targets.
         let build_dir = xbuild::cargo_target_dir()?.join("mpy-cross");
-        let mpy_cross = build_dir.join("mpy-cross");
         let source_dir = self.mpy_dir.join("mpy-cross");
         let mpycross_include = self.crate_dir.join("mpycross_include");
 
@@ -831,7 +834,7 @@ impl<'a> MpyBuilder<'a> {
         cmd.args(["-j", &parallel_job_count.to_string()])
             .args(["-C", &source_dir.to_string_lossy()])
             .arg(format!("BUILD={}", &build_dir.to_string_lossy()))
-            .arg(format!("PROG={}", &mpy_cross.to_string_lossy()))
+            .arg("PROG=mpy-cross")
             .env("INC", format!("-I{}", &mpycross_include.to_string_lossy()));
 
         let cmd_output = cmd
@@ -843,7 +846,7 @@ impl<'a> MpyBuilder<'a> {
             bail!(xbuild::format_command_error(&cmd, &cmd_output));
         }
 
-        Ok(mpy_cross)
+        Ok(build_dir.join("mpy-cross"))
     }
 
     fn build_frozen_modules(&self, qstr_preprocessed: &Path) -> Result<PathBuf> {

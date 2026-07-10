@@ -371,7 +371,10 @@ pub fn format_command_error(
         .to_string();
 
     if !stderr.is_empty() {
-        stderr
+        format!(
+            "Failed to execute {:?}\nstdout:\n{}\nstderr:\n{}",
+            cmd, stdout, stderr
+        )
     } else if !stdout.is_empty() {
         stdout
     } else {
