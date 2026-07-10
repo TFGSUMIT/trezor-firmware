@@ -27,29 +27,29 @@ mod micropython {
         obj::Obj,
         qstr::Qstr,
         simple_type::SimpleTypeObj,
-        typ::Type,
+        typ::FullType,
     };
 
     use super::LayoutState;
 
-    static STATE_INITIAL_TYPE: Type = obj_type! {
+    static STATE_INITIAL_TYPE: FullType = obj_type! {
         name: Qstr::MP_QSTR_INITIAL,
-        base: LAYOUT_STATE_TYPE,
+        base: LAYOUT_STATE_TYPE.as_type(),
     };
 
-    static STATE_ATTACHED_TYPE: Type = obj_type! {
+    static STATE_ATTACHED_TYPE: FullType = obj_type! {
         name: Qstr::MP_QSTR_ATTACHED,
-        base: LAYOUT_STATE_TYPE,
+        base: LAYOUT_STATE_TYPE.as_type(),
     };
 
-    static STATE_TRANSITIONING_TYPE: Type = obj_type! {
+    static STATE_TRANSITIONING_TYPE: FullType = obj_type! {
         name: Qstr::MP_QSTR_TRANSITIONING,
-        base: LAYOUT_STATE_TYPE,
+        base: LAYOUT_STATE_TYPE.as_type(),
     };
 
-    static STATE_DONE_TYPE: Type = obj_type! {
+    static STATE_DONE_TYPE: FullType = obj_type! {
         name: Qstr::MP_QSTR_DONE,
-        base: LAYOUT_STATE_TYPE,
+        base: LAYOUT_STATE_TYPE.as_type(),
     };
 
     pub static STATE_INITIAL: SimpleTypeObj = SimpleTypeObj::new(&STATE_INITIAL_TYPE);
@@ -57,7 +57,7 @@ mod micropython {
     pub static STATE_TRANSITIONING: SimpleTypeObj = SimpleTypeObj::new(&STATE_TRANSITIONING_TYPE);
     pub static STATE_DONE: SimpleTypeObj = SimpleTypeObj::new(&STATE_DONE_TYPE);
 
-    static LAYOUT_STATE_TYPE: Type = obj_type! {
+    static LAYOUT_STATE_TYPE: FullType = obj_type! {
         name: Qstr::MP_QSTR_LayoutState,
         locals: &obj_dict! { obj_map! {
             Qstr::MP_QSTR_INITIAL => STATE_INITIAL.as_obj(),

@@ -11,7 +11,7 @@ use crate::{
         module::Module,
         obj::{Obj, ObjBase},
         qstr::Qstr,
-        typ::Type,
+        typ::{FullType, Type},
         util,
     },
 };
@@ -53,7 +53,7 @@ impl MsgObj {
     }
 
     fn obj_type() -> &'static Type {
-        static TYPE: Type = obj_type! {
+        static TYPE: FullType = obj_type! {
             name: Qstr::MP_QSTR_Msg,
             attr_fn: msg_obj_attr,
         };
@@ -173,7 +173,7 @@ impl MsgDefObj {
     }
 
     fn obj_type() -> &'static Type {
-        static TYPE: Type = obj_type! {
+        static TYPE: FullType = obj_type! {
             name: Qstr::MP_QSTR_MsgDef,
             attr_fn: msg_def_obj_attr,
             call_fn: msg_def_obj_call,

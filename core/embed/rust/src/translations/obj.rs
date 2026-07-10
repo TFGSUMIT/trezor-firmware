@@ -12,7 +12,7 @@ use crate::{
         obj::Obj,
         qstr::Qstr,
         simple_type::SimpleTypeObj,
-        typ::Type,
+        typ::FullType,
         util,
     },
     trezorhal::translations,
@@ -43,7 +43,7 @@ unsafe extern "C" fn tr_attr_fn(_self_in: Obj, attr: ffi::qstr, dest: *mut Obj) 
     unsafe { util::try_or_raise(block) }
 }
 
-static TR_TYPE: Type = obj_type! {
+static TR_TYPE: FullType = obj_type! {
     name: Qstr::MP_QSTR_TR,
     attr_fn: tr_attr_fn,
 };
@@ -91,7 +91,7 @@ pub extern "C" fn translations_header_from_flash(_cls_in: Obj) -> Obj {
     unsafe { util::try_or_raise(block) }
 }
 
-static TRANSLATIONS_HEADER_TYPE: Type = obj_type! {
+static TRANSLATIONS_HEADER_TYPE: FullType = obj_type! {
     name: Qstr::MP_QSTR_TranslationsHeader,
     locals: &obj_dict!(obj_map! {
         Qstr::MP_QSTR_load_from_flash => obj_fn_1!(translations_header_from_flash).as_obj(),

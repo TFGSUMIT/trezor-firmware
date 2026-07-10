@@ -1,6 +1,11 @@
 #![allow(non_upper_case_globals)]
 
-use super::{ffi, obj::Obj, qstr::Qstr, typ::Type};
+use super::{
+    ffi,
+    obj::Obj,
+    qstr::Qstr,
+    typ::{FullType, Type},
+};
 
 pub const AttributeError: &Type = unsafe { &ffi::mp_type_AttributeError };
 pub const EOFError: &Type = unsafe { &ffi::mp_type_EOFError };
@@ -14,7 +19,7 @@ pub const RuntimeError: &Type = unsafe { &ffi::mp_type_RuntimeError };
 pub const TypeError: &Type = unsafe { &ffi::mp_type_TypeError };
 pub const ValueError: &Type = unsafe { &ffi::mp_type_ValueError };
 
-pub const fn define_exception(name: Qstr, parent: &Type) -> Type {
+pub const fn define_exception(name: Qstr, parent: &Type) -> FullType {
     obj_type! {
         name: name,
         make_new_fn: ffi::mp_obj_exception_make_new,

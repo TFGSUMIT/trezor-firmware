@@ -15,7 +15,7 @@ use crate::{
         obj::Obj,
         qstr::Qstr,
         simple_type::SimpleTypeObj,
-        typ::Type,
+        typ::FullType,
         util,
     },
 };
@@ -309,15 +309,15 @@ extern "C" fn thp_handshake_key(iface_num: Obj, local_static_privkey: Obj) -> Ob
 }
 
 #[allow(non_upper_case_globals)]
-pub static ThpError: Type =
+pub static ThpError: FullType =
     exception::define_exception(Qstr::MP_QSTR_ThpError, exception::Exception);
 
-static FAILED_TYPE: Type = obj_type! { name: Qstr::MP_QSTR_FAILED, };
-static KEY_REQUIRED_TYPE: Type = obj_type! { name: Qstr::MP_QSTR_KEY_REQUIRED, };
-static KEY_REQUIRED_UNLOCK_TYPE: Type = obj_type! { name: Qstr::MP_QSTR_KEY_REQUIRED_UNLOCK, };
-static MESSAGE_READY_TYPE: Type = obj_type! { name: Qstr::MP_QSTR_MESSAGE_READY, };
-static ACK_TYPE: Type = obj_type! { name: Qstr::MP_QSTR_ACK, };
-static MESSAGE_READY_ACK_TYPE: Type = obj_type! { name: Qstr::MP_QSTR_MESSAGE_READY_ACK, };
+static FAILED_TYPE: FullType = obj_type! { name: Qstr::MP_QSTR_FAILED, };
+static KEY_REQUIRED_TYPE: FullType = obj_type! { name: Qstr::MP_QSTR_KEY_REQUIRED, };
+static KEY_REQUIRED_UNLOCK_TYPE: FullType = obj_type! { name: Qstr::MP_QSTR_KEY_REQUIRED_UNLOCK, };
+static MESSAGE_READY_TYPE: FullType = obj_type! { name: Qstr::MP_QSTR_MESSAGE_READY, };
+static ACK_TYPE: FullType = obj_type! { name: Qstr::MP_QSTR_ACK, };
+static MESSAGE_READY_ACK_TYPE: FullType = obj_type! { name: Qstr::MP_QSTR_MESSAGE_READY_ACK, };
 
 pub static FAILED_OBJ: SimpleTypeObj = SimpleTypeObj::new(&FAILED_TYPE);
 pub static KEY_REQUIRED_OBJ: SimpleTypeObj = SimpleTypeObj::new(&KEY_REQUIRED_TYPE);
@@ -365,7 +365,7 @@ pub static mp_module_trezorthp: Module = obj_module! {
     Qstr::MP_QSTR___name__ => Qstr::MP_QSTR_trezorthp.to_obj(),
 
     /// ThpError: type[Exception]
-    Qstr::MP_QSTR_ThpError => ThpError.as_obj(),
+    Qstr::MP_QSTR_ThpError => ThpError.as_type().as_obj(),
 
     /// MESSAGE_READY: object
     Qstr::MP_QSTR_MESSAGE_READY => MESSAGE_READY_OBJ.as_obj(),

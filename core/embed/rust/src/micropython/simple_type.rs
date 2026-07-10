@@ -1,6 +1,6 @@
 use super::{
     obj::{Obj, ObjBase},
-    typ::Type,
+    typ::FullType,
 };
 
 /// Simple MicroPython object type builder.
@@ -26,9 +26,11 @@ pub struct SimpleTypeObj {
 }
 
 impl SimpleTypeObj {
-    pub const fn new(base: &'static Type) -> Self {
+    // base would ideally be something like impl Into<&'static Type> but we don't
+    // have const traits and it's currently only used with FullType anyway
+    pub const fn new(base: &'static FullType) -> Self {
         Self {
-            base: base.as_base(),
+            base: base.as_type().as_base(),
         }
     }
 

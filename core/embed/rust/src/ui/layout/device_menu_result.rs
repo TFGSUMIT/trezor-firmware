@@ -1,7 +1,8 @@
 use crate::{
     error::Error,
     micropython::{
-        ffi, macros::obj_type, obj::Obj, qstr::Qstr, simple_type::SimpleTypeObj, typ::Type, util,
+        ffi, macros::obj_type, obj::Obj, qstr::Qstr, simple_type::SimpleTypeObj, typ::FullType,
+        util,
     },
 };
 
@@ -86,7 +87,7 @@ impl DeviceMenuMsg {
 }
 
 // Create a DeviceMenuResult class that contains all result types
-static DEVICE_MENU_RESULT_TYPE: Type = obj_type! {
+static DEVICE_MENU_RESULT_TYPE: FullType = obj_type! {
     name: Qstr::MP_QSTR_DeviceMenuResult,
     attr_fn: device_menu_result_attr,
 };
