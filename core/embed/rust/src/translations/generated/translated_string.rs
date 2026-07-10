@@ -1632,15 +1632,13 @@ pub enum TranslatedString {
     #[cfg(feature = "universal_fw")]
     stellar__authorization = 1240,  // "Authorization"
     #[cfg(feature = "universal_fw")]
-    stellar__contract_address = 1241,  // "Contract Address"
+    stellar__ext_auth = 1241,  // "External Authorizations"
     #[cfg(feature = "universal_fw")]
-    stellar__function = 1242,  // "Function"
+    stellar__ext_auth_message = 1242,  // "Transaction contains additional invocations authorized by external means."
     #[cfg(feature = "universal_fw")]
-    stellar__invoke_contract = 1243,  // "Invoke Contract"
+    stellar__function = 1243,  // "Function"
     #[cfg(feature = "universal_fw")]
-    stellar__ext_auth = 1244,  // "External Authorizations"
-    #[cfg(feature = "universal_fw")]
-    stellar__ext_auth_message = 1245,  // "Transaction contains additional invocations authorized by external means."
+    stellar__invoke_contract = 1244,  // "Invoke Contract"
 }
 
 impl TranslatedString {
@@ -2889,11 +2887,10 @@ impl TranslatedString {
                 "Owner address",
                 "Arguments",
                 "Authorization",
-                "Contract Address",
-                "Function",
-                "Invoke Contract",
                 "External Authorizations",
                 "Transaction contains additional invocations authorized by external means.",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(feature = "debug", feature = "universal_fw"))]
@@ -4140,11 +4137,10 @@ impl TranslatedString {
                 19427,
                 19436,
                 19449,
-                19465,
-                19473,
-                19488,
-                19511,
-                19584,
+                19472,
+                19545,
+                19553,
+                19568,
             ];
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -5390,11 +5386,10 @@ impl TranslatedString {
                 "Owner address",
                 "Arguments",
                 "Authorization",
-                "Contract Address",
-                "Function",
-                "Invoke Contract",
                 "External Authorizations",
                 "Transaction contains additional invocations authorized by external means.",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -6641,11 +6636,10 @@ impl TranslatedString {
                 19427,
                 19436,
                 19449,
-                19465,
-                19473,
-                19488,
-                19511,
-                19584,
+                19472,
+                19545,
+                19553,
+                19568,
             ];
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -7891,11 +7885,10 @@ impl TranslatedString {
                 "Owner address",
                 "Arguments",
                 "Authorization",
-                "Contract Address",
-                "Function",
-                "Invoke Contract",
                 "External Authorizations",
                 "Transaction contains additional invocations authorized by external means.",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -9142,11 +9135,10 @@ impl TranslatedString {
                 19427,
                 19436,
                 19449,
-                19465,
-                19473,
-                19488,
-                19511,
-                19584,
+                19472,
+                19545,
+                19553,
+                19568,
             ];
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -10392,11 +10384,10 @@ impl TranslatedString {
                 "Owner address",
                 "Arguments",
                 "Authorization",
-                "Contract Address",
-                "Function",
-                "Invoke Contract",
                 "External Authorizations",
                 "Transaction contains additional invocations authorized by external means.",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -11643,11 +11634,10 @@ impl TranslatedString {
                 19427,
                 19436,
                 19449,
-                19465,
-                19473,
-                19488,
-                19511,
-                19584,
+                19472,
+                19545,
+                19553,
+                19568,
             ];
 
         } else if #[cfg(feature = "layout_caesar")] {
@@ -12894,11 +12884,10 @@ impl TranslatedString {
                 "Owner address",
                 "Arguments",
                 "Authorization",
-                "Contract Address",
-                "Function",
-                "Invoke Contract",
                 "External Authorizations",
                 "Transaction contains additional invocations authorized by external means.",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(feature = "debug", feature = "universal_fw"))]
@@ -14145,11 +14134,10 @@ impl TranslatedString {
                 17315,
                 17324,
                 17337,
-                17353,
-                17361,
-                17376,
-                17399,
-                17472,
+                17360,
+                17433,
+                17441,
+                17456,
             ];
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -15395,11 +15383,10 @@ impl TranslatedString {
                 "Owner address",
                 "Arguments",
                 "Authorization",
-                "Contract Address",
-                "Function",
-                "Invoke Contract",
                 "External Authorizations",
                 "Transaction contains additional invocations authorized by external means.",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -16646,11 +16633,10 @@ impl TranslatedString {
                 17315,
                 17324,
                 17337,
-                17353,
-                17361,
-                17376,
-                17399,
-                17472,
+                17360,
+                17433,
+                17441,
+                17456,
             ];
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -17896,11 +17882,10 @@ impl TranslatedString {
                 "Owner address",
                 "Arguments",
                 "Authorization",
-                "Contract Address",
-                "Function",
-                "Invoke Contract",
                 "External Authorizations",
                 "Transaction contains additional invocations authorized by external means.",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -19147,11 +19132,10 @@ impl TranslatedString {
                 17315,
                 17324,
                 17337,
-                17353,
-                17361,
-                17376,
-                17399,
-                17472,
+                17360,
+                17433,
+                17441,
+                17456,
             ];
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -20397,11 +20381,10 @@ impl TranslatedString {
                 "Owner address",
                 "Arguments",
                 "Authorization",
-                "Contract Address",
-                "Function",
-                "Invoke Contract",
                 "External Authorizations",
                 "Transaction contains additional invocations authorized by external means.",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -21648,11 +21631,10 @@ impl TranslatedString {
                 17315,
                 17324,
                 17337,
-                17353,
-                17361,
-                17376,
-                17399,
-                17472,
+                17360,
+                17433,
+                17441,
+                17456,
             ];
 
         } else if #[cfg(feature = "layout_delizia")] {
@@ -22899,11 +22881,10 @@ impl TranslatedString {
                 "Owner address",
                 "Arguments",
                 "Authorization",
-                "Contract Address",
-                "Function",
-                "Invoke Contract",
                 "External Authorizations",
                 "Transaction contains additional invocations authorized by external means.",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(feature = "debug", feature = "universal_fw"))]
@@ -24150,11 +24131,10 @@ impl TranslatedString {
                 18944,
                 18953,
                 18966,
-                18982,
-                18990,
-                19005,
-                19028,
-                19101,
+                18989,
+                19062,
+                19070,
+                19085,
             ];
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -25400,11 +25380,10 @@ impl TranslatedString {
                 "Owner address",
                 "Arguments",
                 "Authorization",
-                "Contract Address",
-                "Function",
-                "Invoke Contract",
                 "External Authorizations",
                 "Transaction contains additional invocations authorized by external means.",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -26651,11 +26630,10 @@ impl TranslatedString {
                 18944,
                 18953,
                 18966,
-                18982,
-                18990,
-                19005,
-                19028,
-                19101,
+                18989,
+                19062,
+                19070,
+                19085,
             ];
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -27901,11 +27879,10 @@ impl TranslatedString {
                 "Owner address",
                 "Arguments",
                 "Authorization",
-                "Contract Address",
-                "Function",
-                "Invoke Contract",
                 "External Authorizations",
                 "Transaction contains additional invocations authorized by external means.",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -29152,11 +29129,10 @@ impl TranslatedString {
                 18944,
                 18953,
                 18966,
-                18982,
-                18990,
-                19005,
-                19028,
-                19101,
+                18989,
+                19062,
+                19070,
+                19085,
             ];
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -30402,11 +30378,10 @@ impl TranslatedString {
                 "Owner address",
                 "Arguments",
                 "Authorization",
-                "Contract Address",
-                "Function",
-                "Invoke Contract",
                 "External Authorizations",
                 "Transaction contains additional invocations authorized by external means.",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -31653,11 +31628,10 @@ impl TranslatedString {
                 18944,
                 18953,
                 18966,
-                18982,
-                18990,
-                19005,
-                19028,
-                19101,
+                18989,
+                19062,
+                19070,
+                19085,
             ];
 
         } else if #[cfg(feature = "layout_eckhart")] {
@@ -32904,11 +32878,10 @@ impl TranslatedString {
                 "Owner address",
                 "Arguments",
                 "Authorization",
-                "Contract Address",
-                "Function",
-                "Invoke Contract",
                 "External Authorizations",
                 "Transaction contains additional invocations authorized by external means.",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(feature = "debug", feature = "universal_fw"))]
@@ -34155,11 +34128,10 @@ impl TranslatedString {
                 20252,
                 20261,
                 20274,
-                20290,
-                20298,
-                20313,
-                20336,
-                20409,
+                20297,
+                20370,
+                20378,
+                20393,
             ];
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -35405,11 +35377,10 @@ impl TranslatedString {
                 "Owner address",
                 "Arguments",
                 "Authorization",
-                "Contract Address",
-                "Function",
-                "Invoke Contract",
                 "External Authorizations",
                 "Transaction contains additional invocations authorized by external means.",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(feature = "debug", not(feature = "universal_fw")))]
@@ -36656,11 +36627,10 @@ impl TranslatedString {
                 20252,
                 20261,
                 20274,
-                20290,
-                20298,
-                20313,
-                20336,
-                20409,
+                20297,
+                20370,
+                20378,
+                20393,
             ];
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -37906,11 +37876,10 @@ impl TranslatedString {
                 "Owner address",
                 "Arguments",
                 "Authorization",
-                "Contract Address",
-                "Function",
-                "Invoke Contract",
                 "External Authorizations",
                 "Transaction contains additional invocations authorized by external means.",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(not(feature = "debug"), feature = "universal_fw"))]
@@ -39157,11 +39126,10 @@ impl TranslatedString {
                 20252,
                 20261,
                 20274,
-                20290,
-                20298,
-                20313,
-                20336,
-                20409,
+                20297,
+                20370,
+                20378,
+                20393,
             ];
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -40407,11 +40375,10 @@ impl TranslatedString {
                 "Owner address",
                 "Arguments",
                 "Authorization",
-                "Contract Address",
-                "Function",
-                "Invoke Contract",
                 "External Authorizations",
                 "Transaction contains additional invocations authorized by external means.",
+                "Function",
+                "Invoke Contract",
             );
 
             #[cfg(all(not(feature = "debug"), not(feature = "universal_fw")))]
@@ -41658,11 +41625,10 @@ impl TranslatedString {
                 20252,
                 20261,
                 20274,
-                20290,
-                20298,
-                20313,
-                20336,
-                20409,
+                20297,
+                20370,
+                20378,
+                20393,
             ];
 
         }
@@ -42972,8 +42938,6 @@ impl TranslatedString {
         (Qstr::MP_QSTR_stellar__confirm_operation, Self::stellar__confirm_operation),
         #[cfg(feature = "universal_fw")]
         (Qstr::MP_QSTR_stellar__confirm_timebounds, Self::stellar__confirm_timebounds),
-        #[cfg(feature = "universal_fw")]
-        (Qstr::MP_QSTR_stellar__contract_address, Self::stellar__contract_address),
         #[cfg(feature = "universal_fw")]
         (Qstr::MP_QSTR_stellar__create_account, Self::stellar__create_account),
         #[cfg(feature = "universal_fw")]

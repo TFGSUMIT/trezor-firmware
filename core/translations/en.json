@@ -2723,7 +2723,6 @@
     "stellar__confirm_memo": "Confirm memo",
     "stellar__confirm_operation": "Confirm operation",
     "stellar__confirm_timebounds": "Confirm timebounds",
-    "stellar__contract_address": "Contract Address",
     "stellar__create_account": "Create Account",
     "stellar__debited_amount": "Debited amount",
     "stellar__delete": "Delete",

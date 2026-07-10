@@ -433,28 +433,32 @@ async def confirm_asset_issuer(asset: StellarAsset) -> None:
 
 async def _confirm_invoke_contract_args(
     args: StellarInvokeContractArgs,
-    address_title: str,
-    address_description: str | None,
-    function_title: str,
-    function_description: str | None,
     br_name_prefix: str,
+    title: str | None = None,
 ) -> None:
+    # If title is not empty, it is shared across screens;
+    # the per-screen label moves into the description / subtitle.
     await confirm_address(
-        address_title,
+        title or TR.stellar__invoke_contract,
         args.contract_address,
-        description=address_description,
+        description=TR.stellar__invoke_contract if title else None,
         br_name=f"{br_name_prefix}_contract_address",
     )
     await confirm_text(
         f"{br_name_prefix}_function",
-        function_title,
+        title or TR.stellar__function,
         args.function_name,
-        description=function_description,
+        description=TR.stellar__function if title else None,
     )
     props = [
         (_SC_VAL_TYPE_NAME[arg.type], _format_sc_val(arg), True) for arg in args.args
     ]
-    await confirm_properties(f"{br_name_prefix}_args", TR.stellar__arguments, props)
+    await confirm_properties(
+        f"{br_name_prefix}_args",
+        title or TR.stellar__arguments,
+        props,
+        TR.stellar__arguments if title else None,
+    )
 
 
 def _is_root_auth_entry(
@@ -500,10 +504,6 @@ async def confirm_invoke_host_function_op(op: StellarInvokeHostFunctionOp) -> No
 
         await _confirm_invoke_contract_args(
             function.invoke_contract,
-            address_title=TR.stellar__invoke_contract,
-            address_description=None,
-            function_title=TR.stellar__function,
-            function_description=None,
             br_name_prefix="op_invoke",
         )
     else:
@@ -598,11 +598,8 @@ async def _confirm_invocation(
     if not is_root:
         await _confirm_invoke_contract_args(
             func.contract_fn,
-            address_title=title,
-            address_description=TR.stellar__contract_address,
-            function_title=title,
-            function_description=TR.stellar__function,
             br_name_prefix="op_auth",
+            title=title,
         )
 
     for i, sub in enumerate(invocation.sub_invocations):

@@ -921,7 +921,6 @@ class TR:
     stellar__confirm_memo: str = "Confirm memo"
     stellar__confirm_operation: str = "Confirm operation"
     stellar__confirm_timebounds: str = "Confirm timebounds"
-    stellar__contract_address: str = "Contract Address"
     stellar__create_account: str = "Create Account"
     stellar__debited_amount: str = "Debited amount"
     stellar__delete: str = "Delete"

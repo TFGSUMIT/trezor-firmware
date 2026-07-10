@@ -1486,7 +1486,6 @@ static void _librust_qstrs(void) {
   MP_QSTR_stellar__confirm_memo;
   MP_QSTR_stellar__confirm_operation;
   MP_QSTR_stellar__confirm_timebounds;
-  MP_QSTR_stellar__contract_address;
   MP_QSTR_stellar__create_account;
   MP_QSTR_stellar__debited_amount;
   MP_QSTR_stellar__delete;

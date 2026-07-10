@@ -1240,9 +1240,8 @@
   "1238": "tron__owner_address",
   "1239": "stellar__arguments",
   "1240": "stellar__authorization",
-  "1241": "stellar__contract_address",
-  "1242": "stellar__function",
-  "1243": "stellar__invoke_contract",
-  "1244": "stellar__ext_auth",
-  "1245": "stellar__ext_auth_message"
+  "1241": "stellar__ext_auth",
+  "1242": "stellar__ext_auth_message",
+  "1243": "stellar__function",
+  "1244": "stellar__invoke_contract"
 }
