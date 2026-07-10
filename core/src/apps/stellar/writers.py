@@ -43,13 +43,11 @@ def write_int32(w: Writer, value: int) -> None:
     """Write signed 32-bit integer in big-endian."""
     if value < -0x80000000 or value > 0x7FFFFFFF:
         raise ValueError("int32 out of range")
-    value &= 0xFFFFFFFF
-    writers.write_bytes_unchecked(w, value.to_bytes(4, "big"))
+    write_uint32(w, value & 0xFFFFFFFF)
 
 
 def write_int64(w: Writer, value: int) -> None:
     """Write signed 64-bit integer in big-endian."""
     if value < -0x8000000000000000 or value > 0x7FFFFFFFFFFFFFFF:
         raise ValueError("int64 out of range")
-    value &= 0xFFFFFFFFFFFFFFFF
-    writers.write_bytes_unchecked(w, value.to_bytes(8, "big"))
+    write_uint64(w, value & 0xFFFFFFFFFFFFFFFF)
